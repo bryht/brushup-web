@@ -1,0 +1,1358 @@
+<!doctype html>
+<html lang="en" data-theme="sepia">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BrushUp — Improve your English writing in any app</title>
+    <meta
+      name="description"
+      content="A desktop app that helps non-native English speakers improve their writing. Press a hotkey, pick a preset, get better text. Works in Outlook, Slack, Word, and any app."
+    />
+    <meta property="og:title" content="BrushUp" />
+    <meta
+      property="og:description"
+      content="Improve your English writing in any app. Press a hotkey, pick a preset, get better text."
+    />
+    <meta property="og:type" content="website" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 130 130' fill='none'><rect x='24' y='56' width='16' height='62' rx='2' fill='%23b8542a'/><circle cx='60' cy='86' r='22' stroke='%23b8542a' stroke-width='14' fill='none'/><path d='M 24 56 L 40 56 L 88 28 L 96 22 L 88 14 L 30 46 Z' fill='%23b8542a'/><rect x='-12' y='-3' width='24' height='6' rx='1' transform='translate(38 50) rotate(-32)' fill='%23b8542a'/></svg>"
+    />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      /* ─── Sepia theme tokens (mirrored from doc/design/tokens.css) ─── */
+      :root,
+      [data-theme="sepia"] {
+        --tb-bg: #f4efe6;
+        --tb-bg-elev: #faf6ec;
+        --tb-bg-elev-2: #ece4d2;
+        --tb-bg-input: #faf6ec;
+        --tb-line: rgba(60, 40, 20, 0.1);
+        --tb-line-strong: rgba(60, 40, 20, 0.18);
+
+        --tb-fg: #2b2418;
+        --tb-fg-mute: #6e5f48;
+        --tb-fg-dim: #8a7c66;
+        --tb-fg-faint: #b3a48a;
+
+        --tb-accent: #b8542a;
+        --tb-accent-fg: #faf6ec;
+        --tb-accent-glow: rgba(184, 84, 42, 0.14);
+
+        --tb-add: #4a7a3a;
+        --tb-add-bg: rgba(74, 122, 58, 0.12);
+        --tb-del: #b3402a;
+        --tb-del-bg: rgba(179, 64, 42, 0.1);
+
+        --tb-warn: #a87217;
+        --tb-link: #2f5a8a;
+
+        --tb-shadow-popup:
+          0 24px 60px -12px rgba(60, 40, 20, 0.2), 0 8px 24px -4px rgba(60, 40, 20, 0.12),
+          0 0 0 0.5px rgba(60, 40, 20, 0.1);
+
+        --tb-font-sans:
+          "Inter Tight", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+        --tb-font-mono: "JetBrains Mono", ui-monospace, "SF Mono", monospace;
+        --tb-font-prose: "Iowan Old Style", "Charter", "Georgia", serif;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        background: var(--tb-bg);
+        color: var(--tb-fg);
+        font-family: var(--tb-font-sans);
+        line-height: 1.55;
+        font-feature-settings: "ss01", "cv11", "tnum";
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      a {
+        color: var(--tb-link);
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+
+      .container {
+        max-width: 1040px;
+        margin: 0 auto;
+        padding: 0 28px;
+      }
+
+      /* ─── Atoms (matching tokens.css) ─── */
+      .tb-mono {
+        font-family: var(--tb-font-mono);
+        font-feature-settings: "tnum", "zero";
+      }
+
+      .tb-kbd {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 20px;
+        height: 22px;
+        padding: 0 7px;
+        font-family: var(--tb-font-mono);
+        font-size: 11.5px;
+        font-weight: 500;
+        color: var(--tb-fg-mute);
+        background: var(--tb-bg-elev-2);
+        border: 0.5px solid var(--tb-line-strong);
+        border-radius: 5px;
+        line-height: 1;
+        box-shadow: 0 1px 0 var(--tb-line-strong);
+      }
+      .tb-kbd-row {
+        display: inline-flex;
+        gap: 4px;
+        align-items: center;
+      }
+
+      .tb-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 5px 12px;
+        font-size: 11.5px;
+        font-family: var(--tb-font-mono);
+        color: var(--tb-fg-mute);
+        background: var(--tb-bg-elev);
+        border: 0.5px solid var(--tb-line);
+        border-radius: 999px;
+        line-height: 1.3;
+      }
+      .tb-chip .tb-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--tb-add);
+        box-shadow: 0 0 6px var(--tb-add);
+        display: inline-block;
+      }
+
+      /* ─── Nav ─── */
+      nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 22px 0;
+        border-bottom: 0.5px solid var(--tb-line);
+      }
+      nav .logo {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 15px;
+        font-weight: 700;
+        letter-spacing: -0.01em;
+        color: var(--tb-fg);
+      }
+      nav .logo .mark {
+        color: var(--tb-accent);
+        width: 22px;
+        height: 22px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+      nav .links {
+        display: flex;
+        gap: 22px;
+        font-size: 13px;
+        align-items: center;
+      }
+      nav .links a {
+        color: var(--tb-fg-mute);
+        transition: color 0.15s;
+      }
+      nav .links a:hover {
+        color: var(--tb-fg);
+        text-decoration: none;
+      }
+
+      /* ─── Hero ─── */
+      .hero {
+        padding: 96px 0 64px;
+        display: grid;
+        grid-template-columns: 1.05fr 0.95fr;
+        gap: 56px;
+        align-items: center;
+      }
+      .hero .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 11px;
+        font-family: var(--tb-font-mono);
+        color: var(--tb-fg-mute);
+        background: var(--tb-bg-elev);
+        border: 0.5px solid var(--tb-line);
+        border-radius: 999px;
+        padding: 5px 12px;
+        margin-bottom: 24px;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+      .hero .eyebrow .tb-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--tb-accent);
+        box-shadow: 0 0 8px var(--tb-accent-glow);
+      }
+      .hero h1 {
+        font-size: 58px;
+        font-weight: 700;
+        letter-spacing: -0.035em;
+        line-height: 1.02;
+        margin-bottom: 22px;
+        color: var(--tb-fg);
+      }
+      .hero h1 .accent {
+        color: var(--tb-accent);
+      }
+      .hero .lede {
+        font-size: 18px;
+        color: var(--tb-fg-mute);
+        max-width: 480px;
+        margin-bottom: 32px;
+        line-height: 1.5;
+      }
+      .hero .ctas {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+      .meta-line {
+        margin-top: 18px;
+        font-size: 12px;
+        color: var(--tb-fg-dim);
+        font-family: var(--tb-font-mono);
+        display: flex;
+        gap: 14px;
+        flex-wrap: wrap;
+      }
+      .meta-line span:not(:last-child)::after {
+        content: "·";
+        margin-left: 14px;
+        color: var(--tb-fg-faint);
+      }
+
+      /* Buttons */
+      .tb-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        height: 40px;
+        padding: 0 18px;
+        font-family: var(--tb-font-sans);
+        font-size: 13.5px;
+        font-weight: 500;
+        color: var(--tb-fg);
+        background: var(--tb-bg-elev);
+        border: 0.5px solid var(--tb-line-strong);
+        border-radius: 8px;
+        cursor: pointer;
+        transition:
+          background 0.12s,
+          border-color 0.12s,
+          transform 0.06s;
+        line-height: 1;
+        white-space: nowrap;
+      }
+      .tb-btn:hover {
+        background: var(--tb-bg-elev-2);
+        text-decoration: none;
+      }
+      .tb-btn:active {
+        transform: translateY(0.5px);
+      }
+      .tb-btn-primary {
+        background: var(--tb-accent);
+        color: var(--tb-accent-fg);
+        border-color: var(--tb-accent);
+        font-weight: 600;
+      }
+      .tb-btn-primary:hover {
+        background: var(--tb-accent);
+        filter: brightness(1.05);
+        color: var(--tb-accent-fg);
+      }
+
+      /* ─── Hero popup mock ─── */
+      .popup-mock {
+        background: var(--tb-bg-elev);
+        border: 0.5px solid var(--tb-line-strong);
+        border-radius: 12px;
+        box-shadow: var(--tb-shadow-popup);
+        overflow: hidden;
+        font-family: var(--tb-font-sans);
+      }
+      .popup-mock-head {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 14px;
+        border-bottom: 0.5px solid var(--tb-line);
+        background: var(--tb-bg-elev);
+      }
+      .popup-mock-head .status {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-family: var(--tb-font-mono);
+        font-size: 11px;
+        color: var(--tb-fg-mute);
+      }
+      .popup-mock-head .status .dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--tb-add);
+        box-shadow: 0 0 6px var(--tb-add);
+      }
+      .popup-mock-head .status .sep {
+        color: var(--tb-fg-faint);
+      }
+      .popup-mock-head .status .model {
+        color: var(--tb-fg);
+      }
+      .popup-mock-head .spacer {
+        flex: 1;
+      }
+      .popup-mock-head .x {
+        width: 22px;
+        height: 22px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--tb-fg-dim);
+        font-size: 14px;
+        border-radius: 4px;
+      }
+
+      .popup-mock-presets {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        padding: 14px;
+        border-bottom: 0.5px solid var(--tb-line);
+      }
+      .tb-preset {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        height: 28px;
+        padding: 0 11px;
+        font-size: 12px;
+        font-weight: 500;
+        color: var(--tb-fg-mute);
+        background: transparent;
+        border: 0.5px solid var(--tb-line-strong);
+        border-radius: 999px;
+        white-space: nowrap;
+        font-family: var(--tb-font-sans);
+      }
+      .tb-preset[data-active="true"] {
+        background: var(--tb-accent);
+        color: var(--tb-accent-fg);
+        border-color: var(--tb-accent);
+        font-weight: 600;
+      }
+      .tb-preset .tb-preset-num {
+        font-family: var(--tb-font-mono);
+        font-size: 10px;
+        color: var(--tb-fg-faint);
+        margin-left: 2px;
+      }
+      .tb-preset[data-active="true"] .tb-preset-num {
+        color: var(--tb-accent-fg);
+        opacity: 0.6;
+      }
+
+      .popup-mock-panes {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        padding: 14px;
+      }
+      .tb-pane {
+        display: flex;
+        flex-direction: column;
+        background: var(--tb-bg-input);
+        border: 0.5px solid var(--tb-line);
+        border-radius: 8px;
+        overflow: hidden;
+        min-width: 0;
+      }
+      .tb-pane-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 7px 10px;
+        font-family: var(--tb-font-mono);
+        font-size: 10px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--tb-fg-dim);
+        border-bottom: 0.5px solid var(--tb-line);
+      }
+      .tb-pane-body {
+        padding: 12px;
+        font-size: 12.5px;
+        line-height: 1.55;
+        color: var(--tb-fg);
+        min-height: 96px;
+      }
+      .tb-diff-add {
+        background: var(--tb-add-bg);
+        color: var(--tb-add);
+        border-radius: 2px;
+        padding: 0 1px;
+      }
+      .tb-diff-del {
+        background: var(--tb-del-bg);
+        color: var(--tb-del);
+        border-radius: 2px;
+        padding: 0 1px;
+        text-decoration: line-through;
+        text-decoration-color: var(--tb-del);
+        opacity: 0.85;
+      }
+
+      .popup-mock-banner {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 9px 14px;
+        font-size: 11.5px;
+        color: var(--tb-fg-dim);
+        background: var(--tb-bg-elev-2);
+        border-top: 0.5px solid var(--tb-line);
+        font-family: var(--tb-font-mono);
+      }
+      .popup-mock-banner .sep {
+        color: var(--tb-fg-faint);
+        margin: 0 4px;
+      }
+
+      /* ─── Section heading ─── */
+      .section {
+        padding: 88px 0;
+        border-top: 0.5px solid var(--tb-line);
+      }
+      .section-head {
+        margin-bottom: 48px;
+      }
+      .section-head .label {
+        font-family: var(--tb-font-mono);
+        font-size: 11px;
+        color: var(--tb-accent);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        margin-bottom: 10px;
+        display: block;
+      }
+      .section-head h2 {
+        font-size: 36px;
+        font-weight: 700;
+        letter-spacing: -0.025em;
+        line-height: 1.1;
+        color: var(--tb-fg);
+        max-width: 640px;
+      }
+      .section-head p {
+        margin-top: 12px;
+        font-size: 16px;
+        color: var(--tb-fg-mute);
+        max-width: 580px;
+      }
+
+      /* ─── How it works ─── */
+      .steps {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+      }
+      .step {
+        background: var(--tb-bg-elev);
+        border: 0.5px solid var(--tb-line-strong);
+        border-radius: 12px;
+        padding: 28px 24px;
+        position: relative;
+      }
+      .step .num {
+        font-family: var(--tb-font-mono);
+        font-size: 11px;
+        color: var(--tb-accent);
+        letter-spacing: 0.08em;
+        margin-bottom: 16px;
+        display: block;
+      }
+      .step h3 {
+        font-size: 17px;
+        font-weight: 600;
+        margin-bottom: 8px;
+        letter-spacing: -0.01em;
+        color: var(--tb-fg);
+      }
+      .step p {
+        font-size: 13.5px;
+        color: var(--tb-fg-mute);
+        line-height: 1.55;
+      }
+      .step .hint {
+        margin-top: 16px;
+        display: flex;
+        gap: 6px;
+        align-items: center;
+        font-size: 11px;
+        font-family: var(--tb-font-mono);
+        color: var(--tb-fg-dim);
+      }
+
+      /* ─── Features ─── */
+      .feature-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+      }
+      .feature {
+        background: var(--tb-bg-elev);
+        border: 0.5px solid var(--tb-line-strong);
+        border-radius: 12px;
+        padding: 24px;
+        display: flex;
+        gap: 16px;
+        align-items: flex-start;
+      }
+      .feature .feature-icon {
+        flex-shrink: 0;
+        width: 36px;
+        height: 36px;
+        border-radius: 8px;
+        background: var(--tb-bg-elev-2);
+        border: 0.5px solid var(--tb-line);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--tb-accent);
+      }
+      .feature h3 {
+        font-size: 14.5px;
+        font-weight: 600;
+        margin-bottom: 6px;
+        letter-spacing: -0.005em;
+        color: var(--tb-fg);
+      }
+      .feature p {
+        font-size: 13px;
+        color: var(--tb-fg-mute);
+        line-height: 1.55;
+      }
+
+      /* ─── Presets grid ─── */
+      .preset-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 12px;
+      }
+      .preset-card {
+        background: var(--tb-bg-elev);
+        border: 0.5px solid var(--tb-line-strong);
+        border-radius: 10px;
+        padding: 18px;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+      .preset-card .glyph {
+        flex-shrink: 0;
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        background: var(--tb-accent-glow);
+        color: var(--tb-accent);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .preset-card .body {
+        min-width: 0;
+      }
+      .preset-card .title {
+        font-size: 13.5px;
+        font-weight: 600;
+        color: var(--tb-fg);
+        letter-spacing: -0.005em;
+      }
+      .preset-card .desc {
+        font-size: 12px;
+        color: var(--tb-fg-mute);
+        margin-top: 2px;
+        line-height: 1.4;
+      }
+      .preset-card .num {
+        font-family: var(--tb-font-mono);
+        font-size: 10.5px;
+        color: var(--tb-fg-faint);
+        margin-left: auto;
+        padding-left: 8px;
+      }
+
+      /* ─── Bottom CTA ─── */
+      .bottom-cta {
+        text-align: center;
+        padding: 96px 0;
+        border-top: 0.5px solid var(--tb-line);
+      }
+      .bottom-cta h2 {
+        font-size: 38px;
+        font-weight: 700;
+        letter-spacing: -0.03em;
+        margin-bottom: 14px;
+        color: var(--tb-fg);
+      }
+      .bottom-cta p {
+        color: var(--tb-fg-mute);
+        font-size: 16px;
+        margin-bottom: 32px;
+        max-width: 480px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .bottom-cta .ctas {
+        display: inline-flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      /* ─── Footer ─── */
+      footer {
+        border-top: 0.5px solid var(--tb-line);
+        padding: 28px 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 12.5px;
+        color: var(--tb-fg-dim);
+      }
+      footer .left {
+        display: inline-flex;
+        gap: 8px;
+        align-items: center;
+        font-family: var(--tb-font-mono);
+      }
+      footer a {
+        color: var(--tb-fg-mute);
+      }
+      footer a:hover {
+        color: var(--tb-fg);
+        text-decoration: none;
+      }
+
+      /* ─── Responsive ─── */
+      @media (max-width: 900px) {
+        .hero {
+          grid-template-columns: 1fr;
+          padding: 64px 0 48px;
+          gap: 40px;
+        }
+        .hero h1 {
+          font-size: 44px;
+        }
+        .section {
+          padding: 64px 0;
+        }
+        .section-head h2 {
+          font-size: 28px;
+        }
+        .steps {
+          grid-template-columns: 1fr;
+        }
+        .feature-grid {
+          grid-template-columns: 1fr;
+        }
+        .popup-mock-panes {
+          grid-template-columns: 1fr;
+        }
+        .bottom-cta h2 {
+          font-size: 30px;
+        }
+        footer {
+          flex-direction: column;
+          gap: 12px;
+        }
+      }
+      @media (max-width: 540px) {
+        .container {
+          padding: 0 20px;
+        }
+        .hero h1 {
+          font-size: 36px;
+        }
+        .popup-mock-banner {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="container">
+      <div class="logo">
+        <span class="mark">
+          <svg width="22" height="22" viewBox="0 0 130 130" fill="none" aria-hidden="true">
+            <rect x="24" y="56" width="16" height="62" rx="2" fill="currentColor" />
+            <circle cx="60" cy="86" r="22" stroke="currentColor" stroke-width="14" fill="none" />
+            <path d="M 24 56 L 40 56 L 88 28 L 96 22 L 88 14 L 30 46 Z" fill="currentColor" />
+            <rect
+              x="-12"
+              y="-3"
+              width="24"
+              height="6"
+              rx="1"
+              transform="translate(38 50) rotate(-32)"
+              fill="currentColor"
+            />
+          </svg>
+        </span>
+        <span>Brush<span style="color: var(--tb-accent)">Up</span></span>
+      </div>
+      <div class="links">
+        <a href="#how">How it works</a>
+        <a href="#features">Features</a>
+        <a href="#presets">Presets</a>
+        <a href="https://github.com/bryht/brushup-web">GitHub</a>
+      </div>
+    </nav>
+
+    <!-- ─── Hero ─── -->
+    <section class="hero container">
+      <div>
+        <div class="eyebrow">
+          <span class="tb-dot"></span>
+          Open source · Bring your own key
+        </div>
+        <h1>Improve your English<br /><span class="accent">in any app.</span></h1>
+        <p class="lede">
+          Select text, press a hotkey, pick a preset. BrushUp rewrites your English to sound
+          natural, correct, or professional — right inside Outlook, Slack, Word, or whatever you're
+          typing in.
+        </p>
+        <div class="ctas">
+          <a class="tb-btn tb-btn-primary" href="https://github.com/bryht/brushup-web/releases">
+            Download for Windows
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 16 16"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.6"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M8 2v9M4 7l4 4 4-4M3 14h10" />
+            </svg>
+          </a>
+          <a class="tb-btn" href="https://github.com/bryht/brushup-web">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
+              <path
+                d="M8 0a8 8 0 0 0-2.53 15.59c.4.07.55-.17.55-.38v-1.49c-2.23.48-2.7-.94-2.7-.94-.36-.92-.89-1.17-.89-1.17-.73-.5.06-.49.06-.49.8.06 1.23.83 1.23.83.72 1.23 1.88.88 2.34.67.07-.52.28-.88.5-1.08-1.78-.2-3.65-.89-3.65-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.01.08-2.11 0 0 .67-.21 2.2.82a7.66 7.66 0 0 1 4 0c1.53-1.03 2.2-.82 2.2-.82.44 1.1.16 1.91.08 2.11.51.56.82 1.28.82 2.15 0 3.07-1.88 3.74-3.66 3.94.29.25.54.74.54 1.49v2.21c0 .21.15.46.55.38A8 8 0 0 0 8 0Z"
+              />
+            </svg>
+            View on GitHub
+          </a>
+        </div>
+        <div class="meta-line">
+          <span>Windows 10/11</span>
+          <span>No account</span>
+          <span>MIT licensed</span>
+        </div>
+      </div>
+
+      <!-- Popup mock — matches the design system -->
+      <div class="popup-mock">
+        <div class="popup-mock-head">
+          <span class="status">
+            <span class="dot"></span>
+            <span>openrouter</span>
+            <span class="sep">›</span>
+            <span class="model">claude-sonnet-4.5</span>
+          </span>
+          <span class="spacer"></span>
+          <span class="x">×</span>
+        </div>
+        <div class="popup-mock-presets">
+          <span class="tb-preset" data-active="true">
+            <svg
+              width="12"
+              height="12"
+              viewBox="0 0 16 16"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.4"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M8 2v3M8 11v3M2 8h3M11 8h3M4 4l2 2M10 10l2 2M12 4l-2 2M6 10l-2 2" />
+            </svg>
+            Improve English
+            <span class="tb-preset-num">1</span>
+          </span>
+          <span class="tb-preset">
+            <svg
+              width="12"
+              height="12"
+              viewBox="0 0 16 16"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.4"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M3 8.5L6.5 12 13 4" />
+            </svg>
+            Fix grammar
+            <span class="tb-preset-num">2</span>
+          </span>
+          <span class="tb-preset">
+            <svg
+              width="12"
+              height="12"
+              viewBox="0 0 16 16"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.4"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <rect x="3" y="3" width="10" height="10" rx="1" />
+              <path d="M3 6h10M6 9h4" />
+            </svg>
+            Make formal
+            <span class="tb-preset-num">3</span>
+          </span>
+          <span class="tb-preset">
+            <svg
+              width="12"
+              height="12"
+              viewBox="0 0 16 16"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.4"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M3 5h10M3 8h7M3 11h4" />
+            </svg>
+            Simplify
+            <span class="tb-preset-num">5</span>
+          </span>
+        </div>
+        <div class="popup-mock-panes">
+          <div class="tb-pane">
+            <div class="tb-pane-head">
+              <span>Original</span>
+              <span class="tb-mono" style="font-size: 9.5px; color: var(--tb-fg-faint)"
+                >42 words</span
+              >
+            </div>
+            <div class="tb-pane-body">
+              I want to <span class="tb-diff-del">postpone</span> tomorrow's meeting
+              <span class="tb-diff-del">because</span> I'm not
+              <span class="tb-diff-del">feeling so good</span> today.
+              <span class="tb-diff-del">Can we</span> move it to next week?
+            </div>
+          </div>
+          <div class="tb-pane">
+            <div class="tb-pane-head">
+              <span style="color: var(--tb-accent)">Improved</span>
+              <span class="tb-mono" style="font-size: 9.5px; color: var(--tb-fg-faint)"
+                >streaming…</span
+              >
+            </div>
+            <div class="tb-pane-body">
+              I'd like to <span class="tb-diff-add">reschedule</span> tomorrow's meeting
+              <span class="tb-diff-add">— I'm</span> not
+              <span class="tb-diff-add">feeling well</span> today.
+              <span class="tb-diff-add">Could we</span> move it to next week?
+            </div>
+          </div>
+        </div>
+        <div class="popup-mock-banner">
+          <span class="tb-kbd-row">
+            <span class="tb-kbd">⌃</span><span class="tb-kbd">⌥</span><span class="tb-kbd">R</span>
+          </span>
+          <span>rewrite</span>
+          <span class="sep">·</span>
+          <span class="tb-kbd-row">
+            <span class="tb-kbd">↵</span>
+          </span>
+          <span>replace</span>
+          <span class="sep">·</span>
+          <span class="tb-kbd-row">
+            <span class="tb-kbd">esc</span>
+          </span>
+          <span>cancel</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── How it works ─── -->
+    <section class="section" id="how">
+      <div class="container">
+        <div class="section-head">
+          <span class="label">01 — Workflow</span>
+          <h2>Three keystrokes from typo to polished.</h2>
+          <p>
+            No copy-paste. No tab-switching. The popup floats above your work and dies the moment
+            you're done.
+          </p>
+        </div>
+        <div class="steps">
+          <div class="step">
+            <span class="num">STEP 01</span>
+            <h3>Select your text</h3>
+            <p>
+              Highlight a sentence, paragraph, or whole draft in any application — email, chat,
+              document, or browser.
+            </p>
+            <div class="hint">↳ works via Windows UI Automation</div>
+          </div>
+          <div class="step">
+            <span class="num">STEP 02</span>
+            <h3>Press the hotkey</h3>
+            <p>
+              Hit your shortcut (default: Ctrl+Alt+R). A floating popup snaps open with your
+              captured text.
+            </p>
+            <div class="hint">
+              <span class="tb-kbd-row">
+                <span class="tb-kbd">Ctrl</span><span class="tb-kbd">Alt</span
+                ><span class="tb-kbd">R</span>
+              </span>
+            </div>
+          </div>
+          <div class="step">
+            <span class="num">STEP 03</span>
+            <h3>Pick a preset, replace</h3>
+            <p>
+              Choose Fix Grammar, Make Formal, Translate to EN — anything. Hit Enter to rewrite,
+              Enter again to replace.
+            </p>
+            <div class="hint">
+              <span class="tb-kbd-row">
+                <span class="tb-kbd">1</span><span style="color: var(--tb-fg-faint)">…</span
+                ><span class="tb-kbd">7</span>
+              </span>
+              <span style="margin-left: 4px">pick preset</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── Features ─── -->
+    <section class="section" id="features">
+      <div class="container">
+        <div class="section-head">
+          <span class="label">02 — Built for the keyboard</span>
+          <h2>Quiet, fast, and never in your way.</h2>
+          <p>
+            Designed for non-native English speakers who type all day. Mouse-free, account-free, and
+            entirely under your control.
+          </p>
+        </div>
+        <div class="feature-grid">
+          <div class="feature">
+            <div class="feature-icon">
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 16 16"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.4"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <circle cx="8" cy="8" r="6" />
+                <path d="M2 8h12M8 2c2 2 2 10 0 12M8 2c-2 2-2 10 0 12" />
+              </svg>
+            </div>
+            <div>
+              <h3>Works everywhere</h3>
+              <p>
+                UI Automation captures text from any app — Outlook, Word, Slack, Notion, browsers,
+                even legacy apps. Clipboard fallback included.
+              </p>
+            </div>
+          </div>
+          <div class="feature">
+            <div class="feature-icon">
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 16 16"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.4"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M3 8h2l1-4 2 8 2-6 1 2h2" />
+              </svg>
+            </div>
+            <div>
+              <h3>Streaming rewrites</h3>
+              <p>
+                Watch the improved text arrive token by token. Cancel anytime if the rewrite goes
+                sideways.
+              </p>
+            </div>
+          </div>
+          <div class="feature">
+            <div class="feature-icon">
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 16 16"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.4"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M2 6h12M2 10h12M5 3l-3 3 3 3M11 7l3 3-3 3" />
+              </svg>
+            </div>
+            <div>
+              <h3>Side-by-side diff</h3>
+              <p>
+                See exactly what changed. Deletions struck through in red, additions highlighted in
+                green. No mystery rewrites.
+              </p>
+            </div>
+          </div>
+          <div class="feature">
+            <div class="feature-icon">
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 16 16"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.4"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M13 8a5 5 0 1 1-5-5M13 3v3h-3" />
+              </svg>
+            </div>
+            <div>
+              <h3>Undo replace</h3>
+              <p>
+                Replaced the wrong thing? Hit Ctrl+Z and the original text snaps back into the
+                source app — instantly.
+              </p>
+            </div>
+          </div>
+          <div class="feature">
+            <div class="feature-icon">
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 16 16"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.4"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <rect x="3" y="7" width="10" height="7" rx="1" />
+                <path d="M5 7V5a3 3 0 0 1 6 0v2" />
+              </svg>
+            </div>
+            <div>
+              <h3>API key in OS keychain</h3>
+              <p>
+                Your API key is stored in Windows Credential Manager — never in a plain-text config
+                file, never sent anywhere except your chosen provider.
+              </p>
+            </div>
+          </div>
+          <div class="feature">
+            <div class="feature-icon">
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 16 16"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.4"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <circle cx="8" cy="8" r="2.5" />
+                <path
+                  d="M8 1v2M8 13v2M1 8h2M13 8h2M3 3l1.5 1.5M11.5 11.5L13 13M13 3l-1.5 1.5M4.5 11.5L3 13"
+                />
+              </svg>
+            </div>
+            <div>
+              <h3>Bring your own provider</h3>
+              <p>
+                OpenRouter, Ollama Cloud, or any OpenAI-compatible endpoint. Swap models anytime —
+                Claude, GPT, Gemini, open-source. Your call.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── Presets ─── -->
+    <section class="section" id="presets">
+      <div class="container">
+        <div class="section-head">
+          <span class="label">03 — Presets</span>
+          <h2>Seven presets out of the box. Customize freely.</h2>
+          <p>
+            Each preset has a carefully tuned system prompt. Edit them, add your own, or delete what
+            you don't use.
+          </p>
+        </div>
+        <div class="preset-grid">
+          <div class="preset-card">
+            <span class="glyph"
+              ><svg
+                width="16"
+                height="16"
+                viewBox="0 0 16 16"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.4"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M8 2v3M8 11v3M2 8h3M11 8h3M4 4l2 2M10 10l2 2M12 4l-2 2M6 10l-2 2" /></svg
+            ></span>
+            <div class="body">
+              <div class="title">Improve English</div>
+              <div class="desc">Make it sound native</div>
+            </div>
+            <span class="num">1</span>
+          </div>
+          <div class="preset-card">
+            <span class="glyph"
+              ><svg
+                width="16"
+                height="16"
+                viewBox="0 0 16 16"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.4"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M3 8.5L6.5 12 13 4" /></svg
+            ></span>
+            <div class="body">
+              <div class="title">Fix Grammar</div>
+              <div class="desc">Correct mistakes only</div>
+            </div>
+            <span class="num">2</span>
+          </div>
+          <div class="preset-card">
+            <span class="glyph"
+              ><svg
+                width="16"
+                height="16"
+                viewBox="0 0 16 16"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.4"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <rect x="3" y="3" width="10" height="10" rx="1" />
+                <path d="M3 6h10M6 9h4" /></svg
+            ></span>
+            <div class="body">
+              <div class="title">Make Formal</div>
+              <div class="desc">Business tone</div>
+            </div>
+            <span class="num">3</span>
+          </div>
+          <div class="preset-card">
+            <span class="glyph"
+              ><svg
+                width="16"
+                height="16"
+                viewBox="0 0 16 16"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.4"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M3 6c1.5-2 3-2 5 0s3.5 2 5 0M3 11c1.5-2 3-2 5 0s3.5 2 5 0" /></svg
+            ></span>
+            <div class="body">
+              <div class="title">Make Casual</div>
+              <div class="desc">Friendly tone</div>
+            </div>
+            <span class="num">4</span>
+          </div>
+          <div class="preset-card">
+            <span class="glyph"
+              ><svg
+                width="16"
+                height="16"
+                viewBox="0 0 16 16"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.4"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M3 5h10M3 8h7M3 11h4" /></svg
+            ></span>
+            <div class="body">
+              <div class="title">Simplify</div>
+              <div class="desc">Shorter, clearer</div>
+            </div>
+            <span class="num">5</span>
+          </div>
+          <div class="preset-card">
+            <span class="glyph"
+              ><svg
+                width="16"
+                height="16"
+                viewBox="0 0 16 16"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.4"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M2 11h5M4.5 11V4M2 4h5" />
+                <path d="M9 13l3-7 3 7M10.2 11h3.6" /></svg
+            ></span>
+            <div class="body">
+              <div class="title">Translate to EN</div>
+              <div class="desc">Any language → English</div>
+            </div>
+            <span class="num">6</span>
+          </div>
+          <div class="preset-card">
+            <span class="glyph"
+              ><svg
+                width="16"
+                height="16"
+                viewBox="0 0 16 16"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.4"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <circle cx="8" cy="8" r="5" />
+                <path d="M6 9c.5.7 1.2 1 2 1s1.5-.3 2-1M6 7h.01M10 7h.01" /></svg
+            ></span>
+            <div class="body">
+              <div class="title">Make Polite</div>
+              <div class="desc">Soften the tone</div>
+            </div>
+            <span class="num">7</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── Bottom CTA ─── -->
+    <section class="bottom-cta">
+      <div class="container">
+        <h2>Start writing better today.</h2>
+        <p>
+          Free, open source, and runs quietly in your system tray. No account, no telemetry, no
+          nonsense.
+        </p>
+        <div class="ctas">
+          <a class="tb-btn tb-btn-primary" href="https://github.com/bryht/brushup-web/releases">
+            Download BrushUp
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 16 16"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.6"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M8 2v9M4 7l4 4 4-4M3 14h10" />
+            </svg>
+          </a>
+          <a class="tb-btn" href="https://github.com/bryht/brushup-web">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
+              <path
+                d="M8 0a8 8 0 0 0-2.53 15.59c.4.07.55-.17.55-.38v-1.49c-2.23.48-2.7-.94-2.7-.94-.36-.92-.89-1.17-.89-1.17-.73-.5.06-.49.06-.49.8.06 1.23.83 1.23.83.72 1.23 1.88.88 2.34.67.07-.52.28-.88.5-1.08-1.78-.2-3.65-.89-3.65-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.01.08-2.11 0 0 .67-.21 2.2.82a7.66 7.66 0 0 1 4 0c1.53-1.03 2.2-.82 2.2-.82.44 1.1.16 1.91.08 2.11.51.56.82 1.28.82 2.15 0 3.07-1.88 3.74-3.66 3.94.29.25.54.74.54 1.49v2.21c0 .21.15.46.55.38A8 8 0 0 0 8 0Z"
+              />
+            </svg>
+            Star on GitHub
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <footer class="container">
+      <span class="left">
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 130 130"
+          fill="none"
+          aria-hidden="true"
+          style="color: var(--tb-accent); vertical-align: -2px"
+        >
+          <rect x="24" y="56" width="16" height="62" rx="2" fill="currentColor" />
+          <circle cx="60" cy="86" r="22" stroke="currentColor" stroke-width="14" fill="none" />
+          <path d="M 24 56 L 40 56 L 88 28 L 96 22 L 88 14 L 30 46 Z" fill="currentColor" />
+          <rect
+            x="-12"
+            y="-3"
+            width="24"
+            height="6"
+            rx="1"
+            transform="translate(38 50) rotate(-32)"
+            fill="currentColor"
+          />
+        </svg>
+        BrushUp
+        <span style="color: var(--tb-fg-faint)">·</span>
+        MIT License
+      </span>
+      <span><a href="https://github.com/bryht/brushup-web">github.com/bryht/brushup-web</a></span>
+    </footer>
+  </body>
+</html>
