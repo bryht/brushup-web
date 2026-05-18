@@ -740,7 +740,6 @@
         <a href="#how">How it works</a>
         <a href="#features">Features</a>
         <a href="#presets">Presets</a>
-        <a href="https://github.com/bryht/brushup-web">GitHub</a>
       </div>
     </nav>
 
@@ -758,7 +757,7 @@
           typing in.
         </p>
         <div class="ctas">
-          <a class="tb-btn tb-btn-primary" href="https://github.com/bryht/brushup-web/releases">
+          <a class="tb-btn tb-btn-primary js-download" href="#download">
             Download for Windows
             <svg
               width="14"
@@ -772,14 +771,6 @@
             >
               <path d="M8 2v9M4 7l4 4 4-4M3 14h10" />
             </svg>
-          </a>
-          <a class="tb-btn" href="https://github.com/bryht/brushup-web">
-            <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
-              <path
-                d="M8 0a8 8 0 0 0-2.53 15.59c.4.07.55-.17.55-.38v-1.49c-2.23.48-2.7-.94-2.7-.94-.36-.92-.89-1.17-.89-1.17-.73-.5.06-.49.06-.49.8.06 1.23.83 1.23.83.72 1.23 1.88.88 2.34.67.07-.52.28-.88.5-1.08-1.78-.2-3.65-.89-3.65-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.01.08-2.11 0 0 .67-.21 2.2.82a7.66 7.66 0 0 1 4 0c1.53-1.03 2.2-.82 2.2-.82.44 1.1.16 1.91.08 2.11.51.56.82 1.28.82 2.15 0 3.07-1.88 3.74-3.66 3.94.29.25.54.74.54 1.49v2.21c0 .21.15.46.55.38A8 8 0 0 0 8 0Z"
-              />
-            </svg>
-            View on GitHub
           </a>
         </div>
         <div class="meta-line">
@@ -1297,7 +1288,7 @@
           nonsense.
         </p>
         <div class="ctas">
-          <a class="tb-btn tb-btn-primary" href="https://github.com/bryht/brushup-web/releases">
+          <a class="tb-btn tb-btn-primary js-download" href="#download">
             Download BrushUp
             <svg
               width="14"
@@ -1311,14 +1302,6 @@
             >
               <path d="M8 2v9M4 7l4 4 4-4M3 14h10" />
             </svg>
-          </a>
-          <a class="tb-btn" href="https://github.com/bryht/brushup-web">
-            <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
-              <path
-                d="M8 0a8 8 0 0 0-2.53 15.59c.4.07.55-.17.55-.38v-1.49c-2.23.48-2.7-.94-2.7-.94-.36-.92-.89-1.17-.89-1.17-.73-.5.06-.49.06-.49.8.06 1.23.83 1.23.83.72 1.23 1.88.88 2.34.67.07-.52.28-.88.5-1.08-1.78-.2-3.65-.89-3.65-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.01.08-2.11 0 0 .67-.21 2.2.82a7.66 7.66 0 0 1 4 0c1.53-1.03 2.2-.82 2.2-.82.44 1.1.16 1.91.08 2.11.51.56.82 1.28.82 2.15 0 3.07-1.88 3.74-3.66 3.94.29.25.54.74.54 1.49v2.21c0 .21.15.46.55.38A8 8 0 0 0 8 0Z"
-              />
-            </svg>
-            Star on GitHub
           </a>
         </div>
       </div>
@@ -1349,7 +1332,42 @@
         </svg>
         BrushUp
       </span>
-      <span><a href="https://github.com/bryht/brushup-web">github.com/bryht/brushup-web</a></span>
     </footer>
+
+    <script>
+      (function () {
+        var cached = null;
+        async function resolveLatestExe() {
+          if (cached) return cached;
+          var res = await fetch("https://api.github.com/repos/bryht/brushup-web/releases/latest", {
+            headers: { Accept: "application/vnd.github+json" },
+          });
+          if (!res.ok) throw new Error("api " + res.status);
+          var data = await res.json();
+          var asset = (data.assets || []).find(function (a) {
+            return /\.exe$/i.test(a.name);
+          });
+          if (!asset) throw new Error("no exe asset");
+          cached = asset.browser_download_url;
+          return cached;
+        }
+
+        // Prefetch on load so the click is instant.
+        resolveLatestExe().catch(function () {});
+
+        document.querySelectorAll(".js-download").forEach(function (el) {
+          el.addEventListener("click", function (e) {
+            e.preventDefault();
+            resolveLatestExe()
+              .then(function (url) {
+                window.location.href = url;
+              })
+              .catch(function () {
+                window.location.href = "https://github.com/bryht/brushup-web/releases/latest";
+              });
+          });
+        });
+      })();
+    </script>
   </body>
 </html>
