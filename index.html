@@ -775,7 +775,9 @@
         </div>
         <div class="meta-line">
           <span>Windows 10/11</span>
+          <span>x64</span>
           <span>No account</span>
+          <span id="version-meta">Auto-updating</span>
         </div>
       </div>
 
@@ -1116,6 +1118,29 @@
               </p>
             </div>
           </div>
+          <div class="feature">
+            <div class="feature-icon">
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 16 16"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.4"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M13.5 8a5.5 5.5 0 1 1-1.6-3.9M13.5 2.5V5h-2.5" />
+              </svg>
+            </div>
+            <div>
+              <h3>Automatic updates</h3>
+              <p>
+                Signed releases update themselves in the background — you always run the latest
+                version without hunting for a new installer.
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -1336,29 +1361,41 @@
 
     <script>
       (function () {
-        var cached = null;
-        async function resolveLatestExe() {
-          if (cached) return cached;
-          var res = await fetch("https://api.github.com/repos/bryht/brushup-web/releases/latest", {
-            headers: { Accept: "application/vnd.github+json" },
-          });
-          if (!res.ok) throw new Error("api " + res.status);
-          var data = await res.json();
+        var releasePromise = null;
+        function getLatestRelease() {
+          if (!releasePromise) {
+            releasePromise = fetch(
+              "https://api.github.com/repos/bryht/brushup-web/releases/latest",
+              { headers: { Accept: "application/vnd.github+json" } }
+            ).then(function (res) {
+              if (!res.ok) throw new Error("api " + res.status);
+              return res.json();
+            });
+          }
+          return releasePromise;
+        }
+
+        function exeFromRelease(data) {
           var asset = (data.assets || []).find(function (a) {
             return /\.exe$/i.test(a.name);
           });
           if (!asset) throw new Error("no exe asset");
-          cached = asset.browser_download_url;
-          return cached;
+          return asset.browser_download_url;
         }
 
-        // Prefetch on load so the click is instant.
-        resolveLatestExe().catch(function () {});
+        // Prefetch on load so the click is instant, and surface the live version.
+        getLatestRelease()
+          .then(function (data) {
+            var el = document.getElementById("version-meta");
+            if (el && data.tag_name) el.textContent = data.tag_name;
+          })
+          .catch(function () {});
 
         document.querySelectorAll(".js-download").forEach(function (el) {
           el.addEventListener("click", function (e) {
             e.preventDefault();
-            resolveLatestExe()
+            getLatestRelease()
+              .then(exeFromRelease)
               .then(function (url) {
                 window.location.href = url;
               })
