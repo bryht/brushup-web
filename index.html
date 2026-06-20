@@ -1611,6 +1611,10 @@
         paint();
 
         // ── Download: resolve the latest installer ──
+        // Uses GitHub's `releases/latest`, which by design skips drafts and
+        // pre-releases. Dev-channel builds are published as pre-releases (see
+        // .github/workflows/deploy-app-dev.yml), so they appear on the GitHub
+        // releases page but never here — the website only ever offers stable.
         var releasePromise = null;
         function getLatestRelease() {
           if (!releasePromise) {
