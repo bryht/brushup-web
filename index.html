@@ -82,6 +82,10 @@
         --tb-accent-fg: #faf6ec;
         --tb-accent-glow: rgba(184, 84, 42, 0.14);
 
+        /* Brand red — the logo/wordmark stay red in every theme, even where
+           --tb-accent is the dark phosphor green. */
+        --tb-brand: #b8542a;
+
         --tb-add: #4a7a3a;
         --tb-add-bg: rgba(74, 122, 58, 0.12);
         --tb-del: #b3402a;
@@ -118,6 +122,9 @@
         --tb-accent: #b6f25a; /* phosphor green */
         --tb-accent-fg: #0a0b0d;
         --tb-accent-glow: rgba(182, 242, 90, 0.18);
+
+        /* Brand red holds across themes (see light theme). */
+        --tb-brand: #b8542a;
 
         --tb-add: #74e088;
         --tb-add-bg: rgba(116, 224, 136, 0.12);
@@ -275,7 +282,7 @@
         color: var(--tb-fg);
       }
       nav .logo .mark {
-        color: var(--tb-accent);
+        color: var(--tb-brand);
         width: 22px;
         height: 22px;
         display: inline-flex;
@@ -859,7 +866,7 @@
             />
           </svg>
         </span>
-        <span>Brush<span style="color: var(--tb-accent)">Up</span></span>
+        <span>Brush<span style="color: var(--tb-brand)">Up</span></span>
       </div>
       <div class="links">
         <a href="#how">How it works</a>
@@ -1612,9 +1619,7 @@
 
         // ── Download: resolve the latest installer ──
         // Uses GitHub's `releases/latest`, which by design skips drafts and
-        // pre-releases. Dev-channel builds are published as pre-releases (see
-        // .github/workflows/deploy-app-dev.yml), so they appear on the GitHub
-        // releases page but never here — the website only ever offers stable.
+        // pre-releases, so the website only ever offers stable builds.
         var releasePromise = null;
         function getLatestRelease() {
           if (!releasePromise) {
