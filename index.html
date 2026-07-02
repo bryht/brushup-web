@@ -6,12 +6,12 @@
     <title>BrushUp — Improve your English writing in any app</title>
     <meta
       name="description"
-      content="A desktop app that helps non-native English speakers improve their writing. Press a hotkey, pick a preset, get better text. Works in Outlook, Slack, Word, and any app."
+      content="A desktop app that helps non-native English speakers improve their writing. Press a hotkey, pick a preset, get better text. Works in Outlook, Slack, Word, and any app. Just $5/year — launch offer, regularly $30."
     />
     <meta property="og:title" content="BrushUp" />
     <meta
       property="og:description"
-      content="Improve your English writing in any app. Press a hotkey, pick a preset, get better text."
+      content="Improve your English writing in any app. Press a hotkey, pick a preset, get better text. Just $5/year — launch offer."
     />
     <meta property="og:type" content="website" />
     <link
@@ -741,6 +741,156 @@
         padding-left: 8px;
       }
 
+      /* ─── Pricing ─── */
+      .section-head.center {
+        text-align: center;
+      }
+      .section-head.center h2,
+      .section-head.center p {
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .price-hint {
+        display: inline-flex;
+        align-items: baseline;
+        gap: 7px;
+        font-size: 13px;
+        color: var(--tb-fg-mute);
+        font-family: var(--tb-font-mono);
+      }
+      .price-hint s {
+        color: var(--tb-fg-dim);
+        text-decoration-color: var(--tb-del);
+      }
+      .price-hint strong {
+        color: var(--tb-accent);
+        font-weight: 600;
+        font-size: 16px;
+      }
+
+      .price-card {
+        position: relative;
+        max-width: 440px;
+        margin: 0 auto;
+        background: var(--tb-bg-elev);
+        border: 1px solid var(--tb-accent);
+        border-radius: 14px;
+        box-shadow: 0 0 28px var(--tb-accent-glow);
+        padding: 38px 32px 28px;
+        text-align: center;
+      }
+      .price-card .deal-tag {
+        position: absolute;
+        top: -13px;
+        left: 50%;
+        transform: translateX(-50%);
+        white-space: nowrap;
+        font-family: var(--tb-font-mono);
+        font-size: 10.5px;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--tb-accent-fg);
+        background: var(--tb-accent);
+        border-radius: 999px;
+        padding: 5px 14px;
+      }
+      .price-card .plan-name {
+        font-size: 14px;
+        font-weight: 600;
+        letter-spacing: -0.005em;
+        color: var(--tb-fg);
+        margin-bottom: 14px;
+      }
+      .price-row {
+        display: flex;
+        align-items: baseline;
+        justify-content: center;
+        gap: 10px;
+        margin-bottom: 8px;
+      }
+      .price-old {
+        font-family: var(--tb-font-mono);
+        font-size: 20px;
+        color: var(--tb-fg-dim);
+        text-decoration: line-through;
+        text-decoration-color: var(--tb-del);
+      }
+      .price-now {
+        font-size: 58px;
+        font-weight: 800;
+        letter-spacing: -0.04em;
+        line-height: 1;
+        color: var(--tb-fg);
+      }
+      .price-per {
+        font-size: 14px;
+        color: var(--tb-fg-mute);
+      }
+      .price-note {
+        font-size: 12.5px;
+        color: var(--tb-fg-mute);
+      }
+      .price-list {
+        list-style: none;
+        text-align: left;
+        margin: 24px 0;
+        display: grid;
+        gap: 10px;
+      }
+      .price-list li {
+        display: flex;
+        gap: 10px;
+        align-items: flex-start;
+        font-size: 13.5px;
+        color: var(--tb-fg);
+        line-height: 1.45;
+      }
+      .price-list li svg {
+        flex-shrink: 0;
+        color: var(--tb-add);
+        margin-top: 3px;
+      }
+      .price-card .tb-btn {
+        width: 100%;
+        justify-content: center;
+        height: 44px;
+        font-size: 14px;
+      }
+      .price-fine {
+        margin-top: 14px;
+        font-size: 11.5px;
+        color: var(--tb-fg-dim);
+        font-family: var(--tb-font-mono);
+      }
+
+      .faq-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+        max-width: 880px;
+        margin: 56px auto 0;
+      }
+      .faq {
+        background: var(--tb-bg-elev);
+        border: 0.5px solid var(--tb-line-strong);
+        border-radius: 12px;
+        padding: 20px 22px;
+      }
+      .faq h3 {
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 6px;
+        letter-spacing: -0.005em;
+        color: var(--tb-fg);
+      }
+      .faq p {
+        font-size: 13px;
+        color: var(--tb-fg-mute);
+        line-height: 1.55;
+      }
+
       /* ─── Bottom CTA ─── */
       .bottom-cta {
         text-align: center;
@@ -815,6 +965,9 @@
         .feature-grid {
           grid-template-columns: 1fr;
         }
+        .faq-grid {
+          grid-template-columns: 1fr;
+        }
         .popup-mock-panes {
           grid-template-columns: 1fr;
         }
@@ -872,6 +1025,7 @@
         <a href="#how">How it works</a>
         <a href="#features">Features</a>
         <a href="#presets">Presets</a>
+        <a href="#pricing">Pricing</a>
       </div>
       <div class="tb-segment theme-switch" role="group" aria-label="Theme">
         <button type="button" data-pref="system" title="Match the system theme">
@@ -932,7 +1086,7 @@
       <div>
         <div class="eyebrow">
           <span class="tb-dot"></span>
-          No API key · Works out of the box
+          Launch offer · $5/year — regularly $30
         </div>
         <h1>Improve your English<br /><span class="accent">in any app.</span></h1>
         <p class="lede">
@@ -956,11 +1110,13 @@
               <path d="M8 2v9M4 7l4 4 4-4M3 14h10" />
             </svg>
           </a>
+          <span class="price-hint"><s>$30</s> <strong>$5</strong>/year after free trial</span>
         </div>
         <div class="meta-line">
           <span>Windows 10/11</span>
           <span>x64</span>
           <span>14-day free trial</span>
+          <span>No credit card</span>
           <span id="version-meta">Auto-updating</span>
         </div>
       </div>
@@ -1543,14 +1699,114 @@
       </div>
     </section>
 
+    <!-- ─── Pricing ─── -->
+    <section class="section" id="pricing">
+      <div class="container">
+        <div class="section-head center">
+          <span class="label">04 — Pricing</span>
+          <h2>Everything included. One small price.</h2>
+          <p>
+            No monthly subscription, no credits, no premium tier. One license unlocks the whole app
+            for a year — for less than a cup of coffee.
+          </p>
+        </div>
+
+        <div class="price-card">
+          <span class="deal-tag">Launch offer — save 83%</span>
+          <div class="plan-name">BrushUp Annual</div>
+          <div class="price-row">
+            <span class="price-old">$30</span>
+            <span class="price-now">$5</span>
+            <span class="price-per">/ year</span>
+          </div>
+          <div class="price-note">
+            Launch price for early adopters — regularly <strong>$30/year</strong>.
+          </div>
+          <ul class="price-list">
+            <li>
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5L6.5 12 13 4" /></svg>
+              Built-in AI provider — no account setup, no API key, no model picking
+            </li>
+            <li>
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5L6.5 12 13 4" /></svg>
+              Rewrites in every app — Outlook, Word, Slack, browsers, anywhere you type
+            </li>
+            <li>
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5L6.5 12 13 4" /></svg>
+              All 8 presets, fully customizable — add your own prompts
+            </li>
+            <li>
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5L6.5 12 13 4" /></svg>
+              Dictionary lookup with pronunciation, examples &amp; memory aids
+            </li>
+            <li>
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5L6.5 12 13 4" /></svg>
+              Local history to review and learn from your own writing
+            </li>
+            <li>
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5L6.5 12 13 4" /></svg>
+              Automatic signed updates, and your license follows your account to any PC
+            </li>
+          </ul>
+          <a class="tb-btn tb-btn-primary js-download" href="#download">
+            Start your free 14-day trial
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 16 16"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.6"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M8 2v9M4 7l4 4 4-4M3 14h10" />
+            </svg>
+          </a>
+          <div class="price-fine">No credit card to try · buy when you're ready, right inside the app</div>
+        </div>
+
+        <div class="faq-grid">
+          <div class="faq">
+            <h3>What happens when the trial ends?</h3>
+            <p>
+              BrushUp keeps working — rewrites are never hard-blocked. You'll just see a gentle
+              reminder now and then until you pick up a license.
+            </p>
+          </div>
+          <div class="faq">
+            <h3>How do I buy?</h3>
+            <p>
+              Download the app and start your trial. When you're ready, click Buy inside the app —
+              checkout takes a minute and your license activates automatically. No keys to paste.
+            </p>
+          </div>
+          <div class="faq">
+            <h3>Can I use it on another computer?</h3>
+            <p>
+              Yes. The license follows your account, not your machine — sign in on a new PC and
+              you're set. One active machine at a time.
+            </p>
+          </div>
+          <div class="faq">
+            <h3>Why only $5?</h3>
+            <p>
+              It's an early-adopter launch discount — 83% off the regular $30/year. Grab it while
+              it lasts.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- ─── Bottom CTA ─── -->
     <section class="bottom-cta">
       <div class="container">
         <h2>Start writing better today.</h2>
         <p>
-          Runs quietly in your system tray. Free for 14 days — no account, no API key. After the
-          trial, an annual license keeps the built-in provider going, and rewrites are never
-          hard-blocked.
+          Runs quietly in your system tray. Free for 14 days — no credit card, no API key. After
+          the trial, just <strong>$5/year</strong> (launch offer — regularly $30) keeps the
+          built-in provider going, and rewrites are never hard-blocked.
         </p>
         <div class="ctas">
           <a class="tb-btn tb-btn-primary js-download" href="#download">
