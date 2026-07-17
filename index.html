@@ -943,12 +943,107 @@
         text-decoration: none;
       }
 
+      /* ─── Video showcase ─── */
+      .video-showcase {
+        padding: 24px 0 64px;
+      }
+      .video-wrap {
+        position: relative;
+        max-width: 940px;
+        margin: 0 auto;
+        border-radius: 16px;
+        overflow: hidden;
+        border: 0.5px solid var(--tb-line-strong);
+        box-shadow:
+          0 40px 80px -24px rgba(0, 0, 0, 0.45),
+          0 0 0 1px var(--tb-line);
+        background: var(--tb-bg-elev);
+      }
+      [data-theme="dark"] .video-wrap {
+        box-shadow:
+          0 40px 90px -20px rgba(0, 0, 0, 0.7),
+          0 0 0 1px rgba(255, 255, 255, 0.06),
+          0 0 60px -10px var(--tb-accent-glow);
+      }
+      .video-wrap video {
+        display: block;
+        width: 100%;
+        height: auto;
+        aspect-ratio: 16 / 9;
+        background: #0d0e10;
+      }
+      /* Subtle faux "title bar" over the video to echo the app-window motif */
+      .video-wrap::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 30px;
+        background: linear-gradient(180deg, rgba(0, 0, 0, 0.28), rgba(0, 0, 0, 0));
+        z-index: 2;
+        pointer-events: none;
+      }
+      .video-caption {
+        text-align: center;
+        margin-top: 18px;
+        font-size: 13px;
+        color: var(--tb-fg-dim);
+        font-family: var(--tb-font-mono);
+      }
+
+      /* ─── Hero polish ─── */
+      .hero {
+        position: relative;
+      }
+      .hero::before {
+        content: "";
+        position: absolute;
+        top: -120px;
+        right: -160px;
+        width: 560px;
+        height: 560px;
+        background: radial-gradient(circle, var(--tb-accent-glow) 0%, transparent 60%);
+        pointer-events: none;
+        z-index: 0;
+      }
+      .hero > * {
+        position: relative;
+        z-index: 1;
+      }
+
+      /* ─── Scroll reveal ─── */
+      .reveal {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.6s ease, transform 0.6s ease;
+      }
+      .reveal.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .reveal {
+          opacity: 1;
+          transform: none;
+          transition: none;
+        }
+      }
+
+      /* ─── Section polish — softer top borders with a hairline gradient ─── */
+      .section {
+        position: relative;
+      }
+
       /* ─── Responsive ─── */
       @media (max-width: 900px) {
         .hero {
           grid-template-columns: 1fr;
           padding: 64px 0 48px;
           gap: 40px;
+        }
+        .video-showcase {
+          padding: 16px 0 48px;
         }
         .hero h1 {
           font-size: 44px;
@@ -1209,8 +1304,23 @@
       </div>
     </section>
 
+    <!-- ─── Video showcase ─── -->
+    <section class="video-showcase container reveal">
+      <div class="video-wrap">
+        <video
+          controls
+          preload="metadata"
+          poster="assets/poster.jpeg"
+          aria-label="BrushUp demo: select text, rewrite, replace — in any app"
+        >
+          <source src="assets/brushup-demo.mp4" type="video/mp4" />
+        </video>
+      </div>
+      <p class="video-caption">Watch it work — three keystrokes from typo to polished, ~80s.</p>
+    </section>
+
     <!-- ─── How it works ─── -->
-    <section class="section" id="how">
+    <section class="section reveal" id="how">
       <div class="container">
         <div class="section-head">
           <span class="label">01 — Workflow</span>
@@ -1267,7 +1377,7 @@
     </section>
 
     <!-- ─── Features ─── -->
-    <section class="section" id="features">
+    <section class="section reveal" id="features">
       <div class="container">
         <div class="section-head">
           <span class="label">02 — Built for the keyboard</span>
@@ -1520,7 +1630,7 @@
     </section>
 
     <!-- ─── Presets ─── -->
-    <section class="section" id="presets">
+    <section class="section reveal" id="presets">
       <div class="container">
         <div class="section-head">
           <span class="label">03 — Presets</span>
@@ -1700,7 +1810,7 @@
     </section>
 
     <!-- ─── Pricing ─── -->
-    <section class="section" id="pricing">
+    <section class="section reveal" id="pricing">
       <div class="container">
         <div class="section-head center">
           <span class="label">04 — Pricing</span>
@@ -1800,7 +1910,7 @@
     </section>
 
     <!-- ─── Bottom CTA ─── -->
-    <section class="bottom-cta">
+    <section class="bottom-cta reveal">
       <div class="container">
         <h2>Start writing better today.</h2>
         <p>
@@ -1919,6 +2029,45 @@
               });
           });
         });
+
+        // ── Scroll reveal — fade sections in as they enter the viewport ──
+        var reveals = document.querySelectorAll(".reveal");
+        if ("IntersectionObserver" in window && reveals.length) {
+          var io = new IntersectionObserver(
+            function (entries) {
+              entries.forEach(function (entry) {
+                if (entry.isIntersecting) {
+                  entry.target.classList.add("is-visible");
+                  io.unobserve(entry.target);
+                }
+              });
+            },
+            { threshold: 0.12 }
+          );
+          reveals.forEach(function (el) {
+            io.observe(el);
+          });
+        } else {
+          reveals.forEach(function (el) {
+            el.classList.add("is-visible");
+          });
+        }
+
+        // ── Video: lazy-play on viewport entry, pause when scrolled away ──
+        var v = document.querySelector(".video-wrap video");
+        if (v && "IntersectionObserver" in window) {
+          var vio = new IntersectionObserver(
+            function (entries) {
+              entries.forEach(function (entry) {
+                if (!entry.isIntersecting && !v.paused) {
+                  v.pause();
+                }
+              });
+            },
+            { threshold: 0.25 }
+          );
+          vio.observe(v);
+        }
       })();
     </script>
   </body>
