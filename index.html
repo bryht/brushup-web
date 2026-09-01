@@ -1361,13 +1361,14 @@
             <span class="num">STEP 03</span>
             <h3>Pick a preset, replace</h3>
             <p>
-              Choose Fix Grammar, Make Formal, Lookup — anything. Hit Enter to rewrite, Enter again
-              to replace the text right where it was.
+              Choose Fix Grammar, Make Formal, Simplify — anything. Hit Enter to rewrite, Enter
+              again to replace the text right where it was. Lookup and Translate have keys of their
+              own, so they answer in one press.
             </p>
             <div class="hint">
               <span class="tb-kbd-row">
                 <span class="tb-kbd">1</span><span style="color: var(--tb-fg-faint)">…</span
-                ><span class="tb-kbd">8</span>
+                ><span class="tb-kbd">6</span>
               </span>
               <span style="margin-left: 4px">pick preset</span>
             </div>
@@ -1517,6 +1518,31 @@
                 stroke-linecap="round"
                 stroke-linejoin="round"
               >
+                <path d="M2 11h5M4.5 11V4M2 4h5" />
+                <path d="M9 13l3-7 3 7M10.2 11h3.6" />
+              </svg>
+            </div>
+            <div>
+              <h3>Translate into as many languages as you like</h3>
+              <p>
+                Hit Translate on any selection and read it back in every language you configured —
+                one block each, in a window of its own, with the original a click away. Nothing is
+                pasted over your text unless you copy it yourself.
+              </p>
+            </div>
+          </div>
+          <div class="feature">
+            <div class="feature-icon">
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 16 16"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.4"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
                 <circle cx="8" cy="8" r="6" />
                 <path d="M8 4.5V8l2.5 1.5" />
               </svg>
@@ -1524,8 +1550,8 @@
             <div>
               <h3>Learn from your writing</h3>
               <p>
-                Every rewrite and lookup is saved on your machine — review past results, spot
-                your patterns, and memorize new words. Nothing leaves your PC.
+                Every rewrite, lookup, and translation is saved on your machine — review past
+                results, spot your patterns, and memorize new words. Nothing leaves your PC.
               </p>
             </div>
           </div>
@@ -1636,8 +1662,9 @@
           <span class="label">03 — Presets</span>
           <h2>Eight presets out of the box. Customize freely.</h2>
           <p>
-            Seven rewrite presets with carefully tuned prompts — edit them, add your own, or delete
-            what you don't use — plus the built-in Lookup dictionary.
+            Six rewrite presets with carefully tuned prompts — edit them, add your own, or delete
+            what you don't use — plus two built-ins: the Lookup dictionary and Translate, each with
+            its own window and hotkey.
           </p>
         </div>
         <div class="preset-grid">
@@ -1754,27 +1781,6 @@
                 stroke-linecap="round"
                 stroke-linejoin="round"
               >
-                <path d="M2 11h5M4.5 11V4M2 4h5" />
-                <path d="M9 13l3-7 3 7M10.2 11h3.6" /></svg
-            ></span>
-            <div class="body">
-              <div class="title">Translate to EN</div>
-              <div class="desc">Any language → English</div>
-            </div>
-            <span class="num">6</span>
-          </div>
-          <div class="preset-card">
-            <span class="glyph"
-              ><svg
-                width="16"
-                height="16"
-                viewBox="0 0 16 16"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.4"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
                 <circle cx="8" cy="8" r="5" />
                 <path d="M6 9c.5.7 1.2 1 2 1s1.5-.3 2-1M6 7h.01M10 7h.01" /></svg
             ></span>
@@ -1782,7 +1788,7 @@
               <div class="title">Make Polite</div>
               <div class="desc">Soften the tone</div>
             </div>
-            <span class="num">7</span>
+            <span class="num">6</span>
           </div>
           <div class="preset-card" data-builtin="true">
             <span class="glyph"
@@ -1803,7 +1809,28 @@
               <div class="title">Lookup</div>
               <div class="desc">Definitions, IPA &amp; memory aid</div>
             </div>
-            <span class="num">8</span>
+            <span class="num">built-in</span>
+          </div>
+          <div class="preset-card" data-builtin="true">
+            <span class="glyph"
+              ><svg
+                width="16"
+                height="16"
+                viewBox="0 0 16 16"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.4"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M2 11h5M4.5 11V4M2 4h5" />
+                <path d="M9 13l3-7 3 7M10.2 11h3.6" /></svg
+            ></span>
+            <div class="body">
+              <div class="title">Translate</div>
+              <div class="desc">Into every language you pick</div>
+            </div>
+            <span class="num">built-in</span>
           </div>
         </div>
       </div>
@@ -1843,11 +1870,15 @@
             </li>
             <li>
               <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5L6.5 12 13 4" /></svg>
-              All 8 presets, fully customizable — add your own prompts
+              Every rewrite preset, fully customizable — add your own prompts
             </li>
             <li>
               <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5L6.5 12 13 4" /></svg>
               Dictionary lookup with pronunciation, examples &amp; memory aids
+            </li>
+            <li>
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5L6.5 12 13 4" /></svg>
+              Translate into as many languages as you like, one hotkey away
             </li>
             <li>
               <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5L6.5 12 13 4" /></svg>
