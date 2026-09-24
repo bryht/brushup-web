@@ -6,12 +6,12 @@
     <title>BrushUp — Improve your English writing in any app</title>
     <meta
       name="description"
-      content="A desktop app that helps non-native English speakers improve their writing. Press a hotkey, pick a preset, get better text. Works in Outlook, Slack, Word, and any app. Just $5/year — launch offer, regularly $30."
+      content="A desktop app that helps non-native English speakers improve their writing. Hold Ctrl, tap C twice, pick a preset — better text without leaving the app. Works in Outlook, Slack, Word, and anywhere else you type. Just $5/year — launch offer, regularly $30."
     />
     <meta property="og:title" content="BrushUp" />
     <meta
       property="og:description"
-      content="Improve your English writing in any app. Press a hotkey, pick a preset, get better text. Just $5/year — launch offer."
+      content="Improve your English writing in any app. Hold Ctrl, tap C twice, pick a preset, get better text. Just $5/year — launch offer."
     />
     <meta property="og:type" content="website" />
     <link
@@ -1185,9 +1185,9 @@
         </div>
         <h1>Improve your English<br /><span class="accent">in any app.</span></h1>
         <p class="lede">
-          Select text, press a hotkey, pick a preset. BrushUp rewrites your English to sound
-          natural, correct, or professional — right inside Outlook, Slack, Word, or whatever you're
-          typing in. The built-in provider works instantly: no account, no API key, no setup.
+          Select text, hold Ctrl and tap C twice, pick a preset. BrushUp rewrites your English to
+          sound natural, correct, or professional — right inside Outlook, Slack, Word, or whatever
+          you're typing in. The built-in provider works instantly: no account, no API key, no setup.
         </p>
         <div class="ctas">
           <a class="tb-btn tb-btn-primary js-download" href="#download">
@@ -1316,7 +1316,7 @@
           <source src="assets/brushup-demo.mp4" type="video/mp4" />
         </video>
       </div>
-      <p class="video-caption">Watch it work — three keystrokes from typo to polished, ~80s.</p>
+      <p class="video-caption">Watch it work — three keystrokes from typo to polished, ~98s.</p>
     </section>
 
     <!-- ─── How it works ─── -->
@@ -1342,19 +1342,20 @@
           </div>
           <div class="step">
             <span class="num">STEP 02</span>
-            <h3>Copy — then tap C again</h3>
+            <h3>Hold Ctrl, tap C twice</h3>
             <p>
-              Press Ctrl+C, then tap C once more within half a second. A floating popup snaps open
-              with your captured text. The second letter is configurable.
+              A small switcher opens at your cursor: Rewrite, Lookup, Translate. Keep holding Ctrl
+              and tap C to move between them, then let go to run the highlighted one. It starts on
+              whatever you ran last, so a quick double-tap simply repeats it — no switcher, no
+              picking.
             </p>
             <div class="hint">
               <span class="tb-kbd-row">
-                <span class="tb-kbd">Ctrl</span><span class="tb-kbd">C</span>
-              </span>
-              <span>then</span>
-              <span class="tb-kbd-row">
+                <span class="tb-kbd">Ctrl</span>
+                <span class="tb-kbd">C</span>
                 <span class="tb-kbd">C</span>
               </span>
+              <span>let go to run</span>
             </div>
           </div>
           <div class="step">
@@ -1362,8 +1363,8 @@
             <h3>Pick a preset, replace</h3>
             <p>
               Choose Fix Grammar, Make Formal, Simplify — anything. Hit Enter to rewrite, Enter
-              again to replace the text right where it was. Lookup and Translate have keys of their
-              own, so they answer in one press.
+              again to replace the text right where it was. Lookup and Translate sit in the same
+              switcher and answer in a window of their own, without touching your text.
             </p>
             <div class="hint">
               <span class="tb-kbd-row">
@@ -1389,6 +1390,33 @@
           </p>
         </div>
         <div class="feature-grid">
+          <div class="feature">
+            <div class="feature-icon">
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 16 16"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.4"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <rect x="1.5" y="2.5" width="13" height="11" rx="1.5" />
+                <path d="M4 5.5h8M4 8h8M4 10.5h4" />
+              </svg>
+            </div>
+            <div>
+              <h3>One hotkey, three actions</h3>
+              <p>
+                <span class="tb-kbd">Ctrl</span> <span class="tb-kbd">C</span>
+                <span class="tb-kbd">C</span> opens a small switcher at your cursor. Keep holding
+                Ctrl and tap C to move between Rewrite, Lookup, and Translate; let go to run the
+                highlighted one. It starts on whatever you ran last, so repeating yourself takes a
+                single double-tap.
+              </p>
+            </div>
+          </div>
           <div class="feature">
             <div class="feature-icon">
               <svg
@@ -1501,8 +1529,9 @@
             <div>
               <h3>Built-in dictionary lookup</h3>
               <p>
-                Select any word and hit Lookup: definitions, IPA pronunciation, example sentences, a
-                memory aid to make it stick — and a speaker button to hear it aloud.
+                Select any word and pick Lookup in the switcher: definitions, IPA pronunciation,
+                example sentences, a memory aid to make it stick — and a speaker button to hear it
+                aloud.
               </p>
             </div>
           </div>
@@ -1525,9 +1554,10 @@
             <div>
               <h3>Translate into as many languages as you like</h3>
               <p>
-                Hit Translate on any selection and read it back in every language you configured —
-                one block each, in a window of its own, with the original a click away. Nothing is
-                pasted over your text unless you copy it yourself.
+                Pick Translate on any selection and read it back in every language you configured —
+                one block each, in a window of its own, with the original a click away. A language
+                the text is already in is skipped. Nothing is pasted over your text unless you copy
+                it yourself.
               </p>
             </div>
           </div>
@@ -1621,7 +1651,9 @@
             <div>
               <h3>Keyboard-first</h3>
               <p>
-                Stay on the home row. Tap a number or step through presets with
+                Stay on the home row. One hotkey — <span class="tb-kbd">Ctrl</span>
+                <span class="tb-kbd">C</span> <span class="tb-kbd">C</span> — runs all three
+                actions. In the popup, tap a number or step through presets with
                 <span class="tb-kbd">←</span> <span class="tb-kbd">→</span>, press
                 <span class="tb-kbd">↵</span> to rewrite or replace, and
                 <span class="tb-kbd">Esc</span> to dismiss — your hands never leave the keyboard.
@@ -1664,7 +1696,7 @@
           <p>
             Six rewrite presets with carefully tuned prompts — edit them, add your own, or delete
             what you don't use — plus two built-ins: the Lookup dictionary and Translate, each with
-            its own window and hotkey.
+            its own window and its own place in the Ctrl+C+C switcher.
           </p>
         </div>
         <div class="preset-grid">
@@ -1878,7 +1910,7 @@
             </li>
             <li>
               <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5L6.5 12 13 4" /></svg>
-              Translate into as many languages as you like, one hotkey away
+              Translate into as many languages as you like, one switcher pick away
             </li>
             <li>
               <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5L6.5 12 13 4" /></svg>
