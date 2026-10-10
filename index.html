@@ -262,6 +262,18 @@
         color: var(--tb-fg);
         box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
       }
+      /* Compact variant that fits inside a pane header (the diff view toggle) */
+      .tb-segment-sm {
+        padding: 1px;
+        border-radius: 5px;
+      }
+      .tb-segment-sm > button {
+        padding: 2px 7px;
+        font-size: inherit;
+        letter-spacing: inherit;
+        text-transform: inherit;
+        border-radius: 4px;
+      }
 
       /* ─── Nav ─── */
       nav {
@@ -472,9 +484,6 @@
       }
 
       .popup-mock-panes {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 10px;
         padding: 14px;
       }
       .tb-pane {
@@ -518,6 +527,20 @@
         color: var(--tb-add);
         border-radius: 2px;
         padding: 0 1px;
+        /* Underline so additions don't rely on color alone. */
+        text-decoration: underline;
+        text-decoration-color: var(--tb-add);
+        text-underline-offset: 2px;
+      }
+      /* Result view: the clean text, marks dropped */
+      .popup-mock-panes[data-view="result"] .tb-diff-del {
+        display: none;
+      }
+      .popup-mock-panes[data-view="result"] .tb-diff-add {
+        background: none;
+        color: inherit;
+        text-decoration: none;
+        padding: 0;
       }
       .tb-diff-del {
         background: var(--tb-del-bg);
@@ -1063,9 +1086,6 @@
         .faq-grid {
           grid-template-columns: 1fr;
         }
-        .popup-mock-panes {
-          grid-template-columns: 1fr;
-        }
         .bottom-cta h2 {
           font-size: 30px;
         }
@@ -1249,31 +1269,32 @@
           <span class="dot"></span>
           <span class="x">×</span>
         </div>
-        <div class="popup-mock-panes">
-          <div class="tb-pane">
-            <div class="tb-pane-head">
-              <span>Original</span>
-              <span class="tb-mono" style="font-size: 9.5px; color: var(--tb-fg-faint)"
-                >4 changes</span
-              >
-            </div>
-            <div class="tb-pane-body">
-              I want to <span class="tb-diff-del">postpone</span> tomorrow's meeting
-              <span class="tb-diff-del">because</span> I'm not
-              <span class="tb-diff-del">feeling so good</span> today.
-              <span class="tb-diff-del">Can we</span> move it to next week?
-            </div>
-          </div>
+        <div class="popup-mock-panes" data-view="changes">
           <div class="tb-pane" data-improved>
             <div class="tb-pane-head">
-              <span>Improved</span>
+              <span
+                class="tb-segment tb-segment-sm diff-view-switch"
+                role="radiogroup"
+                aria-label="Result view"
+              >
+                <button type="button" role="radio" data-view="changes" data-active="true" aria-checked="true">
+                  Changes
+                </button>
+                <button type="button" role="radio" data-view="result" data-active="false" aria-checked="false">
+                  Result
+                </button>
+              </span>
               <span class="tb-mono" style="font-size: 9.5px; color: var(--tb-fg-faint)">1.8s</span>
             </div>
             <div class="tb-pane-body">
-              I'd like to <span class="tb-diff-add">reschedule</span> tomorrow's meeting
-              <span class="tb-diff-add">— I'm</span> not
-              <span class="tb-diff-add">feeling well</span> today.
-              <span class="tb-diff-add">Could we</span> move it to next week?
+              I <span class="tb-diff-del">want to postpone </span
+              ><span class="tb-diff-add" title="was: want to postpone">'d like to reschedule </span
+              >tomorrow's meeting <span class="tb-diff-del">because </span
+              ><span class="tb-diff-add" title="was: because">— </span>I'm not
+              <span class="tb-diff-del">feeling so good </span
+              ><span class="tb-diff-add" title="was: feeling so good">feeling well </span>today.
+              <span class="tb-diff-del">Can we </span
+              ><span class="tb-diff-add" title="was: Can we">Could we </span>move it to next week?
             </div>
           </div>
         </div>
@@ -1291,6 +1312,11 @@
           <span class="tb-tag-good">Done</span>
           <span>4 changes</span>
           <span class="spacer"></span>
+          <span class="tb-kbd-row">
+            <span class="tb-kbd">tab</span>
+          </span>
+          <span>view</span>
+          <span class="sep">·</span>
           <span class="tb-kbd-row">
             <span class="tb-kbd">↵</span>
           </span>
@@ -1503,10 +1529,10 @@
               </svg>
             </div>
             <div>
-              <h3>Side-by-side diff</h3>
+              <h3>Inline diff</h3>
               <p>
-                See exactly what changed. Deletions struck through, additions highlighted. No
-                mystery rewrites.
+                See exactly what changed in one pane: deletions struck through, additions
+                underlined. Press Tab for the clean result. No mystery rewrites.
               </p>
             </div>
           </div>
@@ -2045,6 +2071,20 @@
           });
         });
         paint();
+
+        // ── Hero mock: Changes / Result toggle, like Tab in the popup ──
+        var diffPanes = document.querySelector(".popup-mock-panes");
+        var viewButtons = document.querySelectorAll(".diff-view-switch button");
+        viewButtons.forEach(function (btn) {
+          btn.addEventListener("click", function () {
+            diffPanes.setAttribute("data-view", btn.getAttribute("data-view"));
+            viewButtons.forEach(function (b) {
+              var on = b === btn ? "true" : "false";
+              b.setAttribute("data-active", on);
+              b.setAttribute("aria-checked", on);
+            });
+          });
+        });
 
         // ── Download: resolve the latest installer ──
         // Uses GitHub's `releases/latest`, which by design skips drafts and
