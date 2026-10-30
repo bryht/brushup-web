@@ -3,15 +3,15 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>BrushUp — Improve your English writing in any app</title>
+    <title>BrushUp — Rewrite, look up and translate English in any app</title>
     <meta
       name="description"
-      content="A desktop app that helps non-native English speakers improve their writing. Hold Ctrl, tap C twice, pick a preset — better text without leaving the app. Works in Outlook, Slack, Word, and anywhere else you type. Just €5.10/year — launch offer, regularly €30."
+      content="A Windows app for people who work in English as a second language. Select text, hold Ctrl and tap C twice: rewrite it, look up a word, or translate it, right inside Outlook, Slack, Word or any other app. Everything you run becomes flashcards and insights. €5.10/year launch offer, regularly €30."
     />
-    <meta property="og:title" content="BrushUp" />
+    <meta property="og:title" content="BrushUp — English help in any app" />
     <meta
       property="og:description"
-      content="Improve your English writing in any app. Hold Ctrl, tap C twice, pick a preset, get better text. Just €5.10/year — launch offer."
+      content="Rewrite, look up and translate English without leaving the app you're in. One hotkey: Ctrl C C. €5.10/year launch offer."
     />
     <meta property="og:type" content="website" />
     <link
@@ -22,7 +22,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap"
       rel="stylesheet"
     />
 
@@ -61,7 +61,11 @@
     </script>
 
     <style>
-      /* ─── Theme tokens (mirrored from src/styles/tokens.css) ─── */
+      /* ─── Theme tokens ───
+         Based on src/styles/tokens.css, with the site's redesign changes:
+         terracotta is the accent in both themes (green now only means "added
+         text"), dim text and the light accent are darkened to pass 4.5:1, and
+         hairlines are 1px so they survive Windows display scaling. */
       :root,
       [data-theme="light"] {
         color-scheme: light;
@@ -71,37 +75,45 @@
         --tb-bg-elev-2: #ece4d2;
         --tb-bg-input: #faf6ec;
         --tb-line: rgba(60, 40, 20, 0.1);
-        --tb-line-strong: rgba(60, 40, 20, 0.18);
+        --tb-line-strong: rgba(60, 40, 20, 0.17);
 
         --tb-fg: #2b2418;
         --tb-fg-mute: #6e5f48;
-        --tb-fg-dim: #8a7c66;
+        --tb-fg-dim: #71654f;
         --tb-fg-faint: #b3a48a;
 
-        --tb-accent: #b8542a;
+        --tb-accent: #a64b28;
         --tb-accent-fg: #faf6ec;
-        --tb-accent-glow: rgba(184, 84, 42, 0.14);
+        --tb-accent-glow: rgba(166, 75, 40, 0.13);
 
-        /* Brand red — the logo/wordmark stay red in every theme, even where
-           --tb-accent is the dark phosphor green. */
+        /* The logo mark's own ink. */
         --tb-brand: #b8542a;
 
-        --tb-add: #4a7a3a;
-        --tb-add-bg: rgba(74, 122, 58, 0.12);
+        --tb-add: #457035;
+        --tb-add-bg: rgba(69, 112, 53, 0.12);
         --tb-del: #b3402a;
-        --tb-del-bg: rgba(179, 64, 42, 0.1);
+        --tb-del-bg: rgba(179, 64, 42, 0.08);
 
-        --tb-warn: #a87217;
         --tb-link: #2f5a8a;
 
         --tb-shadow-popup:
-          0 24px 60px -12px rgba(60, 40, 20, 0.2), 0 8px 24px -4px rgba(60, 40, 20, 0.12),
-          0 0 0 0.5px rgba(60, 40, 20, 0.1);
+          0 24px 60px -12px rgba(60, 40, 20, 0.22), 0 8px 24px -4px rgba(60, 40, 20, 0.12),
+          0 0 0 1px rgba(60, 40, 20, 0.08);
+
+        /* The demo's host app: a plain, unbranded mail window that should read
+           as "some other program", not as BrushUp. */
+        --host-bg: #ffffff;
+        --host-chrome: #f3f3f3;
+        --host-line: #e3e3e3;
+        --host-fg: #1f1f1f;
+        --host-mute: #5f5f5f;
+        --host-sel: #cce4f7;
 
         --tb-font-sans:
           "Inter Tight", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
         --tb-font-mono: "JetBrains Mono", ui-monospace, "SF Mono", monospace;
-        --tb-font-prose: "Iowan Old Style", "Charter", "Georgia", serif;
+        --tb-font-prose: "Source Serif 4", "Iowan Old Style", "Charter", "Georgia", serif;
+        --host-font: "Segoe UI", system-ui, -apple-system, sans-serif;
       }
 
       [data-theme="dark"] {
@@ -111,32 +123,37 @@
         --tb-bg-elev: #16181c;
         --tb-bg-elev-2: #1c1f24;
         --tb-bg-input: #0a0b0d;
-        --tb-line: rgba(255, 255, 255, 0.06);
-        --tb-line-strong: rgba(255, 255, 255, 0.12);
+        --tb-line: rgba(255, 255, 255, 0.07);
+        --tb-line-strong: rgba(255, 255, 255, 0.13);
 
         --tb-fg: #ededee;
         --tb-fg-mute: #a1a4ac;
-        --tb-fg-dim: #6b6f78;
+        --tb-fg-dim: #82868f;
         --tb-fg-faint: #4a4e57;
 
-        --tb-accent: #b6f25a; /* phosphor green */
+        --tb-accent: #e3825a;
         --tb-accent-fg: #0a0b0d;
-        --tb-accent-glow: rgba(182, 242, 90, 0.18);
+        --tb-accent-glow: rgba(227, 130, 90, 0.16);
 
-        /* Brand red holds across themes (see light theme). */
-        --tb-brand: #b8542a;
+        --tb-brand: #e3825a;
 
         --tb-add: #74e088;
         --tb-add-bg: rgba(116, 224, 136, 0.12);
         --tb-del: #f08886;
-        --tb-del-bg: rgba(240, 136, 134, 0.1);
+        --tb-del-bg: rgba(240, 136, 134, 0.08);
 
-        --tb-warn: #f3c969;
         --tb-link: #8db4ff;
 
         --tb-shadow-popup:
           0 24px 60px -12px rgba(0, 0, 0, 0.6), 0 8px 24px -4px rgba(0, 0, 0, 0.4),
-          0 0 0 1px rgba(255, 255, 255, 0.06);
+          0 0 0 1px rgba(255, 255, 255, 0.07);
+
+        --host-bg: #1b1b1d;
+        --host-chrome: #242427;
+        --host-line: #333337;
+        --host-fg: #e8e8e8;
+        --host-mute: #a6a6a6;
+        --host-sel: #264f78;
       }
 
       * {
@@ -144,16 +161,29 @@
         padding: 0;
         box-sizing: border-box;
       }
+      /* Components set display, which would otherwise beat the hidden attribute. */
+      [hidden] {
+        display: none !important;
+      }
 
+      html {
+        scroll-behavior: smooth;
+        scroll-padding-top: 76px;
+      }
       html,
       body {
         background: var(--tb-bg);
         color: var(--tb-fg);
         font-family: var(--tb-font-sans);
         line-height: 1.55;
-        font-feature-settings: "ss01", "cv11", "tnum";
+        font-feature-settings: "ss01", "cv11";
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
       }
 
       a {
@@ -163,19 +193,35 @@
       a:hover {
         text-decoration: underline;
       }
+      :focus-visible {
+        outline: 2px solid var(--tb-accent);
+        outline-offset: 2px;
+        border-radius: 4px;
+      }
+      button {
+        font: inherit;
+        color: inherit;
+      }
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0 0 0 0);
+        white-space: nowrap;
+      }
 
       .container {
-        max-width: 1040px;
+        max-width: 1080px;
         margin: 0 auto;
         padding: 0 28px;
       }
 
-      /* ─── Atoms (matching tokens.css) ─── */
+      /* ─── Atoms ─── */
       .tb-mono {
         font-family: var(--tb-font-mono);
         font-feature-settings: "tnum", "zero";
       }
-
       .tb-kbd {
         display: inline-flex;
         align-items: center;
@@ -188,40 +234,44 @@
         font-weight: 500;
         color: var(--tb-fg-mute);
         background: var(--tb-bg-elev-2);
-        border: 0.5px solid var(--tb-line-strong);
+        border: 1px solid var(--tb-line-strong);
         border-radius: 5px;
         line-height: 1;
         box-shadow: 0 1px 0 var(--tb-line-strong);
+        transition:
+          background 0.1s,
+          color 0.1s,
+          transform 0.1s;
+        vertical-align: 1px;
+      }
+      .tb-kbd[data-pressed="true"] {
+        color: var(--tb-accent-fg);
+        background: var(--tb-accent);
+        border-color: var(--tb-accent);
+        box-shadow: none;
+        transform: translateY(1px);
+      }
+      .tb-kbd-sm {
+        height: 18px;
+        min-width: 18px;
+        padding: 0 5px;
+        font-size: 10.5px;
+        box-shadow: none;
       }
       .tb-kbd-row {
         display: inline-flex;
         gap: 4px;
         align-items: center;
       }
-
-      .tb-chip {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        padding: 5px 12px;
-        font-size: 11.5px;
-        font-family: var(--tb-font-mono);
-        color: var(--tb-fg-mute);
-        background: var(--tb-bg-elev);
-        border: 0.5px solid var(--tb-line);
-        border-radius: 999px;
-        line-height: 1.3;
-      }
-      .tb-chip .tb-dot {
+      .tb-dot {
         width: 6px;
         height: 6px;
         border-radius: 50%;
-        background: var(--tb-add);
-        box-shadow: 0 0 6px var(--tb-add);
         display: inline-block;
+        background: var(--tb-add);
+        flex-shrink: 0;
       }
-
-      .tb-tag-good {
+      .tb-tag {
         display: inline-flex;
         align-items: center;
         padding: 2px 8px;
@@ -230,159 +280,40 @@
         font-family: var(--tb-font-mono);
         text-transform: uppercase;
         letter-spacing: 0.06em;
+        color: var(--tb-fg-mute);
+        background: var(--tb-bg-elev-2);
+        border-radius: 4px;
+        white-space: nowrap;
+      }
+      .tb-tag-good {
         color: var(--tb-add);
         background: var(--tb-add-bg);
-        border-radius: 4px;
       }
 
-      /* Theme switcher — same segmented control as the app's settings */
+      /* Segmented control (theme switcher) */
       .tb-segment {
         display: inline-flex;
         padding: 2px;
         background: var(--tb-bg-elev-2);
-        border: 0.5px solid var(--tb-line);
+        border: 1px solid var(--tb-line);
         border-radius: 7px;
       }
       .tb-segment > button {
         display: inline-flex;
         align-items: center;
-        gap: 5px;
-        padding: 4px 9px;
-        font-size: 11.5px;
+        justify-content: center;
+        width: 28px;
+        height: 24px;
         color: var(--tb-fg-mute);
         border: 0;
         background: transparent;
         border-radius: 5px;
-        font-family: inherit;
         cursor: pointer;
-        line-height: 1;
       }
       .tb-segment > button[data-active="true"] {
         background: var(--tb-bg-elev);
         color: var(--tb-fg);
         box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
-      }
-      /* Compact variant that fits inside a pane header (the diff view toggle) */
-      .tb-segment-sm {
-        padding: 1px;
-        border-radius: 5px;
-      }
-      .tb-segment-sm > button {
-        padding: 2px 7px;
-        font-size: inherit;
-        letter-spacing: inherit;
-        text-transform: inherit;
-        border-radius: 4px;
-      }
-
-      /* ─── Nav ─── */
-      nav {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 16px;
-        padding: 22px 0;
-        border-bottom: 0.5px solid var(--tb-line);
-      }
-      nav .logo {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        font-size: 15px;
-        font-weight: 700;
-        letter-spacing: -0.01em;
-        color: var(--tb-fg);
-      }
-      nav .logo .mark {
-        color: var(--tb-brand);
-        width: 22px;
-        height: 22px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-      }
-      nav .links {
-        display: flex;
-        gap: 22px;
-        font-size: 13px;
-        align-items: center;
-      }
-      nav .links a {
-        color: var(--tb-fg-mute);
-        transition: color 0.15s;
-      }
-      nav .links a:hover {
-        color: var(--tb-fg);
-        text-decoration: none;
-      }
-
-      /* ─── Hero ─── */
-      .hero {
-        padding: 96px 0 64px;
-        display: grid;
-        grid-template-columns: 1.05fr 0.95fr;
-        gap: 56px;
-        align-items: center;
-      }
-      .hero .eyebrow {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        font-size: 11px;
-        font-family: var(--tb-font-mono);
-        color: var(--tb-fg-mute);
-        background: var(--tb-bg-elev);
-        border: 0.5px solid var(--tb-line);
-        border-radius: 999px;
-        padding: 5px 12px;
-        margin-bottom: 24px;
-        letter-spacing: 0.04em;
-        text-transform: uppercase;
-      }
-      .hero .eyebrow .tb-dot {
-        width: 6px;
-        height: 6px;
-        border-radius: 50%;
-        background: var(--tb-accent);
-        box-shadow: 0 0 8px var(--tb-accent-glow);
-      }
-      .hero h1 {
-        font-size: 58px;
-        font-weight: 700;
-        letter-spacing: -0.035em;
-        line-height: 1.02;
-        margin-bottom: 22px;
-        color: var(--tb-fg);
-      }
-      .hero h1 .accent {
-        color: var(--tb-accent);
-      }
-      .hero .lede {
-        font-size: 18px;
-        color: var(--tb-fg-mute);
-        max-width: 480px;
-        margin-bottom: 32px;
-        line-height: 1.5;
-      }
-      .hero .ctas {
-        display: flex;
-        gap: 12px;
-        flex-wrap: wrap;
-        align-items: center;
-      }
-      .meta-line {
-        margin-top: 18px;
-        font-size: 12px;
-        color: var(--tb-fg-dim);
-        font-family: var(--tb-font-mono);
-        display: flex;
-        gap: 14px;
-        flex-wrap: wrap;
-      }
-      .meta-line span:not(:last-child)::after {
-        content: "·";
-        margin-left: 14px;
-        color: var(--tb-fg-faint);
       }
 
       /* Buttons */
@@ -393,11 +324,11 @@
         height: 40px;
         padding: 0 18px;
         font-family: var(--tb-font-sans);
-        font-size: 13.5px;
+        font-size: 14px;
         font-weight: 500;
         color: var(--tb-fg);
         background: var(--tb-bg-elev);
-        border: 0.5px solid var(--tb-line-strong);
+        border: 1px solid var(--tb-line-strong);
         border-radius: 8px;
         cursor: pointer;
         transition:
@@ -422,376 +353,1196 @@
       }
       .tb-btn-primary:hover {
         background: var(--tb-accent);
-        filter: brightness(1.05);
+        filter: brightness(1.06);
         color: var(--tb-accent-fg);
       }
+      .tb-btn-ghost {
+        background: transparent;
+        border-color: transparent;
+        color: var(--tb-fg-mute);
+      }
+      .tb-btn-ghost:hover {
+        background: var(--tb-bg-elev-2);
+        color: var(--tb-fg);
+      }
+      .tb-btn-sm {
+        height: 30px;
+        padding: 0 12px;
+        font-size: 12.5px;
+      }
+      .tb-btn-primary .tb-kbd {
+        color: var(--tb-accent-fg);
+        background: color-mix(in srgb, var(--tb-accent-fg) 14%, transparent);
+        border-color: color-mix(in srgb, var(--tb-accent-fg) 28%, transparent);
+        box-shadow: none;
+      }
 
-      /* ─── Hero popup mock ─── */
-      .popup-mock {
-        background: var(--tb-bg-elev);
-        border: 0.5px solid var(--tb-line-strong);
-        border-radius: 12px;
-        box-shadow: var(--tb-shadow-popup);
-        overflow: hidden;
-        font-family: var(--tb-font-sans);
+      /* ─── Nav ─── */
+      .nav-wrap {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        background: color-mix(in srgb, var(--tb-bg) 86%, transparent);
+        backdrop-filter: saturate(1.4) blur(10px);
+        -webkit-backdrop-filter: saturate(1.4) blur(10px);
+        border-bottom: 1px solid var(--tb-line);
       }
-      [data-theme="dark"] .popup-mock {
-        box-shadow:
-          var(--tb-shadow-popup),
-          inset 0 1px 0 rgba(255, 255, 255, 0.04);
-      }
-      .popup-mock-head {
+      nav {
         display: flex;
         align-items: center;
-        gap: 10px;
-        padding: 10px 14px;
-        border-bottom: 0.5px solid var(--tb-line);
-        background: var(--tb-bg-elev);
+        gap: 24px;
+        height: 60px;
       }
-      .popup-mock-head .app {
+      .logo {
         display: inline-flex;
         align-items: center;
         gap: 8px;
-        font-size: 13px;
+        font-size: 15px;
         font-weight: 700;
         letter-spacing: -0.01em;
         color: var(--tb-fg);
       }
-      .popup-mock-head .app .mark {
+      .logo:hover {
+        text-decoration: none;
+      }
+      .logo .mark {
+        color: var(--tb-brand);
+        display: inline-flex;
+      }
+      .logo .up {
         color: var(--tb-accent);
+      }
+      nav .links {
+        display: flex;
+        gap: 20px;
+        font-size: 13.5px;
+        margin-left: 12px;
+      }
+      nav .links a {
+        color: var(--tb-fg-mute);
+        transition: color 0.15s;
+      }
+      nav .links a:hover {
+        color: var(--tb-fg);
+        text-decoration: none;
+      }
+      nav .end {
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      /* ─── Desktop vs phone calls to action ───
+         BrushUp is a Windows app; on a phone the download button would hand
+         over an .exe that can't run, so phones get a "send it to your PC"
+         prompt instead. */
+      .cta-phone {
+        display: none;
+      }
+      @media (hover: none) and (pointer: coarse) {
+        .cta-desktop {
+          display: none !important;
+        }
+        .cta-phone {
+          display: flex;
+        }
+      }
+      .cta-phone {
+        flex-direction: column;
+        gap: 10px;
+        align-items: flex-start;
+        padding: 14px 16px;
+        background: var(--tb-bg-elev);
+        border: 1px solid var(--tb-line-strong);
+        border-radius: 10px;
+        font-size: 14px;
+        color: var(--tb-fg-mute);
+        max-width: 420px;
+      }
+      .cta-phone strong {
+        color: var(--tb-fg);
+      }
+
+      /* ─── Hero ─── */
+      .hero {
+        padding: 72px 0 40px;
+        position: relative;
+      }
+      .hero::before {
+        content: "";
+        position: absolute;
+        top: -60px;
+        right: 0;
+        width: 560px;
+        height: 560px;
+        background: radial-gradient(circle, var(--tb-accent-glow) 0%, transparent 62%);
+        pointer-events: none;
+      }
+      .hero-copy {
+        position: relative;
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 48px;
+        align-items: end;
+      }
+      .eyebrow {
         display: inline-flex;
         align-items: center;
+        gap: 8px;
+        font-size: 11px;
+        font-family: var(--tb-font-mono);
+        color: var(--tb-fg-mute);
+        background: var(--tb-bg-elev);
+        border: 1px solid var(--tb-line);
+        border-radius: 999px;
+        padding: 5px 12px;
+        margin-bottom: 22px;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
       }
-      .popup-mock-head .dot {
-        width: 6px;
-        height: 6px;
-        border-radius: 50%;
-        background: var(--tb-add);
-        box-shadow: 0 0 6px var(--tb-add);
+      .eyebrow .tb-dot {
+        background: var(--tb-accent);
       }
-      .popup-mock-head .spacer {
+      h1,
+      h2 {
+        font-family: var(--tb-font-prose);
+        font-weight: 600;
+        color: var(--tb-fg);
+        font-optical-sizing: auto;
+      }
+      .hero h1 {
+        font-size: 64px;
+        letter-spacing: -0.025em;
+        line-height: 1.02;
+      }
+      .hero h1 .accent {
+        color: var(--tb-accent);
+        font-style: normal;
+      }
+      .hero .lede {
+        font-size: 17.5px;
+        color: var(--tb-fg-mute);
+        line-height: 1.55;
+        margin-bottom: 24px;
+      }
+      .hero .lede strong {
+        color: var(--tb-fg);
+        font-weight: 600;
+      }
+      .ctas {
+        display: flex;
+        gap: 14px;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+      .price-hint {
+        font-size: 13px;
+        color: var(--tb-fg-mute);
+      }
+      .price-hint s {
+        color: var(--tb-fg-dim);
+      }
+      .price-hint strong {
+        color: var(--tb-fg);
+        font-weight: 600;
+      }
+      .meta-line {
+        margin-top: 16px;
+        font-size: 12px;
+        color: var(--tb-fg-dim);
+        font-family: var(--tb-font-mono);
+        display: flex;
+        gap: 6px 14px;
+        flex-wrap: wrap;
+      }
+      .meta-line span:not(:last-child)::after {
+        content: "·";
+        margin-left: 14px;
+        color: var(--tb-fg-faint);
+      }
+
+      /* ─── Demo stage: one email story through all three actions ─── */
+      .stage {
+        position: relative;
+        margin-top: 48px;
+      }
+      .host {
+        position: relative;
+        background: var(--host-bg);
+        color: var(--host-fg);
+        font-family: var(--host-font);
+        border: 1px solid var(--host-line);
+        border-radius: 10px;
+        box-shadow: 0 30px 70px -30px rgba(40, 25, 10, 0.35);
+        overflow: hidden;
+        min-height: 520px;
+      }
+      [data-theme="dark"] .host {
+        box-shadow: 0 30px 80px -24px rgba(0, 0, 0, 0.75);
+      }
+      .host-titlebar {
+        display: flex;
+        align-items: center;
+        height: 34px;
+        padding-left: 14px;
+        background: var(--host-chrome);
+        border-bottom: 1px solid var(--host-line);
+        font-size: 12px;
+        color: var(--host-mute);
+      }
+      .host-titlebar .ctl {
+        margin-left: auto;
+        display: flex;
+        height: 100%;
+      }
+      .host-titlebar .ctl span {
+        width: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .host-fields {
+        padding: 10px 24px;
+        border-bottom: 1px solid var(--host-line);
+        font-size: 13px;
+        color: var(--host-mute);
+        display: grid;
+        gap: 4px;
+      }
+      .host-fields b {
+        font-weight: 600;
+        color: var(--host-fg);
+      }
+      .host-body {
+        padding: 20px 24px 28px;
+        font-size: 15px;
+        line-height: 1.6;
+        max-width: 600px;
+      }
+      .host-body p + p {
+        margin-top: 12px;
+      }
+      .host-quote {
+        margin-top: 22px;
+        padding-top: 14px;
+        border-top: 1px solid var(--host-line);
+        color: var(--host-mute);
+      }
+      .host-quote .from {
+        font-size: 13px;
+        margin-bottom: 8px;
+      }
+      .host-quote p {
+        color: var(--host-fg);
+        opacity: 0.85;
+      }
+      .sel {
+        background: var(--host-sel);
+        border-radius: 2px;
+        box-shadow: 0 0 0 2px var(--host-sel);
+      }
+      .caret {
+        display: inline-block;
+        width: 1.5px;
+        height: 1.1em;
+        background: var(--host-fg);
+        vertical-align: -0.18em;
+        margin-left: 1px;
+        animation: blink 1s steps(1) infinite;
+      }
+      @keyframes blink {
+        50% {
+          opacity: 0;
+        }
+      }
+      .replaced {
+        animation: replaced 1.4s ease-out;
+      }
+      @keyframes replaced {
+        0% {
+          background: var(--tb-add-bg);
+        }
+        100% {
+          background: transparent;
+        }
+      }
+
+      /* overlays that float above the host, like BrushUp's real windows */
+      .ov {
+        position: absolute;
+        z-index: 5;
+        max-width: calc(100% - 24px);
+        opacity: 0;
+        transform: translateY(6px) scale(0.985);
+        transition:
+          opacity 0.18s ease-out,
+          transform 0.18s ease-out;
+        pointer-events: none;
+        font-family: var(--tb-font-sans);
+        color: var(--tb-fg);
+      }
+      .ov[data-open="true"] {
+        opacity: 1;
+        transform: none;
+      }
+
+      .stage-bar {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        margin-top: 16px;
+        flex-wrap: wrap;
+      }
+      .stage-keys {
+        display: inline-flex;
+        gap: 4px;
+      }
+      .stage-caption {
         flex: 1;
+        min-width: 200px;
+        font-size: 14px;
+        color: var(--tb-fg-mute);
       }
-      .popup-mock-head .x {
-        width: 22px;
-        height: 22px;
+      .stage-tabs {
+        display: inline-flex;
+        gap: 4px;
+        padding: 3px;
+        background: var(--tb-bg-elev-2);
+        border: 1px solid var(--tb-line);
+        border-radius: 9px;
+      }
+      .stage-tabs button {
+        height: 28px;
+        padding: 0 12px;
+        font-size: 13px;
+        color: var(--tb-fg-mute);
+        background: transparent;
+        border: 0;
+        border-radius: 6px;
+        cursor: pointer;
+      }
+      .stage-tabs button[aria-selected="true"] {
+        background: var(--tb-bg-elev);
+        color: var(--tb-fg);
+        font-weight: 600;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+      }
+      .stage-pause {
+        width: 34px;
+        height: 34px;
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        color: var(--tb-fg-dim);
-        font-size: 14px;
-        border-radius: 4px;
+        border-radius: 8px;
+        border: 1px solid var(--tb-line-strong);
+        background: var(--tb-bg-elev);
+        color: var(--tb-fg-mute);
+        cursor: pointer;
       }
 
-      .popup-mock-panes {
-        padding: 14px;
+      /* ─── App window pieces (match the app: PopupShell, Switcher, cards) ─── */
+      .tb-shell {
+        background: var(--tb-bg-elev);
+        border: 1px solid var(--tb-line-strong);
+        border-radius: 12px;
+        box-shadow: var(--tb-shadow-popup);
+        overflow: hidden;
+        font-size: 13px;
+        color: var(--tb-fg);
+        font-family: var(--tb-font-sans);
       }
-      .tb-pane {
+      .tb-shell-head {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 9px 12px;
+        border-bottom: 1px solid var(--tb-line);
+        background: var(--tb-bg-elev-2);
+      }
+      .tb-shell-title {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-family: var(--tb-font-mono);
+        font-size: 11.5px;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+      }
+      .tb-shell-title svg {
+        color: var(--tb-brand);
+      }
+      .tb-shell-status {
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-family: var(--tb-font-mono);
+        font-size: 11px;
+      }
+      .tb-shell-x {
+        color: var(--tb-fg-dim);
+        font-size: 14px;
+        width: 18px;
+        text-align: center;
+      }
+      .tb-banner {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 12px;
+        font-size: 11.5px;
+        color: var(--tb-fg-dim);
+        background: var(--tb-bg-elev);
+        border-top: 1px solid var(--tb-line);
+        white-space: nowrap;
+        overflow: hidden;
+      }
+      .tb-banner .grow {
+        flex: 1;
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .tb-switcher {
+        width: 250px;
+        background: var(--tb-bg-elev);
+        border: 1px solid var(--tb-line-strong);
+        border-radius: 12px;
+        box-shadow: var(--tb-shadow-popup);
+        overflow: hidden;
+        font-size: 13px;
+        font-family: var(--tb-font-sans);
+        color: var(--tb-fg);
+      }
+      .tb-switcher-list {
+        padding: 5px;
         display: flex;
         flex-direction: column;
+        gap: 2px;
+      }
+      .tb-switcher-item {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 8px;
+        height: 30px;
+        line-height: 30px;
+        padding: 0 10px;
+        border-radius: 6px;
+        border: 0;
+        background: transparent;
+        text-align: left;
+        width: 100%;
+      }
+      .tb-switcher-item small {
+        font-size: 11px;
+        color: var(--tb-fg-dim);
+      }
+      .tb-switcher-item[aria-selected="true"] {
+        background: var(--tb-accent);
+        color: var(--tb-accent-fg);
+        font-weight: 600;
+      }
+      .tb-switcher-item[aria-selected="true"] small {
+        color: var(--tb-accent-fg);
+        opacity: 0.85;
+      }
+      .tb-switcher-foot {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        padding: 7px 12px;
+        border-top: 1px solid var(--tb-line);
+        background: var(--tb-bg-elev-2);
+        font-size: 11px;
+        color: var(--tb-fg-mute);
+      }
+
+      /* Rewrite popup */
+      .tb-presets {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        padding: 12px 14px 0;
+      }
+      .tb-preset {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        height: 26px;
+        padding: 0 10px;
+        font-size: 12px;
+        font-weight: 500;
+        color: var(--tb-fg-mute);
+        border: 1px solid var(--tb-line-strong);
+        border-radius: 999px;
+        white-space: nowrap;
+      }
+      .tb-preset .n {
+        font-family: var(--tb-font-mono);
+        font-size: 10px;
+        font-weight: 700;
+      }
+      .tb-preset[data-active="true"] {
+        background: var(--tb-accent);
+        color: var(--tb-accent-fg);
+        border-color: var(--tb-accent);
+        font-weight: 600;
+      }
+      .tb-pane {
+        margin: 12px 14px;
         background: var(--tb-bg-input);
-        border: 0.5px solid var(--tb-line);
+        border: 1px solid var(--tb-line);
         border-radius: 8px;
         overflow: hidden;
-        min-width: 0;
       }
-      /* The result pane is the focused element, outlined in the accent color */
       .tb-pane[data-improved] {
-        border: 1px solid var(--tb-accent);
+        border-color: var(--tb-accent);
         box-shadow: 0 0 14px var(--tb-accent-glow);
-      }
-      .tb-pane[data-improved] .tb-pane-head span:first-child {
-        color: var(--tb-accent);
       }
       .tb-pane-head {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 7px 10px;
+        padding: 6px 10px;
         font-family: var(--tb-font-mono);
         font-size: 10px;
         letter-spacing: 0.08em;
         text-transform: uppercase;
         color: var(--tb-fg-dim);
-        border-bottom: 0.5px solid var(--tb-line);
+        border-bottom: 1px solid var(--tb-line);
       }
       .tb-pane-body {
-        padding: 12px;
-        font-size: 12.5px;
+        padding: 10px 12px;
+        font-size: 13px;
         line-height: 1.55;
-        color: var(--tb-fg);
-        min-height: 96px;
+        min-height: 70px;
       }
+      .tb-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
+        padding: 0 14px 12px;
+      }
+      /* Diff marks: additions underlined in green; deletions struck through
+         in neutral text, so the brand colour never reads as "wrong". */
       .tb-diff-add {
         background: var(--tb-add-bg);
         color: var(--tb-add);
         border-radius: 2px;
         padding: 0 1px;
-        /* Underline so additions don't rely on color alone. */
         text-decoration: underline;
         text-decoration-color: var(--tb-add);
         text-underline-offset: 2px;
       }
-      /* Result view: the clean text, marks dropped */
-      .popup-mock-panes[data-view="result"] .tb-diff-del {
+      .tb-diff-del {
+        background: var(--tb-del-bg);
+        color: var(--tb-fg-dim);
+        border-radius: 2px;
+        padding: 0 1px;
+        text-decoration: line-through;
+        text-decoration-color: var(--tb-del);
+        text-decoration-thickness: 1.5px;
+      }
+      [data-view="result"] .tb-diff-del {
         display: none;
       }
-      .popup-mock-panes[data-view="result"] .tb-diff-add {
+      [data-view="result"] .tb-diff-add {
         background: none;
         color: inherit;
         text-decoration: none;
         padding: 0;
       }
-      .tb-diff-del {
-        background: var(--tb-del-bg);
-        color: var(--tb-del);
-        border-radius: 2px;
-        padding: 0 1px;
-        text-decoration: line-through;
-        text-decoration-color: var(--tb-del);
-        opacity: 0.85;
+      .streaming::after {
+        content: "";
+        display: inline-block;
+        width: 7px;
+        height: 1.05em;
+        background: var(--tb-accent);
+        vertical-align: -0.15em;
+        margin-left: 2px;
+        border-radius: 1px;
+        animation: blink 1s steps(1) infinite;
       }
 
-      .popup-mock-actions {
+      /* Lookup card */
+      .tb-lookup {
         display: flex;
-        justify-content: flex-end;
+        flex-direction: column;
+        gap: 12px;
+        padding: 14px 16px;
+      }
+      .tb-lookup-header {
+        display: flex;
+        align-items: baseline;
         gap: 10px;
-        padding: 0 14px 14px;
+        flex-wrap: wrap;
       }
-      .popup-mock-actions .tb-btn {
-        height: 32px;
-        padding: 0 13px;
-        font-size: 12.5px;
-        gap: 8px;
+      .tb-lookup-word {
+        font-family: var(--tb-font-prose);
+        font-size: 22px;
+        font-weight: 600;
+        letter-spacing: -0.01em;
+        line-height: 1.2;
       }
-      .popup-mock-actions .tb-kbd {
-        height: 18px;
-        min-width: 18px;
-        padding: 0 5px;
+      .tb-lookup-phonetic {
+        font-family: var(--tb-font-mono);
+        font-size: 13px;
+        color: var(--tb-fg-dim);
+      }
+      .tb-lang {
+        font-family: var(--tb-font-mono);
         font-size: 10px;
-      }
-      .popup-mock-actions .tb-btn-primary .tb-kbd {
-        color: var(--tb-accent-fg);
-        background: color-mix(in srgb, var(--tb-accent-fg) 12%, transparent);
-        border-color: color-mix(in srgb, var(--tb-accent-fg) 25%, transparent);
-        box-shadow: none;
-      }
-
-      .popup-mock-banner {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        padding: 9px 14px;
-        font-size: 11.5px;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
         color: var(--tb-fg-dim);
         background: var(--tb-bg-elev-2);
-        border-top: 0.5px solid var(--tb-line);
-        font-family: var(--tb-font-mono);
+        padding: 2px 6px;
+        border-radius: 4px;
       }
-      .popup-mock-banner .sep {
-        color: var(--tb-fg-faint);
-        margin: 0 4px;
-      }
-      .popup-mock-banner .spacer {
-        flex: 1;
-      }
-
-      /* ─── Section heading ─── */
-      .section {
-        padding: 88px 0;
-        border-top: 0.5px solid var(--tb-line);
-      }
-      .section-head {
-        margin-bottom: 48px;
-      }
-      .section-head .label {
-        font-family: var(--tb-font-mono);
-        font-size: 11px;
-        color: var(--tb-accent);
-        letter-spacing: 0.1em;
-        text-transform: uppercase;
-        margin-bottom: 10px;
-        display: block;
-      }
-      .section-head h2 {
-        font-size: 36px;
-        font-weight: 700;
-        letter-spacing: -0.025em;
-        line-height: 1.1;
-        color: var(--tb-fg);
-        max-width: 640px;
-      }
-      .section-head p {
-        margin-top: 12px;
-        font-size: 16px;
+      .tb-lookup-speak {
+        margin-left: auto;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 30px;
+        height: 30px;
+        background: transparent;
+        border: 1px solid var(--tb-line-strong);
+        border-radius: 50%;
         color: var(--tb-fg-mute);
-        max-width: 580px;
+        cursor: pointer;
+        align-self: center;
       }
-
-      /* ─── How it works ─── */
-      .steps {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 20px;
+      .tb-lookup-speak:hover,
+      .tb-lookup-speak[data-speaking="true"] {
+        color: var(--tb-accent);
+        border-color: var(--tb-accent);
       }
-      .step {
-        background: var(--tb-bg-elev);
-        border: 0.5px solid var(--tb-line-strong);
-        border-radius: 12px;
-        padding: 28px 24px;
+      .tb-well {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        padding: 10px 12px;
+        background: var(--tb-bg-input);
+        border: 1px solid var(--tb-line);
+        border-radius: 8px;
+      }
+      .tb-label {
+        font-family: var(--tb-font-mono);
+        font-size: 10px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--tb-accent);
+      }
+      .tb-lookup-meaning {
+        font-size: 13.5px;
+        line-height: 1.5;
+      }
+      .tb-lookup-native {
+        font-size: 12.5px;
+        line-height: 1.5;
+        color: var(--tb-fg-mute);
+      }
+      .tb-lookup-examples {
+        list-style: none;
+        margin-top: 4px;
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+      }
+      .tb-lookup-examples li {
+        font-family: var(--tb-font-prose);
+        font-size: 13px;
+        color: var(--tb-fg-mute);
+        line-height: 1.5;
+        padding-left: 12px;
         position: relative;
       }
-      .step .num {
-        font-family: var(--tb-font-mono);
-        font-size: 11px;
-        color: var(--tb-accent);
-        letter-spacing: 0.08em;
-        margin-bottom: 16px;
-        display: block;
-      }
-      .step h3 {
-        font-size: 17px;
-        font-weight: 600;
-        margin-bottom: 8px;
-        letter-spacing: -0.01em;
-        color: var(--tb-fg);
-      }
-      .step p {
-        font-size: 13.5px;
-        color: var(--tb-fg-mute);
-        line-height: 1.55;
-      }
-      .step .hint {
-        margin-top: 16px;
-        display: flex;
-        gap: 6px;
-        align-items: center;
-        font-size: 11px;
-        font-family: var(--tb-font-mono);
+      .tb-lookup-examples li::before {
+        content: "·";
+        position: absolute;
+        left: 2px;
         color: var(--tb-fg-dim);
       }
-
-      /* ─── Features ─── */
-      .feature-grid {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 16px;
+      .tb-memory {
+        background: var(--tb-accent-glow);
+        border-color: var(--tb-accent);
       }
-      .feature {
-        background: var(--tb-bg-elev);
-        border: 0.5px solid var(--tb-line-strong);
-        border-radius: 12px;
-        padding: 24px;
-        display: flex;
-        gap: 16px;
-        align-items: flex-start;
-      }
-      .feature .feature-icon {
-        flex-shrink: 0;
-        width: 36px;
-        height: 36px;
-        border-radius: 8px;
-        background: var(--tb-bg-elev-2);
-        border: 0.5px solid var(--tb-line);
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        color: var(--tb-accent);
-      }
-      .feature h3 {
-        font-size: 14.5px;
-        font-weight: 600;
-        margin-bottom: 6px;
-        letter-spacing: -0.005em;
-        color: var(--tb-fg);
-      }
-      .feature p {
-        font-size: 13px;
-        color: var(--tb-fg-mute);
+      .tb-memory-text {
+        font-size: 12.5px;
         line-height: 1.55;
       }
 
-      /* ─── Presets grid ─── */
-      .preset-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-        gap: 12px;
+      /* Translate card */
+      .tb-translate {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        padding: 14px 16px;
       }
-      .preset-card {
-        background: var(--tb-bg-elev);
-        border: 0.5px solid var(--tb-line-strong);
-        border-radius: 10px;
-        padding: 18px;
+      .tb-translate-head {
         display: flex;
         align-items: center;
-        gap: 14px;
+        gap: 8px;
+        min-height: 20px;
       }
-      .preset-card .glyph {
-        flex-shrink: 0;
-        width: 32px;
-        height: 32px;
-        border-radius: 8px;
-        background: var(--tb-accent-glow);
-        color: var(--tb-accent);
+      .tb-translate-head .tb-btn {
+        margin-left: auto;
+        height: 22px;
+        padding: 0 8px;
+        font-size: 11px;
+      }
+      .tb-translate-text {
+        font-family: var(--tb-font-prose);
+        font-size: 14.5px;
+        line-height: 1.55;
+      }
+      .tb-translate-original {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        padding-top: 8px;
+        border-top: 1px solid var(--tb-line);
+      }
+      .tb-translate-toggle {
         display: inline-flex;
         align-items: center;
-        justify-content: center;
-      }
-      .preset-card[data-builtin="true"] .glyph {
-        background: color-mix(in srgb, var(--tb-link) 14%, transparent);
-        color: var(--tb-link);
-      }
-      .preset-card .body {
-        min-width: 0;
-      }
-      .preset-card .title {
-        font-size: 13.5px;
-        font-weight: 600;
-        color: var(--tb-fg);
-        letter-spacing: -0.005em;
-      }
-      .preset-card .desc {
-        font-size: 12px;
-        color: var(--tb-fg-mute);
-        margin-top: 2px;
-        line-height: 1.4;
-      }
-      .preset-card .num {
+        gap: 6px;
+        align-self: flex-start;
+        padding: 2px 0;
+        background: transparent;
+        border: 0;
+        cursor: pointer;
         font-family: var(--tb-font-mono);
-        font-size: 10.5px;
-        color: var(--tb-fg-faint);
-        margin-left: auto;
-        padding-left: 8px;
+        font-size: 11px;
+        color: var(--tb-fg-mute);
+      }
+      .tb-translate-toggle:hover {
+        color: var(--tb-fg);
+      }
+      .tb-translate-original-text {
+        font-family: var(--tb-font-prose);
+        font-size: 13px;
+        line-height: 1.55;
+        color: var(--tb-fg-mute);
       }
 
-      /* ─── Pricing ─── */
-      .section-head.center {
-        text-align: center;
+      /* ─── Sections ─── */
+      .section {
+        padding: 96px 0;
+        border-top: 1px solid var(--tb-line);
       }
-      .section-head.center h2,
-      .section-head.center p {
+      .section-head {
+        margin-bottom: 40px;
+        max-width: 640px;
+      }
+      .section-head.center {
         margin-left: auto;
         margin-right: auto;
+        text-align: center;
+      }
+      .label {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--tb-accent);
+        margin-bottom: 12px;
+      }
+      .label .tb-kbd {
+        font-weight: 500;
+      }
+      h2 {
+        font-size: 40px;
+        letter-spacing: -0.02em;
+        line-height: 1.1;
+      }
+      .section-head p {
+        margin-top: 14px;
+        font-size: 16.5px;
+        color: var(--tb-fg-mute);
       }
 
-      .price-hint {
-        display: inline-flex;
-        align-items: baseline;
-        gap: 7px;
-        font-size: 13px;
-        color: var(--tb-fg-mute);
-        font-family: var(--tb-font-mono);
+      .split {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 56px;
+        align-items: center;
       }
-      .price-hint s {
+      .split .section-head {
+        margin-bottom: 24px;
+      }
+      .points {
+        list-style: none;
+        display: grid;
+        gap: 16px;
+      }
+      .points li {
+        display: grid;
+        grid-template-columns: 20px 1fr;
+        gap: 12px;
+        font-size: 14.5px;
+        color: var(--tb-fg-mute);
+        line-height: 1.55;
+      }
+      .points li svg {
+        color: var(--tb-accent);
+        margin-top: 3px;
+      }
+      .points li strong {
+        color: var(--tb-fg);
+        font-weight: 600;
+      }
+
+      /* One hotkey */
+      .hotkey {
+        display: grid;
+        grid-template-columns: 300px 1fr;
+        gap: 56px;
+        align-items: center;
+      }
+      .hotkey .tb-switcher {
+        width: 100%;
+      }
+      .hotkey .tb-switcher-item {
+        cursor: pointer;
+      }
+      .hotkey-try {
+        margin-top: 12px;
+        font-size: 12.5px;
         color: var(--tb-fg-dim);
+        text-align: center;
+      }
+      .steps {
+        list-style: none;
+        display: grid;
+        gap: 22px;
+        counter-reset: step;
+      }
+      .steps li {
+        display: grid;
+        grid-template-columns: 36px 1fr;
+        gap: 14px;
+      }
+      .steps li::before {
+        counter-increment: step;
+        content: counter(step);
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        border: 1px solid var(--tb-line-strong);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-family: var(--tb-font-prose);
+        font-weight: 600;
+        font-size: 15px;
+        color: var(--tb-accent);
+      }
+      .steps h3 {
+        font-size: 16.5px;
+        font-weight: 600;
+        letter-spacing: -0.01em;
+        margin-bottom: 4px;
+      }
+      .steps p {
+        font-size: 14.5px;
+        color: var(--tb-fg-mute);
+      }
+
+      /* Rewrite: preset showcase */
+      .showcase {
+        background: var(--tb-bg-elev);
+        border: 1px solid var(--tb-line-strong);
+        border-radius: 12px;
+        overflow: hidden;
+      }
+      .showcase-tabs {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        padding: 12px 14px;
+        border-bottom: 1px solid var(--tb-line);
+      }
+      .showcase-tab {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        height: 30px;
+        padding: 0 12px;
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--tb-fg-mute);
+        background: transparent;
+        border: 1px solid var(--tb-line-strong);
+        border-radius: 999px;
+        cursor: pointer;
+      }
+      .showcase-tab:hover {
+        color: var(--tb-fg);
+      }
+      .showcase-tab .n {
+        font-family: var(--tb-font-mono);
+        font-size: 10.5px;
+        font-weight: 700;
+      }
+      .showcase-tab[aria-selected="true"] {
+        background: var(--tb-accent);
+        border-color: var(--tb-accent);
+        color: var(--tb-accent-fg);
+        font-weight: 600;
+      }
+      .showcase-body {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+      }
+      .showcase-body > div {
+        padding: 20px 22px 24px;
+      }
+      .showcase-body > div + div {
+        border-left: 1px solid var(--tb-line);
+      }
+      .showcase-cap {
+        font-family: var(--tb-font-mono);
+        font-size: 10.5px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--tb-fg-dim);
+      }
+      .showcase-text {
+        margin-top: 8px;
+        font-family: var(--tb-font-prose);
+        font-size: 18px;
+        line-height: 1.55;
+      }
+      .showcase-before .showcase-text {
+        color: var(--tb-fg-mute);
+      }
+      .showcase-foot {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 14px;
+        font-size: 12.5px;
+        color: var(--tb-fg-mute);
+        background: var(--tb-bg-elev-2);
+        border-top: 1px solid var(--tb-line);
+      }
+      .notes {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 28px;
+        margin-top: 40px;
+      }
+      .notes h3 {
+        font-size: 14.5px;
+        font-weight: 600;
+        margin-bottom: 4px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .notes h3 svg {
+        color: var(--tb-accent);
+      }
+      .notes p {
+        font-size: 13.5px;
+        color: var(--tb-fg-mute);
+      }
+
+      /* Learn */
+      .learn-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+        align-items: start;
+      }
+      .learn-col h3 {
+        font-size: 16.5px;
+        font-weight: 600;
+        letter-spacing: -0.01em;
+      }
+      .learn-col > p {
+        font-size: 14px;
+        color: var(--tb-fg-mute);
+        margin: 4px 0 16px;
+      }
+      .flash {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        padding: 16px;
+      }
+      .flash-meta {
+        display: flex;
+        align-items: center;
+        font-size: 12.5px;
+        color: var(--tb-fg-mute);
+      }
+      .flash-card {
+        min-height: 210px;
+        cursor: pointer;
+        border: 1px solid var(--tb-line);
+        border-radius: 12px;
+        background: var(--tb-bg-elev);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+      }
+      .flash-card[data-flipped="true"] {
+        align-items: stretch;
+        text-align: left;
+      }
+      .flash-word {
+        font-size: 30px;
+        font-weight: 600;
+        letter-spacing: -0.01em;
+      }
+      .flash-phonetic {
+        font-family: var(--tb-font-mono);
+        font-size: 14px;
+        color: var(--tb-fg-mute);
+        margin-top: 8px;
+      }
+      .flash-hint {
+        font-size: 11.5px;
+        color: var(--tb-fg-dim);
+        margin-top: 20px;
+      }
+      .flash-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .insight {
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .insight-head {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 13.5px;
+        font-weight: 600;
+      }
+      .insight-text {
+        font-size: 13px;
+        line-height: 1.5;
+      }
+      .insight-pair {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        font-size: 13px;
+        line-height: 1.45;
+      }
+      .insight-pair .cap {
+        font-family: var(--tb-font-mono);
+        font-size: 10.5px;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--tb-fg-dim);
+        margin-bottom: 3px;
+      }
+      .insight-pair .before {
+        color: var(--tb-fg-mute);
+        text-decoration: line-through;
         text-decoration-color: var(--tb-del);
       }
-      .price-hint strong {
-        color: var(--tb-accent);
-        font-weight: 600;
-        font-size: 16px;
+      .insight-pair .after {
+        color: var(--tb-add);
+      }
+      .insight-tip {
+        font-size: 13px;
+        line-height: 1.5;
+        padding: 10px 12px;
+        background: var(--tb-accent-glow);
+        border-radius: 8px;
+      }
+      .learn-foot {
+        margin-top: 28px;
+        font-size: 14px;
+        color: var(--tb-fg-mute);
       }
 
+      /* Video */
+      .video-wrap {
+        position: relative;
+        max-width: 940px;
+        margin: 0 auto;
+        border-radius: 14px;
+        overflow: hidden;
+        border: 1px solid var(--tb-line-strong);
+        box-shadow: 0 40px 80px -30px rgba(0, 0, 0, 0.4);
+        background: var(--tb-bg-elev);
+      }
+      .video-wrap video {
+        display: block;
+        width: 100%;
+        height: auto;
+        aspect-ratio: 16 / 9;
+        background: #0d0e10;
+      }
+
+      /* Everywhere strip */
+      .facts {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1px;
+        background: var(--tb-line);
+        border: 1px solid var(--tb-line);
+        border-radius: 12px;
+        overflow: hidden;
+      }
+      .fact {
+        background: var(--tb-bg);
+        padding: 24px;
+      }
+      .fact h3 {
+        font-size: 15px;
+        font-weight: 600;
+        margin-bottom: 4px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .fact h3 svg {
+        color: var(--tb-accent);
+      }
+      .fact p {
+        font-size: 13.5px;
+        color: var(--tb-fg-mute);
+      }
+
+      /* Privacy */
+      .privacy {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 32px;
+      }
+      .privacy h3 {
+        font-family: var(--tb-font-prose);
+        font-size: 20px;
+        font-weight: 600;
+        line-height: 1.25;
+        margin-bottom: 8px;
+      }
+      .privacy p {
+        font-size: 14.5px;
+        color: var(--tb-fg-mute);
+      }
+
+      /* Pricing */
       .price-card {
         position: relative;
         max-width: 440px;
@@ -803,7 +1554,7 @@
         padding: 38px 32px 28px;
         text-align: center;
       }
-      .price-card .deal-tag {
+      .deal-tag {
         position: absolute;
         top: -13px;
         left: 50%;
@@ -819,11 +1570,9 @@
         border-radius: 999px;
         padding: 5px 14px;
       }
-      .price-card .plan-name {
+      .plan-name {
         font-size: 14px;
         font-weight: 600;
-        letter-spacing: -0.005em;
-        color: var(--tb-fg);
         margin-bottom: 14px;
       }
       .price-row {
@@ -838,22 +1587,21 @@
         font-size: 20px;
         color: var(--tb-fg-dim);
         text-decoration: line-through;
-        text-decoration-color: var(--tb-del);
       }
       .price-now {
-        font-size: 58px;
-        font-weight: 800;
-        letter-spacing: -0.04em;
+        font-family: var(--tb-font-prose);
+        font-size: 60px;
+        font-weight: 600;
+        letter-spacing: -0.03em;
         line-height: 1;
-        color: var(--tb-fg);
       }
-      .price-per {
+      .price-per,
+      .price-note {
         font-size: 14px;
         color: var(--tb-fg-mute);
       }
       .price-note {
-        font-size: 12.5px;
-        color: var(--tb-fg-mute);
+        font-size: 13px;
       }
       .price-list {
         list-style: none;
@@ -866,184 +1614,120 @@
         display: flex;
         gap: 10px;
         align-items: flex-start;
-        font-size: 13.5px;
-        color: var(--tb-fg);
+        font-size: 14px;
         line-height: 1.45;
       }
       .price-list li svg {
         flex-shrink: 0;
-        color: var(--tb-add);
+        color: var(--tb-accent);
         margin-top: 3px;
       }
       .price-card .tb-btn {
         width: 100%;
         justify-content: center;
         height: 44px;
-        font-size: 14px;
+      }
+      .price-card .cta-phone {
+        text-align: left;
       }
       .price-fine {
         margin-top: 14px;
-        font-size: 11.5px;
+        font-size: 12px;
         color: var(--tb-fg-dim);
-        font-family: var(--tb-font-mono);
-      }
-
-      .faq-grid {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 16px;
-        max-width: 880px;
-        margin: 56px auto 0;
       }
       .faq {
-        background: var(--tb-bg-elev);
-        border: 0.5px solid var(--tb-line-strong);
-        border-radius: 12px;
-        padding: 20px 22px;
+        max-width: 760px;
+        margin: 64px auto 0;
+        border-top: 1px solid var(--tb-line);
       }
-      .faq h3 {
-        font-size: 14px;
+      .faq details {
+        border-bottom: 1px solid var(--tb-line);
+      }
+      .faq summary {
+        list-style: none;
+        cursor: pointer;
+        padding: 18px 4px;
+        font-size: 15.5px;
         font-weight: 600;
-        margin-bottom: 6px;
-        letter-spacing: -0.005em;
-        color: var(--tb-fg);
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
       }
-      .faq p {
-        font-size: 13px;
+      .faq summary::-webkit-details-marker {
+        display: none;
+      }
+      .faq summary::after {
+        content: "+";
+        font-family: var(--tb-font-mono);
+        color: var(--tb-fg-dim);
+        font-weight: 400;
+      }
+      .faq details[open] summary::after {
+        content: "–";
+      }
+      .faq details p {
+        padding: 0 4px 18px;
+        font-size: 14.5px;
         color: var(--tb-fg-mute);
-        line-height: 1.55;
+        max-width: 640px;
       }
 
-      /* ─── Bottom CTA ─── */
+      /* Bottom CTA + footer */
       .bottom-cta {
         text-align: center;
-        padding: 96px 0;
-        border-top: 0.5px solid var(--tb-line);
+        padding: 104px 0;
+        border-top: 1px solid var(--tb-line);
       }
       .bottom-cta h2 {
-        font-size: 38px;
-        font-weight: 700;
-        letter-spacing: -0.03em;
+        font-size: 44px;
         margin-bottom: 14px;
-        color: var(--tb-fg);
       }
       .bottom-cta p {
         color: var(--tb-fg-mute);
-        font-size: 16px;
-        margin-bottom: 32px;
+        font-size: 16.5px;
+        margin: 0 auto 28px;
         max-width: 520px;
-        margin-left: auto;
-        margin-right: auto;
       }
       .bottom-cta .ctas {
-        display: inline-flex;
-        gap: 12px;
-        flex-wrap: wrap;
         justify-content: center;
       }
-
-      /* ─── Footer ─── */
+      .bottom-cta .cta-phone {
+        margin: 0 auto;
+        text-align: left;
+      }
       footer {
-        border-top: 0.5px solid var(--tb-line);
-        padding: 28px 0;
+        border-top: 1px solid var(--tb-line);
+        padding: 32px 0 40px;
+      }
+      .foot {
         display: flex;
         justify-content: space-between;
-        align-items: center;
-        font-size: 12.5px;
-        color: var(--tb-fg-dim);
-      }
-      footer .left {
-        display: inline-flex;
-        gap: 8px;
-        align-items: center;
-        font-family: var(--tb-font-mono);
-      }
-      footer a {
-        color: var(--tb-fg-mute);
-      }
-      footer a:hover {
-        color: var(--tb-fg);
-        text-decoration: none;
-      }
-
-      /* ─── Video showcase ─── */
-      .video-showcase {
-        padding: 24px 0 64px;
-      }
-      .video-wrap {
-        position: relative;
-        max-width: 940px;
-        margin: 0 auto;
-        border-radius: 16px;
-        overflow: hidden;
-        border: 0.5px solid var(--tb-line-strong);
-        box-shadow:
-          0 40px 80px -24px rgba(0, 0, 0, 0.45),
-          0 0 0 1px var(--tb-line);
-        background: var(--tb-bg-elev);
-      }
-      [data-theme="dark"] .video-wrap {
-        box-shadow:
-          0 40px 90px -20px rgba(0, 0, 0, 0.7),
-          0 0 0 1px rgba(255, 255, 255, 0.06),
-          0 0 60px -10px var(--tb-accent-glow);
-      }
-      .video-wrap video {
-        display: block;
-        width: 100%;
-        height: auto;
-        aspect-ratio: 16 / 9;
-        background: #0d0e10;
-      }
-      /* Subtle faux "title bar" over the video to echo the app-window motif */
-      .video-wrap::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 30px;
-        background: linear-gradient(180deg, rgba(0, 0, 0, 0.28), rgba(0, 0, 0, 0));
-        z-index: 2;
-        pointer-events: none;
-      }
-      .video-caption {
-        text-align: center;
-        margin-top: 18px;
+        align-items: flex-start;
+        gap: 24px;
+        flex-wrap: wrap;
         font-size: 13px;
         color: var(--tb-fg-dim);
-        font-family: var(--tb-font-mono);
+      }
+      .foot-links {
+        display: flex;
+        gap: 8px 22px;
+        flex-wrap: wrap;
+      }
+      .foot-links a {
+        color: var(--tb-fg-mute);
       }
 
-      /* ─── Hero polish ─── */
-      .hero {
-        position: relative;
-      }
-      .hero::before {
-        content: "";
-        position: absolute;
-        top: -120px;
-        right: -160px;
-        width: 560px;
-        height: 560px;
-        background: radial-gradient(circle, var(--tb-accent-glow) 0%, transparent 60%);
-        pointer-events: none;
-        z-index: 0;
-      }
-      .hero > * {
-        position: relative;
-        z-index: 1;
-      }
-
-      /* ─── Scroll reveal ─── */
+      /* Scroll reveal */
       .reveal {
         opacity: 0;
-        transform: translateY(20px);
-        transition: opacity 0.6s ease, transform 0.6s ease;
+        transform: translateY(18px);
+        transition:
+          opacity 0.6s ease,
+          transform 0.6s ease;
       }
       .reveal.is-visible {
         opacity: 1;
-        transform: translateY(0);
+        transform: none;
       }
       @media (prefers-reduced-motion: reduce) {
         .reveal {
@@ -1051,1038 +1735,1442 @@
           transform: none;
           transition: none;
         }
-      }
-
-      /* ─── Section polish — softer top borders with a hairline gradient ─── */
-      .section {
-        position: relative;
+        .ov {
+          transition: none;
+        }
+        .caret,
+        .streaming::after {
+          animation: none;
+        }
       }
 
       /* ─── Responsive ─── */
-      @media (max-width: 900px) {
-        .hero {
-          grid-template-columns: 1fr;
-          padding: 64px 0 48px;
-          gap: 40px;
-        }
-        .video-showcase {
-          padding: 16px 0 48px;
-        }
-        .hero h1 {
-          font-size: 44px;
-        }
-        .section {
-          padding: 64px 0;
-        }
-        .section-head h2 {
-          font-size: 28px;
-        }
-        .steps {
-          grid-template-columns: 1fr;
-        }
-        .feature-grid {
-          grid-template-columns: 1fr;
-        }
-        .faq-grid {
-          grid-template-columns: 1fr;
-        }
-        .bottom-cta h2 {
-          font-size: 30px;
-        }
-        footer {
-          flex-direction: column;
-          gap: 12px;
-        }
-      }
-      @media (max-width: 720px) {
+      @media (max-width: 960px) {
         nav .links {
           display: none;
         }
-      }
-      @media (max-width: 540px) {
-        .container {
-          padding: 0 20px;
+        .hero-copy,
+        .split,
+        .hotkey,
+        .learn-grid {
+          grid-template-columns: 1fr;
+          gap: 32px;
         }
         .hero h1 {
-          font-size: 36px;
+          font-size: 50px;
         }
-        .popup-mock-banner {
+        h2 {
+          font-size: 32px;
+        }
+        .notes {
+          grid-template-columns: 1fr 1fr;
+        }
+        .facts,
+        .privacy {
+          grid-template-columns: 1fr 1fr;
+        }
+        .split .card-first {
+          order: 2;
+        }
+        .hotkey .tb-switcher {
+          max-width: 320px;
+        }
+      }
+      @media (max-width: 640px) {
+        .container {
+          padding: 0 18px;
+        }
+        .hero {
+          padding-top: 48px;
+        }
+        .hero h1 {
+          font-size: 40px;
+        }
+        .section {
+          padding: 72px 0;
+        }
+        h2,
+        .bottom-cta h2 {
+          font-size: 30px;
+        }
+        .showcase-body {
+          grid-template-columns: 1fr;
+        }
+        .showcase-body > div + div {
+          border-left: 0;
+          border-top: 1px solid var(--tb-line);
+        }
+        .notes,
+        .facts,
+        .privacy {
+          grid-template-columns: 1fr;
+        }
+        nav .end .nav-dl {
           display: none;
         }
-        .theme-switch .label-text {
+        .host-body {
+          padding: 16px;
+          font-size: 14px;
+        }
+        .host-fields {
+          padding: 8px 16px;
+        }
+        .host {
+          min-height: 560px;
+        }
+        .stage-keys {
           display: none;
         }
       }
     </style>
   </head>
   <body>
-    <nav class="container">
-      <div class="logo">
-        <span class="mark">
-          <svg width="22" height="22" viewBox="0 0 130 130" fill="none" aria-hidden="true">
-            <rect x="24" y="56" width="16" height="62" rx="2" fill="currentColor" />
-            <circle cx="60" cy="86" r="22" stroke="currentColor" stroke-width="14" fill="none" />
-            <path d="M 24 56 L 40 56 L 88 28 L 96 22 L 88 14 L 30 46 Z" fill="currentColor" />
-            <rect
-              x="-12"
-              y="-3"
-              width="24"
-              height="6"
-              rx="1"
-              transform="translate(38 50) rotate(-32)"
-              fill="currentColor"
-            />
-          </svg>
-        </span>
-        <span>Brush<span style="color: var(--tb-brand)">Up</span></span>
-      </div>
-      <div class="links">
-        <a href="#how">How it works</a>
-        <a href="#features">Features</a>
-        <a href="#presets">Presets</a>
-        <a href="#pricing">Pricing</a>
-      </div>
-      <div class="tb-segment theme-switch" role="group" aria-label="Theme">
-        <button type="button" data-pref="system" title="Match the system theme">
-          <svg
-            width="13"
-            height="13"
-            viewBox="0 0 16 16"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.4"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            aria-hidden="true"
-          >
-            <rect x="2" y="3" width="12" height="8.5" rx="1" />
-            <path d="M5.5 14h5M8 11.5V14" />
-          </svg>
-          <span class="label-text">System</span>
-        </button>
-        <button type="button" data-pref="dark" title="Dark theme">
-          <svg
-            width="13"
-            height="13"
-            viewBox="0 0 16 16"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.4"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            aria-hidden="true"
-          >
-            <path d="M13.5 9.5A6 6 0 1 1 6.5 2.5a5 5 0 0 0 7 7Z" />
-          </svg>
-          <span class="label-text">Dark</span>
-        </button>
-        <button type="button" data-pref="light" title="Light theme">
-          <svg
-            width="13"
-            height="13"
-            viewBox="0 0 16 16"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.4"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            aria-hidden="true"
-          >
-            <circle cx="8" cy="8" r="3" />
-            <path d="M8 1.5v2M8 12.5v2M1.5 8h2M12.5 8h2M3.4 3.4l1.4 1.4M11.2 11.2l1.4 1.4M12.6 3.4l-1.4 1.4M4.8 11.2l-1.4 1.4" />
-          </svg>
-          <span class="label-text">Light</span>
-        </button>
-      </div>
-    </nav>
-
-    <!-- ─── Hero ─── -->
-    <section class="hero container">
-      <div>
-        <div class="eyebrow">
-          <span class="tb-dot"></span>
-          Launch offer · €5.10/year — regularly €30
-        </div>
-        <h1>Improve your English<br /><span class="accent">in any app.</span></h1>
-        <p class="lede">
-          Select text, hold Ctrl and tap C twice, pick a preset. BrushUp rewrites your English to
-          sound natural, correct, or professional — right inside Outlook, Slack, Word, or whatever
-          you're typing in. The built-in provider works instantly: no account, no API key, no setup.
-        </p>
-        <div class="ctas">
-          <a class="tb-btn tb-btn-primary js-download" href="#download">
-            Download for Windows
-            <svg
-              width="14"
-              height="14"
-              viewBox="0 0 16 16"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1.6"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <path d="M8 2v9M4 7l4 4 4-4M3 14h10" />
-            </svg>
-          </a>
-          <span class="price-hint"><s>€30</s> <strong>€5.10</strong>/year after free trial</span>
-        </div>
-        <div class="meta-line">
-          <span>Windows 10/11</span>
-          <span>x64</span>
-          <span>14-day free trial</span>
-          <span>No credit card</span>
-          <span id="version-meta">Auto-updating</span>
-        </div>
-      </div>
-
-      <!-- Popup mock — matches the design system -->
-      <div class="popup-mock">
-        <div class="popup-mock-head">
-          <span class="app">
-            <span class="mark">
-              <svg width="16" height="16" viewBox="0 0 130 130" fill="none" aria-hidden="true">
-                <rect x="24" y="56" width="16" height="62" rx="2" fill="currentColor" />
-                <circle
-                  cx="60"
-                  cy="86"
-                  r="22"
-                  stroke="currentColor"
-                  stroke-width="14"
-                  fill="none"
-                />
-                <path d="M 24 56 L 40 56 L 88 28 L 96 22 L 88 14 L 30 46 Z" fill="currentColor" />
-                <rect
-                  x="-12"
-                  y="-3"
-                  width="24"
-                  height="6"
-                  rx="1"
-                  transform="translate(38 50) rotate(-32)"
-                  fill="currentColor"
-                />
-              </svg>
-            </span>
-            BrushUp
-          </span>
-          <span class="spacer"></span>
-          <span class="dot"></span>
-          <span class="x">×</span>
-        </div>
-        <div class="popup-mock-panes" data-view="changes">
-          <div class="tb-pane" data-improved>
-            <div class="tb-pane-head">
-              <span
-                class="tb-segment tb-segment-sm diff-view-switch"
-                role="radiogroup"
-                aria-label="Result view"
-              >
-                <button type="button" role="radio" data-view="changes" data-active="true" aria-checked="true">
-                  Changes
-                </button>
-                <button type="button" role="radio" data-view="result" data-active="false" aria-checked="false">
-                  Result
-                </button>
-              </span>
-              <span class="tb-mono" style="font-size: 9.5px; color: var(--tb-fg-faint)">1.8s</span>
-            </div>
-            <div class="tb-pane-body">
-              I <span class="tb-diff-del">want to postpone </span
-              ><span class="tb-diff-add" title="was: want to postpone">'d like to reschedule </span
-              >tomorrow's meeting <span class="tb-diff-del">because </span
-              ><span class="tb-diff-add" title="was: because">— </span>I'm not
-              <span class="tb-diff-del">feeling so good </span
-              ><span class="tb-diff-add" title="was: feeling so good">feeling well </span>today.
-              <span class="tb-diff-del">Can we </span
-              ><span class="tb-diff-add" title="was: Can we">Could we </span>move it to next week?
-            </div>
-          </div>
-        </div>
-        <div class="popup-mock-actions">
-          <span class="tb-btn">
-            Try another
-            <span class="tb-kbd">T</span>
-          </span>
-          <span class="tb-btn tb-btn-primary">
-            Replace
-            <span class="tb-kbd">↵</span>
-          </span>
-        </div>
-        <div class="popup-mock-banner">
-          <span class="tb-tag-good">Done</span>
-          <span>4 changes</span>
-          <span class="spacer"></span>
-          <span class="tb-kbd-row">
-            <span class="tb-kbd">tab</span>
-          </span>
-          <span>view</span>
-          <span class="sep">·</span>
-          <span class="tb-kbd-row">
-            <span class="tb-kbd">↵</span>
-          </span>
-          <span>replace</span>
-          <span class="sep">·</span>
-          <span class="tb-kbd-row">
-            <span class="tb-kbd">esc</span>
-          </span>
-          <span>close</span>
-        </div>
-      </div>
-    </section>
-
-    <!-- ─── Video showcase ─── -->
-    <section class="video-showcase container reveal">
-      <div class="video-wrap">
-        <video
-          controls
-          preload="metadata"
-          poster="assets/poster.jpeg"
-          aria-label="BrushUp demo: select text, rewrite, replace — in any app"
-        >
-          <source src="assets/brushup-demo.mp4" type="video/mp4" />
-        </video>
-      </div>
-      <p class="video-caption">Watch it work — three keystrokes from typo to polished, ~98s.</p>
-    </section>
-
-    <!-- ─── How it works ─── -->
-    <section class="section reveal" id="how">
-      <div class="container">
-        <div class="section-head">
-          <span class="label">01 — Workflow</span>
-          <h2>Three keystrokes from typo to polished.</h2>
-          <p>
-            No copy-paste. No tab-switching. The popup floats above your work and disappears the
-            moment you're done.
-          </p>
-        </div>
-        <div class="steps">
-          <div class="step">
-            <span class="num">STEP 01</span>
-            <h3>Select your text</h3>
-            <p>
-              Highlight a sentence, paragraph, or whole draft in any application — email, chat,
-              document, or browser.
-            </p>
-            <div class="hint">↳ works via Windows UI Automation</div>
-          </div>
-          <div class="step">
-            <span class="num">STEP 02</span>
-            <h3>Hold Ctrl, tap C twice</h3>
-            <p>
-              A small switcher opens at your cursor: Rewrite, Lookup, Translate. Keep holding Ctrl
-              and tap C to move between them, then let go to run the highlighted one. It starts on
-              whatever you ran last, so a quick double-tap simply repeats it — no switcher, no
-              picking.
-            </p>
-            <div class="hint">
-              <span class="tb-kbd-row">
-                <span class="tb-kbd">Ctrl</span>
-                <span class="tb-kbd">C</span>
-                <span class="tb-kbd">C</span>
-              </span>
-              <span>let go to run</span>
-            </div>
-          </div>
-          <div class="step">
-            <span class="num">STEP 03</span>
-            <h3>Pick a preset, replace</h3>
-            <p>
-              Choose Fix Grammar, Make Formal, Simplify — anything. Hit Enter to rewrite, Enter
-              again to replace the text right where it was. Lookup and Translate sit in the same
-              switcher and answer in a window of their own, without touching your text.
-            </p>
-            <div class="hint">
-              <span class="tb-kbd-row">
-                <span class="tb-kbd">1</span><span style="color: var(--tb-fg-faint)">…</span
-                ><span class="tb-kbd">6</span>
-              </span>
-              <span style="margin-left: 4px">pick preset</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ─── Features ─── -->
-    <section class="section reveal" id="features">
-      <div class="container">
-        <div class="section-head">
-          <span class="label">02 — Built for the keyboard</span>
-          <h2>Quiet, fast, and never in your way.</h2>
-          <p>
-            Designed for non-native English speakers who type all day. Mouse-free, account-free, and
-            entirely under your control.
-          </p>
-        </div>
-        <div class="feature-grid">
-          <div class="feature">
-            <div class="feature-icon">
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 16 16"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.4"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <rect x="1.5" y="2.5" width="13" height="11" rx="1.5" />
-                <path d="M4 5.5h8M4 8h8M4 10.5h4" />
-              </svg>
-            </div>
-            <div>
-              <h3>One hotkey, three actions</h3>
-              <p>
-                <span class="tb-kbd">Ctrl</span> <span class="tb-kbd">C</span>
-                <span class="tb-kbd">C</span> opens a small switcher at your cursor. Keep holding
-                Ctrl and tap C to move between Rewrite, Lookup, and Translate; let go to run the
-                highlighted one. It starts on whatever you ran last, so repeating yourself takes a
-                single double-tap.
-              </p>
-            </div>
-          </div>
-          <div class="feature">
-            <div class="feature-icon">
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 16 16"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.4"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <circle cx="8" cy="8" r="6" />
-                <path d="M2 8h12M8 2c2 2 2 10 0 12M8 2c-2 2-2 10 0 12" />
-              </svg>
-            </div>
-            <div>
-              <h3>Works everywhere</h3>
-              <p>
-                UI Automation captures text from any app — Outlook, Word, Slack, Notion, browsers,
-                even legacy apps. Clipboard fallback included.
-              </p>
-            </div>
-          </div>
-          <div class="feature">
-            <div class="feature-icon">
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 16 16"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.4"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path d="M8.5 1.5L3 9h4l-.5 5.5L12 7H8l.5-5.5Z" />
-              </svg>
-            </div>
-            <div>
-              <h3>Zero setup</h3>
-              <p>
-                The built-in provider works the moment you install — no account, no API key, no
-                model picking. A 14-day free trial starts automatically.
-              </p>
-            </div>
-          </div>
-          <div class="feature">
-            <div class="feature-icon">
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 16 16"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.4"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path d="M3 8h2l1-4 2 8 2-6 1 2h2" />
-              </svg>
-            </div>
-            <div>
-              <h3>Streaming rewrites</h3>
-              <p>
-                Watch the improved text arrive word by word. Cancel anytime if the rewrite goes
-                sideways.
-              </p>
-            </div>
-          </div>
-          <div class="feature">
-            <div class="feature-icon">
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 16 16"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.4"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path d="M2 6h12M2 10h12M5 3l-3 3 3 3M11 7l3 3-3 3" />
-              </svg>
-            </div>
-            <div>
-              <h3>Inline diff</h3>
-              <p>
-                See exactly what changed in one pane: deletions struck through, additions
-                underlined. Press Tab for the clean result. No mystery rewrites.
-              </p>
-            </div>
-          </div>
-          <div class="feature">
-            <div class="feature-icon">
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 16 16"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.4"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <circle cx="7" cy="7" r="4.5" />
-                <path d="M10.5 10.5L14 14" />
-              </svg>
-            </div>
-            <div>
-              <h3>Built-in dictionary lookup</h3>
-              <p>
-                Select any word and pick Lookup in the switcher: definitions, IPA pronunciation,
-                example sentences, a memory aid to make it stick — and a speaker button to hear it
-                aloud.
-              </p>
-            </div>
-          </div>
-          <div class="feature">
-            <div class="feature-icon">
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 16 16"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.4"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path d="M2 11h5M4.5 11V4M2 4h5" />
-                <path d="M9 13l3-7 3 7M10.2 11h3.6" />
-              </svg>
-            </div>
-            <div>
-              <h3>Translate into as many languages as you like</h3>
-              <p>
-                Pick Translate on any selection and read it back in every language you configured —
-                one block each, in a window of its own, with the original a click away. A language
-                the text is already in is skipped. Nothing is pasted over your text unless you copy
-                it yourself.
-              </p>
-            </div>
-          </div>
-          <div class="feature">
-            <div class="feature-icon">
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 16 16"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.4"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <circle cx="8" cy="8" r="6" />
-                <path d="M8 4.5V8l2.5 1.5" />
-              </svg>
-            </div>
-            <div>
-              <h3>Learn from your writing</h3>
-              <p>
-                Every rewrite, lookup, and translation is saved on your machine — review past
-                results, spot your patterns, and memorize new words. Nothing leaves your PC.
-              </p>
-            </div>
-          </div>
-          <div class="feature">
-            <div class="feature-icon">
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 16 16"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.4"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path d="M11.5 8.5A4.5 4.5 0 1 1 7.5 2.5a3.5 3.5 0 0 0 4 6Z" />
-                <path d="M12.5 2v2M11.5 3h2" />
-              </svg>
-            </div>
-            <div>
-              <h3>Dark, light, or system</h3>
-              <p>
-                A phosphor-on-black dark theme and a warm paper light theme, across the popup,
-                settings, and learn. Follows Windows by default — just like this page.
-              </p>
-            </div>
-          </div>
-          <div class="feature">
-            <div class="feature-icon">
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 16 16"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.4"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path d="M13 8a5 5 0 1 1-5-5M13 3v3h-3" />
-              </svg>
-            </div>
-            <div>
-              <h3>Undo replace</h3>
-              <p>
-                Replaced the wrong thing? One click restores the original text in the source app —
-                instantly.
-              </p>
-            </div>
-          </div>
-          <div class="feature">
-            <div class="feature-icon">
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 16 16"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.4"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <rect x="1.5" y="4" width="13" height="8" rx="1.5" />
-                <path d="M4 7h.01M6.5 7h.01M9 7h.01M11.5 7h.01M5.5 9.5h5" />
-              </svg>
-            </div>
-            <div>
-              <h3>Keyboard-first</h3>
-              <p>
-                Stay on the home row. One hotkey — <span class="tb-kbd">Ctrl</span>
-                <span class="tb-kbd">C</span> <span class="tb-kbd">C</span> — runs all three
-                actions. In the popup, tap a number or step through presets with
-                <span class="tb-kbd">←</span> <span class="tb-kbd">→</span>, press
-                <span class="tb-kbd">↵</span> to rewrite or replace, and
-                <span class="tb-kbd">Esc</span> to dismiss — your hands never leave the keyboard.
-              </p>
-            </div>
-          </div>
-          <div class="feature">
-            <div class="feature-icon">
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 16 16"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.4"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path d="M13.5 8a5.5 5.5 0 1 1-1.6-3.9M13.5 2.5V5h-2.5" />
-              </svg>
-            </div>
-            <div>
-              <h3>Automatic updates</h3>
-              <p>
-                Signed releases update themselves in the background — you always run the latest
-                version without hunting for a new installer.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ─── Presets ─── -->
-    <section class="section reveal" id="presets">
-      <div class="container">
-        <div class="section-head">
-          <span class="label">03 — Presets</span>
-          <h2>Eight presets out of the box. Customize freely.</h2>
-          <p>
-            Six rewrite presets with carefully tuned prompts — edit them, add your own, or delete
-            what you don't use — plus two built-ins: the Lookup dictionary and Translate, each with
-            its own window and its own place in the Ctrl+C+C switcher.
-          </p>
-        </div>
-        <div class="preset-grid">
-          <div class="preset-card">
-            <span class="glyph"
-              ><svg
-                width="16"
-                height="16"
-                viewBox="0 0 16 16"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.4"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path d="M8 2v3M8 11v3M2 8h3M11 8h3M4 4l2 2M10 10l2 2M12 4l-2 2M6 10l-2 2" /></svg
-            ></span>
-            <div class="body">
-              <div class="title">Improve English</div>
-              <div class="desc">Make it sound native</div>
-            </div>
-            <span class="num">1</span>
-          </div>
-          <div class="preset-card">
-            <span class="glyph"
-              ><svg
-                width="16"
-                height="16"
-                viewBox="0 0 16 16"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.4"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path d="M3 8.5L6.5 12 13 4" /></svg
-            ></span>
-            <div class="body">
-              <div class="title">Fix Grammar</div>
-              <div class="desc">Correct mistakes only</div>
-            </div>
-            <span class="num">2</span>
-          </div>
-          <div class="preset-card">
-            <span class="glyph"
-              ><svg
-                width="16"
-                height="16"
-                viewBox="0 0 16 16"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.4"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <rect x="3" y="3" width="10" height="10" rx="1" />
-                <path d="M3 6h10M6 9h4" /></svg
-            ></span>
-            <div class="body">
-              <div class="title">Make Formal</div>
-              <div class="desc">Business tone</div>
-            </div>
-            <span class="num">3</span>
-          </div>
-          <div class="preset-card">
-            <span class="glyph"
-              ><svg
-                width="16"
-                height="16"
-                viewBox="0 0 16 16"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.4"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path d="M3 6c1.5-2 3-2 5 0s3.5 2 5 0M3 11c1.5-2 3-2 5 0s3.5 2 5 0" /></svg
-            ></span>
-            <div class="body">
-              <div class="title">Make Casual</div>
-              <div class="desc">Friendly tone</div>
-            </div>
-            <span class="num">4</span>
-          </div>
-          <div class="preset-card">
-            <span class="glyph"
-              ><svg
-                width="16"
-                height="16"
-                viewBox="0 0 16 16"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.4"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path d="M3 5h10M3 8h7M3 11h4" /></svg
-            ></span>
-            <div class="body">
-              <div class="title">Simplify</div>
-              <div class="desc">Shorter, clearer</div>
-            </div>
-            <span class="num">5</span>
-          </div>
-          <div class="preset-card">
-            <span class="glyph"
-              ><svg
-                width="16"
-                height="16"
-                viewBox="0 0 16 16"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.4"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <circle cx="8" cy="8" r="5" />
-                <path d="M6 9c.5.7 1.2 1 2 1s1.5-.3 2-1M6 7h.01M10 7h.01" /></svg
-            ></span>
-            <div class="body">
-              <div class="title">Make Polite</div>
-              <div class="desc">Soften the tone</div>
-            </div>
-            <span class="num">6</span>
-          </div>
-          <div class="preset-card" data-builtin="true">
-            <span class="glyph"
-              ><svg
-                width="16"
-                height="16"
-                viewBox="0 0 16 16"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.4"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <circle cx="7" cy="7" r="4.5" />
-                <path d="M10.5 10.5L14 14" /></svg
-            ></span>
-            <div class="body">
-              <div class="title">Lookup</div>
-              <div class="desc">Definitions, IPA &amp; memory aid</div>
-            </div>
-            <span class="num">built-in</span>
-          </div>
-          <div class="preset-card" data-builtin="true">
-            <span class="glyph"
-              ><svg
-                width="16"
-                height="16"
-                viewBox="0 0 16 16"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.4"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path d="M2 11h5M4.5 11V4M2 4h5" />
-                <path d="M9 13l3-7 3 7M10.2 11h3.6" /></svg
-            ></span>
-            <div class="body">
-              <div class="title">Translate</div>
-              <div class="desc">Into every language you pick</div>
-            </div>
-            <span class="num">built-in</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ─── Pricing ─── -->
-    <section class="section reveal" id="pricing">
-      <div class="container">
-        <div class="section-head center">
-          <span class="label">04 — Pricing</span>
-          <h2>Everything included. One small price.</h2>
-          <p>
-            No monthly subscription, no credits, no premium tier. One license unlocks the whole app
-            for a year — for less than a cup of coffee.
-          </p>
-        </div>
-
-        <div class="price-card">
-          <span class="deal-tag">Launch offer — save 83%</span>
-          <div class="plan-name">BrushUp Annual</div>
-          <div class="price-row">
-            <span class="price-old">€30</span>
-            <span class="price-now">€5.10</span>
-            <span class="price-per">/ year</span>
-          </div>
-          <div class="price-note">
-            Launch price for early adopters — regularly <strong>€30/year</strong>.
-          </div>
-          <ul class="price-list">
-            <li>
-              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5L6.5 12 13 4" /></svg>
-              Built-in AI provider — no account setup, no API key, no model picking
-            </li>
-            <li>
-              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5L6.5 12 13 4" /></svg>
-              Rewrites in every app — Outlook, Word, Slack, browsers, anywhere you type
-            </li>
-            <li>
-              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5L6.5 12 13 4" /></svg>
-              Every rewrite preset, fully customizable — add your own prompts
-            </li>
-            <li>
-              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5L6.5 12 13 4" /></svg>
-              Dictionary lookup with pronunciation, examples &amp; memory aids
-            </li>
-            <li>
-              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5L6.5 12 13 4" /></svg>
-              Translate into as many languages as you like, one switcher pick away
-            </li>
-            <li>
-              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5L6.5 12 13 4" /></svg>
-              Local history to review and learn from your own writing
-            </li>
-            <li>
-              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5L6.5 12 13 4" /></svg>
-              Automatic signed updates, and your license follows your account to any PC
-            </li>
-          </ul>
-          <a class="tb-btn tb-btn-primary js-download" href="#download">
-            Start your free 14-day trial
-            <svg
-              width="14"
-              height="14"
-              viewBox="0 0 16 16"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1.6"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <path d="M8 2v9M4 7l4 4 4-4M3 14h10" />
-            </svg>
-          </a>
-          <div class="price-fine">No credit card to try · buy when you're ready, right inside the app</div>
-        </div>
-
-        <div class="faq-grid">
-          <div class="faq">
-            <h3>What happens when the trial ends?</h3>
-            <p>
-              BrushUp keeps working — rewrites are never hard-blocked. You'll just see a gentle
-              reminder now and then until you pick up a license.
-            </p>
-          </div>
-          <div class="faq">
-            <h3>How do I buy?</h3>
-            <p>
-              Download the app and start your trial. When you're ready, click Buy inside the app —
-              checkout takes a minute and your license activates automatically. No keys to paste.
-            </p>
-          </div>
-          <div class="faq">
-            <h3>Can I use it on another computer?</h3>
-            <p>
-              Yes. The license follows your account, not your machine — sign in on a new PC and
-              you're set. One active machine at a time.
-            </p>
-          </div>
-          <div class="faq">
-            <h3>Why only €5.10?</h3>
-            <p>
-              It's an early-adopter launch discount — 83% off the regular €30/year. Grab it while
-              it lasts.
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ─── Bottom CTA ─── -->
-    <section class="bottom-cta reveal">
-      <div class="container">
-        <h2>Start writing better today.</h2>
-        <p>
-          Runs quietly in your system tray. Free for 14 days — no credit card, no API key. After
-          the trial, just <strong>€5.10/year</strong> (launch offer — regularly €30) keeps the
-          built-in provider going, and rewrites are never hard-blocked.
-        </p>
-        <div class="ctas">
-          <a class="tb-btn tb-btn-primary js-download" href="#download">
-            Download BrushUp
-            <svg
-              width="14"
-              height="14"
-              viewBox="0 0 16 16"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1.6"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <path d="M8 2v9M4 7l4 4 4-4M3 14h10" />
-            </svg>
-          </a>
-        </div>
-      </div>
-    </section>
-
-    <footer class="container">
-      <span class="left">
-        <svg
-          width="14"
-          height="14"
-          viewBox="0 0 130 130"
+    <!-- The brush mark, defined once and reused with <use>. -->
+    <svg width="0" height="0" style="position: absolute" aria-hidden="true">
+      <symbol id="mark" viewBox="0 0 130 130">
+        <rect x="24" y="56" width="16" height="62" rx="2" fill="currentColor" />
+        <circle cx="60" cy="86" r="22" stroke="currentColor" stroke-width="14" fill="none" />
+        <path d="M 24 56 L 40 56 L 88 28 L 96 22 L 88 14 L 30 46 Z" fill="currentColor" />
+        <rect
+          x="-12"
+          y="-3"
+          width="24"
+          height="6"
+          rx="1"
+          transform="translate(38 50) rotate(-32)"
+          fill="currentColor"
+        />
+      </symbol>
+      <symbol id="i-check" viewBox="0 0 16 16">
+        <path
+          d="M3 8.5L6.5 12 13 4"
           fill="none"
-          aria-hidden="true"
-          style="color: var(--tb-accent); vertical-align: -2px"
-        >
-          <rect x="24" y="56" width="16" height="62" rx="2" fill="currentColor" />
-          <circle cx="60" cy="86" r="22" stroke="currentColor" stroke-width="14" fill="none" />
-          <path d="M 24 56 L 40 56 L 88 28 L 96 22 L 88 14 L 30 46 Z" fill="currentColor" />
-          <rect
-            x="-12"
-            y="-3"
-            width="24"
-            height="6"
-            rx="1"
-            transform="translate(38 50) rotate(-32)"
-            fill="currentColor"
-          />
-        </svg>
-        BrushUp
-      </span>
+          stroke="currentColor"
+          stroke-width="1.8"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </symbol>
+      <symbol id="i-download" viewBox="0 0 16 16">
+        <path
+          d="M8 2v9M4 7l4 4 4-4M3 14h10"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.6"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </symbol>
+      <symbol id="i-speaker" viewBox="0 0 16 16">
+        <g fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M2.5 6v4h2.5l3.5 3V3L5 6Z" />
+          <path d="M11 5.5a3.5 3.5 0 0 1 0 5M12.8 3.8a6 6 0 0 1 0 8.4" />
+        </g>
+      </symbol>
+    </svg>
+
+    <div class="nav-wrap">
+      <nav class="container" aria-label="Main">
+        <a class="logo" href="#top" aria-label="BrushUp home">
+          <span class="mark"><svg width="22" height="22" aria-hidden="true"><use href="#mark" /></svg></span>
+          <span>Brush<span class="up">Up</span></span>
+        </a>
+        <div class="links">
+          <a href="#rewrite">Rewrite</a>
+          <a href="#lookup">Lookup</a>
+          <a href="#translate">Translate</a>
+          <a href="#learn">Learn</a>
+          <a href="#pricing">Pricing</a>
+        </div>
+        <div class="end">
+          <div class="tb-segment theme-switch" role="group" aria-label="Theme">
+            <button type="button" data-pref="system" title="Match the system theme" aria-label="System theme">
+              <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="2" y="3" width="12" height="8.5" rx="1" />
+                <path d="M5.5 14h5M8 11.5V14" />
+              </svg>
+            </button>
+            <button type="button" data-pref="dark" title="Dark theme" aria-label="Dark theme">
+              <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M13.5 9.5A6 6 0 1 1 6.5 2.5a5 5 0 0 0 7 7Z" />
+              </svg>
+            </button>
+            <button type="button" data-pref="light" title="Light theme" aria-label="Light theme">
+              <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="8" cy="8" r="3" />
+                <path d="M8 1.5v2M8 12.5v2M1.5 8h2M12.5 8h2M3.4 3.4l1.4 1.4M11.2 11.2l1.4 1.4M12.6 3.4l-1.4 1.4M4.8 11.2l-1.4 1.4" />
+              </svg>
+            </button>
+          </div>
+          <a class="tb-btn tb-btn-primary tb-btn-sm js-download cta-desktop nav-dl" href="#download">
+            Download
+            <svg width="13" height="13" aria-hidden="true"><use href="#i-download" /></svg>
+          </a>
+        </div>
+      </nav>
+    </div>
+
+    <main id="top">
+      <!-- ─── Hero ─── -->
+      <section class="hero container">
+        <div class="hero-copy">
+          <div>
+            <div class="eyebrow">
+              <span class="tb-dot"></span>
+              Launch offer · €5.10/year — regularly €30
+            </div>
+            <h1>Improve your English <span class="accent">in any app.</span></h1>
+          </div>
+          <div>
+            <p class="lede">
+              Select any text, hold <strong>Ctrl</strong> and tap <strong>C</strong> twice. Then
+              <strong>rewrite</strong> your reply, <strong>look up</strong> a word you don't know, or
+              <strong>translate</strong> a message, right inside Outlook, Slack, Word or wherever
+              you're working.
+            </p>
+            <div class="ctas">
+              <a class="tb-btn tb-btn-primary js-download cta-desktop" href="#download">
+                Download for Windows
+                <svg width="14" height="14" aria-hidden="true"><use href="#i-download" /></svg>
+              </a>
+              <span class="price-hint cta-desktop"
+                ><s>€30</s> <strong>€5.10</strong>/year after a free trial</span
+              >
+              <div class="cta-phone">
+                <span><strong>BrushUp runs on Windows 10 and 11.</strong> Open this page on your PC to download it.</span>
+                <button class="tb-btn tb-btn-sm js-share" type="button">Copy link for later</button>
+              </div>
+            </div>
+            <div class="meta-line">
+              <span>Windows 10/11</span>
+              <span>14-day free trial</span>
+              <span>No credit card</span>
+              <span id="version-meta">Auto-updating</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Demo: an ordinary email, and the three actions working on it. -->
+        <div class="stage" id="stage">
+          <p class="sr-only">
+            Animated demo: in an email, BrushUp looks up the word "reschedule", translates a
+            sentence into Spanish and Chinese, and rewrites the reply.
+          </p>
+          <div class="host" id="host" aria-hidden="true">
+            <div class="host-titlebar">
+              Re: Our call this week — Mail
+              <span class="ctl"><span>–</span><span>▢</span><span>✕</span></span>
+            </div>
+            <div class="host-fields">
+              <div><b>To</b>&nbsp; Daniel Ross</div>
+              <div><b>Subject</b>&nbsp; Re: Our call this week</div>
+            </div>
+            <div class="host-body">
+              <p>Hi Daniel,</p>
+              <p><span id="draft"></span><span class="caret"></span></p>
+              <div class="host-quote">
+                <div class="from">On Tuesday, Daniel Ross wrote:</div>
+                <p>
+                  Hi, unfortunately I have to <span id="w-word">reschedule</span> our call — a client
+                  meeting overran. <span id="w-sentence">Would Thursday at 3 pm suit you instead?</span>
+                </p>
+              </div>
+            </div>
+
+            <!-- Ctrl C C switcher -->
+            <div class="ov" id="ov-switcher">
+              <div class="tb-switcher">
+                <div class="tb-switcher-list">
+                  <div class="tb-switcher-item" data-action="rewrite"><span>Rewrite</span><small>Pick a preset</small></div>
+                  <div class="tb-switcher-item" data-action="lookup"><span>Lookup</span><small>Explain a word</small></div>
+                  <div class="tb-switcher-item" data-action="translate"><span>Translate</span><small>Into your languages</small></div>
+                </div>
+                <div class="tb-switcher-foot">
+                  <span class="tb-kbd tb-kbd-sm">C</span> next<span style="flex: 1"></span>release
+                  <span class="tb-kbd tb-kbd-sm">Ctrl</span> to run
+                </div>
+              </div>
+            </div>
+
+            <!-- Lookup result -->
+            <div class="ov" id="ov-lookup" style="width: 360px">
+              <div class="tb-shell">
+                <div class="tb-shell-head">
+                  <span class="tb-shell-title"><svg width="16" height="16"><use href="#mark" /></svg>BrushUp</span>
+                  <span class="tb-shell-status"><span class="tb-dot"></span>Built-in</span><span class="tb-shell-x">×</span>
+                </div>
+                <div class="tb-lookup">
+                  <div class="tb-lookup-header">
+                    <span class="tb-lookup-word">reschedule</span>
+                    <span class="tb-lookup-phonetic">/ˌriːˈskedʒuːl/</span>
+                  </div>
+                  <div class="tb-well">
+                    <span class="tb-label">verb</span>
+                    <span class="tb-lookup-meaning">To change the time or date of a planned event.</span>
+                    <span class="tb-lookup-native">reprogramar: cambiar la fecha u hora de algo</span>
+                  </div>
+                  <div class="tb-well tb-memory">
+                    <span class="tb-label">Memory aid</span>
+                    <span class="tb-memory-text">re- means "again": you schedule it again, at a new time.</span>
+                  </div>
+                </div>
+                <div class="tb-banner">
+                  <span class="tb-tag tb-tag-good">Lookup</span><span class="grow">reschedule</span>
+                  <span class="tb-kbd tb-kbd-sm">V</span> pronounce
+                </div>
+              </div>
+            </div>
+
+            <!-- Translate result -->
+            <div class="ov" id="ov-translate" style="width: 360px">
+              <div class="tb-shell">
+                <div class="tb-shell-head">
+                  <span class="tb-shell-title"><svg width="16" height="16"><use href="#mark" /></svg>BrushUp — Translate</span>
+                  <span class="tb-shell-status"><span class="tb-dot"></span>Built-in</span><span class="tb-shell-x">×</span>
+                </div>
+                <div class="tb-translate">
+                  <div class="tb-well">
+                    <div class="tb-translate-head"><span class="tb-label">Spanish</span></div>
+                    <div class="tb-translate-text">¿Te vendría bien el jueves a las 15:00?</div>
+                  </div>
+                  <div class="tb-well">
+                    <div class="tb-translate-head"><span class="tb-label">Chinese</span></div>
+                    <div class="tb-translate-text">改到周四下午3点，你方便吗？</div>
+                  </div>
+                </div>
+                <div class="tb-banner">
+                  <span class="tb-tag tb-tag-good">Translated</span><span class="grow">Spanish · Chinese</span>
+                  <span class="tb-kbd tb-kbd-sm">O</span> original
+                </div>
+              </div>
+            </div>
+
+            <!-- Rewrite popup -->
+            <div class="ov" id="ov-popup" style="width: 420px" data-state="pick">
+              <div class="tb-shell">
+                <div class="tb-shell-head">
+                  <span class="tb-shell-title"><svg width="16" height="16"><use href="#mark" /></svg>BrushUp</span>
+                  <span class="tb-shell-status"><span class="tb-dot"></span>Built-in</span><span class="tb-shell-x">×</span>
+                </div>
+                <div class="tb-presets">
+                  <span class="tb-preset" data-active="true"><span class="n">1</span>Improve English</span>
+                  <span class="tb-preset"><span class="n">2</span>Fix grammar</span>
+                  <span class="tb-preset"><span class="n">3</span>Make formal</span>
+                </div>
+                <div class="tb-pane" id="popup-pane">
+                  <div class="tb-pane-head"><span id="popup-pane-label">Original</span><span id="popup-time"></span></div>
+                  <div class="tb-pane-body" id="popup-body"></div>
+                </div>
+                <div class="tb-actions" id="popup-actions" hidden>
+                  <span class="tb-btn tb-btn-sm">Try another <span class="tb-kbd tb-kbd-sm">T</span></span>
+                  <span class="tb-btn tb-btn-sm tb-btn-primary">Replace <span class="tb-kbd tb-kbd-sm">↵</span></span>
+                </div>
+                <div class="tb-banner" id="popup-banner"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="stage-bar">
+            <span class="stage-keys" aria-hidden="true">
+              <span class="tb-kbd" id="k-ctrl">Ctrl</span>
+              <span class="tb-kbd" id="k-c">C</span>
+              <span class="tb-kbd" id="k-enter">↵</span>
+            </span>
+            <span class="stage-caption" id="stage-caption" aria-live="polite"></span>
+            <span class="stage-tabs" role="tablist" aria-label="Demo">
+              <button type="button" role="tab" data-scene="lookup" aria-selected="true">Lookup</button>
+              <button type="button" role="tab" data-scene="translate" aria-selected="false">Translate</button>
+              <button type="button" role="tab" data-scene="rewrite" aria-selected="false">Rewrite</button>
+            </span>
+            <button type="button" class="stage-pause" id="stage-pause" aria-label="Pause demo">
+              <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true" id="pause-icon">
+                <rect x="2" y="1.5" width="2.5" height="9" rx="0.5" fill="currentColor" />
+                <rect x="7.5" y="1.5" width="2.5" height="9" rx="0.5" fill="currentColor" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── One hotkey ─── -->
+      <section class="section reveal" id="how" data-keys="how">
+        <div class="container hotkey">
+          <div>
+            <div class="tb-switcher" role="listbox" aria-label="Try the switcher: press C to move">
+              <div class="tb-switcher-list">
+                <button type="button" class="tb-switcher-item" role="option" aria-selected="true"><span>Rewrite</span><small>Pick a preset</small></button>
+                <button type="button" class="tb-switcher-item" role="option" aria-selected="false"><span>Lookup</span><small>Explain a word</small></button>
+                <button type="button" class="tb-switcher-item" role="option" aria-selected="false"><span>Translate</span><small>Into your languages</small></button>
+              </div>
+              <div class="tb-switcher-foot">
+                <span class="tb-kbd tb-kbd-sm">C</span> next<span style="flex: 1"></span>release
+                <span class="tb-kbd tb-kbd-sm">Ctrl</span> to run
+              </div>
+            </div>
+            <p class="hotkey-try">Try it: press <span class="tb-kbd tb-kbd-sm">C</span> to move down the list.</p>
+          </div>
+          <div>
+            <div class="section-head">
+              <span class="label">One hotkey</span>
+              <h2>Three actions, one shortcut you already know.</h2>
+            </div>
+            <ol class="steps">
+              <li>
+                <div>
+                  <h3>Select text in any app</h3>
+                  <p>A word, a sentence, a whole draft. In an email, a chat, a document or a web page.</p>
+                </div>
+              </li>
+              <li>
+                <div>
+                  <h3>Hold Ctrl, tap C twice</h3>
+                  <p>
+                    A small switcher opens at your cursor, already on the action you ran last. To repeat it,
+                    just let go.
+                  </p>
+                </div>
+              </li>
+              <li>
+                <div>
+                  <h3>Tap C to choose, let go to run</h3>
+                  <p>
+                    Rewrite opens the popup with your presets. Lookup and Translate answer in a window of
+                    their own and never touch your text.
+                  </p>
+                </div>
+              </li>
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── Rewrite ─── -->
+      <section class="section reveal" id="rewrite" data-keys="rewrite">
+        <div class="container">
+          <div class="section-head">
+            <span class="label">Rewrite</span>
+            <h2>Better English, right where you typed it.</h2>
+            <p>
+              Six presets, each a carefully tuned prompt. Pick one with its number, see exactly what
+              changed, and press Enter to put the new text back in place.
+            </p>
+          </div>
+
+          <div class="showcase">
+            <div class="showcase-tabs" role="tablist" aria-label="Presets"></div>
+            <div class="showcase-body">
+              <div class="showcase-before">
+                <div class="showcase-cap">You wrote</div>
+                <p class="showcase-text" id="sc-before">
+                  Thursday is good for me, but can we make it 4 pm? I have a other meeting until 3:30.
+                </p>
+              </div>
+              <div>
+                <div class="showcase-cap">BrushUp · <span id="sc-name">Improve English</span></div>
+                <p class="showcase-text" id="sc-after" aria-live="polite"></p>
+              </div>
+            </div>
+            <div class="showcase-foot">
+              Press <span class="tb-kbd tb-kbd-sm">1</span>…<span class="tb-kbd tb-kbd-sm">6</span> to switch
+              presets, like you would in the popup.
+            </div>
+          </div>
+
+          <div class="notes">
+            <div>
+              <h3>
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 6h12M2 10h12M5 3l-3 3 3 3M11 7l3 3-3 3" /></svg>
+                See every change
+              </h3>
+              <p>Deletions struck through, additions underlined. Press <span class="tb-kbd tb-kbd-sm">tab</span> for the clean result.</p>
+            </div>
+            <div>
+              <h3>
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h2l1-4 2 8 2-6 1 2h2" /></svg>
+                Streams as it writes
+              </h3>
+              <p>Words arrive as they're written. Cancel anytime, or press <span class="tb-kbd tb-kbd-sm">T</span> to try another version.</p>
+            </div>
+            <div>
+              <h3>
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 8a5 5 0 1 1-5-5M13 3v3h-3" /></svg>
+                Undo replace
+              </h3>
+              <p>Replaced the wrong thing? One click puts your original text back in the app.</p>
+            </div>
+            <div>
+              <h3>
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 2.5l2.5 2.5L6 12.5H3.5V10Z" /></svg>
+                Your own presets
+              </h3>
+              <p>Edit any prompt, reorder the list, add presets of your own, delete what you don't use.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── Lookup ─── -->
+      <section class="section reveal" id="lookup" data-keys="lookup">
+        <div class="container split">
+          <div>
+            <div class="section-head">
+              <span class="label">Lookup</span>
+              <h2>Understand any word without leaving the page.</h2>
+            </div>
+            <ul class="points">
+              <li>
+                <svg width="16" height="16" aria-hidden="true"><use href="#i-check" /></svg>
+                <span><strong>Meaning and examples</strong> in clear English, with the pronunciation in IPA.</span>
+              </li>
+              <li>
+                <svg width="16" height="16" aria-hidden="true"><use href="#i-check" /></svg>
+                <span><strong>A line in your own language</strong> under each meaning, so nothing gets lost.</span>
+              </li>
+              <li>
+                <svg width="16" height="16" aria-hidden="true"><use href="#i-check" /></svg>
+                <span><strong>Hear it.</strong> Press <span class="tb-kbd tb-kbd-sm">V</span> to have the word read aloud.</span>
+              </li>
+              <li>
+                <svg width="16" height="16" aria-hidden="true"><use href="#i-check" /></svg>
+                <span><strong>A memory aid</strong> to make it stick, and every lookup comes back later as a flashcard.</span>
+              </li>
+            </ul>
+          </div>
+          <div class="tb-shell">
+            <div class="tb-shell-head">
+              <span class="tb-shell-title"><svg width="16" height="16" aria-hidden="true"><use href="#mark" /></svg>BrushUp</span>
+              <span class="tb-shell-status"><span class="tb-dot"></span>Built-in</span>
+            </div>
+            <div class="tb-lookup">
+              <div class="tb-lookup-header">
+                <span class="tb-lookup-word">reschedule</span>
+                <span class="tb-lookup-phonetic">/ˌriːˈskedʒuːl/</span>
+                <span class="tb-lang">English</span>
+                <button class="tb-lookup-speak js-speak" type="button" aria-label="Pronounce reschedule (V)">
+                  <svg width="15" height="15" aria-hidden="true"><use href="#i-speaker" /></svg>
+                </button>
+              </div>
+              <div class="tb-well">
+                <span class="tb-label">verb</span>
+                <span class="tb-lookup-meaning">To change the time or date of a planned event.</span>
+                <span class="tb-lookup-native">reprogramar: cambiar la fecha u hora de algo</span>
+                <ul class="tb-lookup-examples">
+                  <li>Could we reschedule the call to Thursday?</li>
+                  <li>The launch was rescheduled for next month.</li>
+                </ul>
+              </div>
+              <div class="tb-well tb-memory">
+                <span class="tb-label">Memory aid</span>
+                <span class="tb-memory-text">re- means "again": you schedule it again, at a new time.</span>
+              </div>
+            </div>
+            <div class="tb-banner">
+              <span class="tb-tag tb-tag-good">Lookup</span><span class="grow">reschedule</span>
+              <span class="tb-kbd tb-kbd-sm">V</span> pronounce
+              <span class="tb-kbd tb-kbd-sm">esc</span> close
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── Translate ─── -->
+      <section class="section reveal" id="translate" data-keys="translate">
+        <div class="container split">
+          <div class="tb-shell card-first">
+            <div class="tb-shell-head">
+              <span class="tb-shell-title"><svg width="16" height="16" aria-hidden="true"><use href="#mark" /></svg>BrushUp — Translate</span>
+              <span class="tb-shell-status"><span class="tb-dot"></span>Built-in</span>
+            </div>
+            <div class="tb-translate">
+              <div class="tb-well">
+                <div class="tb-translate-head">
+                  <span class="tb-label">Spanish</span>
+                  <button class="tb-btn tb-btn-ghost js-copy" type="button">Copy</button>
+                </div>
+                <div class="tb-translate-text">Lamentablemente tengo que reprogramar nuestra llamada. ¿Te vendría bien el jueves a las 15:00?</div>
+              </div>
+              <div class="tb-well">
+                <div class="tb-translate-head">
+                  <span class="tb-label">German</span>
+                  <button class="tb-btn tb-btn-ghost js-copy" type="button">Copy</button>
+                </div>
+                <div class="tb-translate-text">Leider muss ich unser Gespräch verschieben. Würde dir Donnerstag um 15 Uhr passen?</div>
+              </div>
+              <div class="tb-well">
+                <div class="tb-translate-head">
+                  <span class="tb-label">Chinese</span>
+                  <button class="tb-btn tb-btn-ghost js-copy" type="button">Copy</button>
+                </div>
+                <div class="tb-translate-text">很抱歉，我得改一下我们通话的时间。改到周四下午3点，你方便吗？</div>
+              </div>
+              <div class="tb-translate-original">
+                <button class="tb-translate-toggle js-original" type="button" aria-expanded="false">
+                  <span aria-hidden="true" class="js-caret">▸</span><span class="js-orig-label">Show original</span>
+                  <span class="tb-lang">English</span>
+                </button>
+                <div class="tb-translate-original-text" hidden>
+                  Unfortunately I have to reschedule our call. Would Thursday at 3 pm suit you instead?
+                </div>
+              </div>
+            </div>
+            <div class="tb-banner">
+              <span class="tb-tag tb-tag-good">Translated</span><span class="grow">Spanish · German · Chinese</span>
+              <span class="tb-kbd tb-kbd-sm">O</span> original
+              <span class="tb-kbd tb-kbd-sm">esc</span> close
+            </div>
+          </div>
+          <div>
+            <div class="section-head">
+              <span class="label">Translate</span>
+              <h2>Read it in every language you speak.</h2>
+            </div>
+            <ul class="points">
+              <li>
+                <svg width="16" height="16" aria-hidden="true"><use href="#i-check" /></svg>
+                <span><strong>As many languages as you like.</strong> One block each, in the order you set.</span>
+              </li>
+              <li>
+                <svg width="16" height="16" aria-hidden="true"><use href="#i-check" /></svg>
+                <span><strong>Skips the obvious.</strong> A language the text is already in is left out.</span>
+              </li>
+              <li>
+                <svg width="16" height="16" aria-hidden="true"><use href="#i-check" /></svg>
+                <span><strong>Check it against the source.</strong> The original is one press of <span class="tb-kbd tb-kbd-sm">O</span> away.</span>
+              </li>
+              <li>
+                <svg width="16" height="16" aria-hidden="true"><use href="#i-check" /></svg>
+                <span><strong>Your text stays as it was.</strong> Translate opens its own window and never pastes over anything. Copy a block if you need it.</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── Learn ─── -->
+      <section class="section reveal" id="learn">
+        <div class="container">
+          <div class="section-head">
+            <span class="label">Learn</span>
+            <h2>Get better from your own writing.</h2>
+            <p>
+              Everything you rewrite, look up and translate is saved on your PC. BrushUp turns it into
+              practice that's about your English, not a textbook's.
+            </p>
+          </div>
+          <div class="learn-grid">
+            <div class="learn-col">
+              <h3>Flashcards from your lookups</h3>
+              <p>Every word you looked up becomes a card. Flip it, mark it known, and it leaves the deck.</p>
+              <div class="tb-shell">
+                <div class="flash">
+                  <div class="flash-meta">3 / 18 · 2 known</div>
+                  <div class="flash-card js-flash" role="button" tabindex="0" data-flipped="false" aria-label="Flashcard: reschedule. Press to reveal the meaning.">
+                    <div class="js-front">
+                      <div class="flash-word">reschedule</div>
+                      <div class="flash-phonetic">/ˌriːˈskedʒuːl/</div>
+                      <div class="flash-hint">Click or press Space to flip</div>
+                    </div>
+                    <div class="js-back tb-lookup" hidden>
+                      <div class="tb-well">
+                        <span class="tb-label">verb</span>
+                        <span class="tb-lookup-meaning">To change the time or date of a planned event.</span>
+                        <span class="tb-lookup-native">reprogramar: cambiar la fecha u hora de algo</span>
+                      </div>
+                      <div class="tb-well tb-memory">
+                        <span class="tb-label">Memory aid</span>
+                        <span class="tb-memory-text">re- means "again": you schedule it again, at a new time.</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="flash-actions">
+                    <span class="tb-btn tb-btn-ghost tb-btn-sm">‹ Prev</span>
+                    <button type="button" class="tb-btn tb-btn-sm js-flip">Flip</button>
+                    <span class="tb-btn tb-btn-ghost tb-btn-sm">Next ›</span>
+                    <span style="flex: 1"></span>
+                    <span class="tb-btn tb-btn-primary tb-btn-sm">I know this</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="learn-col">
+              <h3>Insights from your rewrites</h3>
+              <p>BrushUp reads back through your edits and shows the mistakes you make most, with a tip for each.</p>
+              <div class="tb-shell">
+                <div class="insight">
+                  <div class="insight-head">Prepositions of time <span class="tb-tag">Frequent</span></div>
+                  <div class="insight-text">You often use "in" with days and dates, where English uses "on".</div>
+                  <div class="insight-pair">
+                    <div><div class="cap">Before</div><div class="before">See you in Monday.</div></div>
+                    <div><div class="cap">After</div><div class="after">See you on Monday.</div></div>
+                  </div>
+                  <div class="insight-pair">
+                    <div><div class="cap">Before</div><div class="before">The report is due in 3 May.</div></div>
+                    <div><div class="cap">After</div><div class="after">The report is due on 3 May.</div></div>
+                  </div>
+                  <div class="insight-tip">Use "on" for days and dates, "in" for months and years, "at" for clock times.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <p class="learn-foot">
+            And a searchable <strong>History</strong> of everything you've run, with the changes for every
+            rewrite. It never leaves your PC; delete any entry, or all of it.
+          </p>
+        </div>
+      </section>
+
+      <!-- ─── Video ─── -->
+      <section class="section reveal" id="demo">
+        <div class="container">
+          <div class="section-head center">
+            <span class="label">See it in action</span>
+            <h2>Watch a whole working session.</h2>
+          </div>
+          <div class="video-wrap">
+            <video
+              controls
+              preload="metadata"
+              poster="assets/poster.jpeg"
+              aria-label="BrushUp demo: select text, rewrite, replace, in any app"
+            >
+              <source src="assets/brushup-demo.mp4" type="video/mp4" />
+            </video>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── Everywhere ─── -->
+      <section class="section reveal">
+        <div class="container">
+          <div class="section-head">
+            <span class="label">Stays out of your way</span>
+            <h2>Quiet in the tray until you need it.</h2>
+          </div>
+          <div class="facts">
+            <div class="fact">
+              <h3>
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="8" r="6" /><path d="M2 8h12M8 2c2 2 2 10 0 12M8 2c-2 2-2 10 0 12" /></svg>
+                Works in any app
+              </h3>
+              <p>Outlook, Word, Slack, Notion, browsers, even older programs.</p>
+            </div>
+            <div class="fact">
+              <h3>
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8.5 1.5L3 9h4l-.5 5.5L12 7H8l.5-5.5Z" /></svg>
+                Ready on install
+              </h3>
+              <p>Sign in with your email and a code. No password, no API key, no model to pick.</p>
+            </div>
+            <div class="fact">
+              <h3>
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="1.5" y="4" width="13" height="8" rx="1.5" /><path d="M4 7h.01M6.5 7h.01M9 7h.01M11.5 7h.01M5.5 9.5h5" /></svg>
+                Keyboard-first
+              </h3>
+              <p>Numbers pick presets, arrows step through them, Enter runs, Esc closes.</p>
+            </div>
+            <div class="fact">
+              <h3>
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.5 8.5A4.5 4.5 0 1 1 7.5 2.5a3.5 3.5 0 0 0 4 6Z" /></svg>
+                Dark, light or system
+              </h3>
+              <p>Follows your Windows theme, just like this page.</p>
+            </div>
+            <div class="fact">
+              <h3>
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13.5 8a5.5 5.5 0 1 1-1.6-3.9M13.5 2.5V5h-2.5" /></svg>
+                Updates itself
+              </h3>
+              <p>Signed releases install in the background. No installers to hunt for.</p>
+            </div>
+            <div class="fact">
+              <h3>
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="12" height="8.5" rx="1" /><path d="M5.5 14h5M8 11.5V14" /></svg>
+                Windows 10 and 11
+              </h3>
+              <p>A small native app for x64 PCs. Your license moves with you to a new PC.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── Privacy ─── -->
+      <section class="section reveal" id="privacy">
+        <div class="container">
+          <div class="section-head">
+            <span class="label">Privacy</span>
+            <h2>Your writing stays close.</h2>
+          </div>
+          <div class="privacy">
+            <div>
+              <h3>Your text goes straight to the AI model.</h3>
+              <p>
+                The app sends the text you select directly to the language model, through OpenRouter.
+                BrushUp's own server never receives it. It only checks your license and gives the app
+                its access key.
+              </p>
+            </div>
+            <div>
+              <h3>Your history stays on your PC.</h3>
+              <p>
+                Rewrites, lookups, translations, flashcards and insights are stored locally. Delete any
+                entry, or clear it all, whenever you like.
+              </p>
+            </div>
+            <div>
+              <h3>Nothing is read until you ask.</h3>
+              <p>
+                BrushUp reads your selection only when you press Ctrl C C, and replaces text only when you
+                press Enter in the Rewrite popup.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── Pricing ─── -->
+      <section class="section reveal" id="pricing">
+        <div class="container">
+          <div class="section-head center">
+            <span class="label">Pricing</span>
+            <h2>Everything included. One small price.</h2>
+            <p>One plan, billed yearly. No tiers, no credits, no add-ons.</p>
+          </div>
+
+          <div class="price-card">
+            <span class="deal-tag">Launch offer — save 83%</span>
+            <div class="plan-name">BrushUp Annual</div>
+            <div class="price-row">
+              <span class="price-old">€30</span>
+              <span class="price-now">€5.10</span>
+              <span class="price-per">/ year</span>
+            </div>
+            <div class="price-note">Launch price for early adopters. Regularly €30 a year.</div>
+            <ul class="price-list">
+              <li><svg width="14" height="14" aria-hidden="true"><use href="#i-check" /></svg>Rewrite, Lookup and Translate in every app</li>
+              <li><svg width="14" height="14" aria-hidden="true"><use href="#i-check" /></svg>Every preset, fully editable, plus your own</li>
+              <li><svg width="14" height="14" aria-hidden="true"><use href="#i-check" /></svg>Translate into as many languages as you like</li>
+              <li><svg width="14" height="14" aria-hidden="true"><use href="#i-check" /></svg>Learn: history, flashcards and insights, kept on your PC</li>
+              <li><svg width="14" height="14" aria-hidden="true"><use href="#i-check" /></svg>Built-in AI. No API key, no model to pick</li>
+              <li><svg width="14" height="14" aria-hidden="true"><use href="#i-check" /></svg>Signed automatic updates; your license moves to any PC</li>
+            </ul>
+            <a class="tb-btn tb-btn-primary js-download cta-desktop" href="#download">
+              Start your free 14-day trial
+              <svg width="14" height="14" aria-hidden="true"><use href="#i-download" /></svg>
+            </a>
+            <div class="cta-phone">
+              <span><strong>BrushUp runs on Windows 10 and 11.</strong> Open this page on your PC to start the trial.</span>
+              <button class="tb-btn tb-btn-sm js-share" type="button">Copy link for later</button>
+            </div>
+            <div class="price-fine">No credit card for the trial. Buy inside the app when you're ready.</div>
+          </div>
+
+          <div class="faq">
+            <details>
+              <summary>What happens when the trial ends?</summary>
+              <p>BrushUp keeps working. Rewrites are never blocked; you'll see a gentle reminder now and then until you buy a license.</p>
+            </details>
+            <details>
+              <summary>How do I buy?</summary>
+              <p>Download the app and start the trial. When you're ready, click Buy inside the app. Checkout takes a minute and your license activates on its own, with no key to paste.</p>
+            </details>
+            <details>
+              <summary>Do I need an account?</summary>
+              <p>Only your email. The first time you open BrushUp you enter it and a 6-digit code we send you. There's no password, and no API key to set up.</p>
+            </details>
+            <details>
+              <summary>Can I use it on another computer?</summary>
+              <p>Yes. Your license follows your account, not your machine. Sign in on the new PC and you're set, one active machine at a time.</p>
+            </details>
+            <details>
+              <summary>Which apps does it work in?</summary>
+              <p>Almost all of them. BrushUp reads the selection through Windows UI Automation and falls back to the clipboard for apps that don't support it.</p>
+            </details>
+            <details>
+              <summary>Why only €5.10?</summary>
+              <p>It's an early-adopter launch discount, 83% off the regular €30 a year, applied automatically at checkout while it lasts.</p>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── Bottom CTA ─── -->
+      <section class="bottom-cta reveal">
+        <div class="container">
+          <h2>Better English, wherever you write.</h2>
+          <p>Runs quietly in your tray. Free for 14 days, no credit card.</p>
+          <div class="ctas">
+            <a class="tb-btn tb-btn-primary js-download cta-desktop" href="#download">
+              Download BrushUp
+              <svg width="14" height="14" aria-hidden="true"><use href="#i-download" /></svg>
+            </a>
+            <div class="cta-phone">
+              <span><strong>BrushUp runs on Windows 10 and 11.</strong> Open this page on your PC to download it.</span>
+              <button class="tb-btn tb-btn-sm js-share" type="button">Copy link for later</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="container foot">
+        <a class="logo" href="#top" aria-label="BrushUp home">
+          <span class="mark"><svg width="18" height="18" aria-hidden="true"><use href="#mark" /></svg></span>
+          <span>Brush<span class="up">Up</span></span>
+        </a>
+        <div class="foot-links">
+          <a href="#rewrite">Rewrite</a>
+          <a href="#lookup">Lookup</a>
+          <a href="#translate">Translate</a>
+          <a href="#learn">Learn</a>
+          <a href="#pricing">Pricing</a>
+          <a href="#privacy">Privacy</a>
+          <a href="https://github.com/bryht/brushup-web/releases">Release notes</a>
+          <a href="https://github.com/bryht/brushup-web/issues">Report a bug</a>
+        </div>
+      </div>
     </footer>
 
     <script>
       (function () {
+        var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
         // ── Theme switcher ──
-        var buttons = document.querySelectorAll(".theme-switch button");
-        function paint() {
+        var themeButtons = document.querySelectorAll(".theme-switch button");
+        function paintTheme() {
           var pref = window.__getThemePref();
-          buttons.forEach(function (btn) {
-            btn.setAttribute("data-active", btn.getAttribute("data-pref") === pref ? "true" : "false");
+          themeButtons.forEach(function (btn) {
+            var on = btn.getAttribute("data-pref") === pref;
+            btn.setAttribute("data-active", on ? "true" : "false");
+            btn.setAttribute("aria-pressed", on ? "true" : "false");
           });
         }
-        buttons.forEach(function (btn) {
+        themeButtons.forEach(function (btn) {
           btn.addEventListener("click", function () {
             window.__setThemePref(btn.getAttribute("data-pref"));
-            paint();
+            paintTheme();
           });
         });
-        paint();
+        paintTheme();
 
-        // ── Hero mock: Changes / Result toggle, like Tab in the popup ──
-        var diffPanes = document.querySelector(".popup-mock-panes");
-        var viewButtons = document.querySelectorAll(".diff-view-switch button");
-        viewButtons.forEach(function (btn) {
-          btn.addEventListener("click", function () {
-            diffPanes.setAttribute("data-view", btn.getAttribute("data-view"));
-            viewButtons.forEach(function (b) {
-              var on = b === btn ? "true" : "false";
-              b.setAttribute("data-active", on);
-              b.setAttribute("aria-checked", on);
-            });
+        // ── Keyboard shortcuts belong to the section on screen ──
+        // Each interactive section (data-keys) claims the page's keys only while
+        // it is the one in view, so pressing C or 1–6 never does two things.
+        var activeKeys = null;
+        var keyed = document.querySelectorAll("[data-keys]");
+        if ("IntersectionObserver" in window) {
+          var ratios = {};
+          var kio = new IntersectionObserver(
+            function (entries) {
+              entries.forEach(function (e) {
+                ratios[e.target.getAttribute("data-keys")] = e.intersectionRatio;
+              });
+              var best = null;
+              var bestRatio = 0.35;
+              Object.keys(ratios).forEach(function (k) {
+                if (ratios[k] > bestRatio) {
+                  best = k;
+                  bestRatio = ratios[k];
+                }
+              });
+              activeKeys = best;
+            },
+            { threshold: [0, 0.2, 0.35, 0.5, 0.65, 0.8, 1] }
+          );
+          keyed.forEach(function (el) {
+            kio.observe(el);
+          });
+        }
+        var keyHandlers = {};
+        document.addEventListener("keydown", function (e) {
+          if (e.ctrlKey || e.metaKey || e.altKey) return;
+          var t = e.target;
+          if (t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA" || t.isContentEditable)) return;
+          var h = activeKeys && keyHandlers[activeKeys];
+          if (h && h(e.key)) e.preventDefault();
+        });
+
+        // ── One hotkey: the switcher moves on C, like the real one ──
+        var howItems = document.querySelectorAll("#how .tb-switcher-item");
+        var howIndex = 0;
+        function setHow(i) {
+          howIndex = (i + howItems.length) % howItems.length;
+          howItems.forEach(function (el, j) {
+            el.setAttribute("aria-selected", j === howIndex ? "true" : "false");
+          });
+        }
+        howItems.forEach(function (el, j) {
+          el.addEventListener("click", function () {
+            setHow(j);
+          });
+        });
+        keyHandlers.how = function (key) {
+          if (key === "c" || key === "C") {
+            setHow(howIndex + 1);
+            return true;
+          }
+        };
+
+        // ── Rewrite: one sentence, six presets ──
+        var PRESETS = [
+          ["Improve English", "Thursday works for me, but could we make it 4 pm? I have another meeting until 3:30."],
+          ["Fix grammar", "Thursday is good for me, but can we make it 4 pm? I have another meeting until 3:30."],
+          ["Make formal", "Thursday suits me well. Would it be possible to meet at 4 pm instead? I have another commitment until 3:30."],
+          ["Make casual", "Thursday's good! Could we do 4 instead? I've got another meeting till 3:30."],
+          ["Simplify", "Thursday is fine. Can we meet at 4 pm? I'm busy until 3:30."],
+          ["Make polite", "Thursday works well for me, thank you. Would you mind if we made it 4 pm? I have another meeting until 3:30."],
+        ];
+        var tabRow = document.querySelector(".showcase-tabs");
+        PRESETS.forEach(function (p, i) {
+          var b = document.createElement("button");
+          b.type = "button";
+          b.className = "showcase-tab";
+          b.setAttribute("role", "tab");
+          b.innerHTML = '<span class="n">' + (i + 1) + "</span>";
+          b.appendChild(document.createTextNode(p[0]));
+          b.addEventListener("click", function () {
+            pickPreset(i);
+          });
+          tabRow.appendChild(b);
+        });
+        var scTabs = tabRow.querySelectorAll(".showcase-tab");
+        function pickPreset(i) {
+          scTabs.forEach(function (t, j) {
+            t.setAttribute("aria-selected", j === i ? "true" : "false");
+          });
+          document.getElementById("sc-name").textContent = PRESETS[i][0];
+          document.getElementById("sc-after").textContent = PRESETS[i][1];
+        }
+        pickPreset(0);
+        keyHandlers.rewrite = function (key) {
+          var n = parseInt(key, 10);
+          if (n >= 1 && n <= PRESETS.length) {
+            pickPreset(n - 1);
+            return true;
+          }
+        };
+
+        // ── Lookup: the speaker reads the word aloud, V too ──
+        var speakBtn = document.querySelector(".js-speak");
+        function speak() {
+          if (!("speechSynthesis" in window)) return;
+          window.speechSynthesis.cancel();
+          var u = new SpeechSynthesisUtterance("reschedule");
+          u.lang = "en-US";
+          u.rate = 0.85;
+          u.onstart = function () {
+            speakBtn.setAttribute("data-speaking", "true");
+          };
+          u.onend = u.onerror = function () {
+            speakBtn.removeAttribute("data-speaking");
+          };
+          window.speechSynthesis.speak(u);
+        }
+        speakBtn.addEventListener("click", speak);
+        keyHandlers.lookup = function (key) {
+          if (key === "v" || key === "V") {
+            speak();
+            return true;
+          }
+        };
+
+        // ── Translate: show original (O) and copy ──
+        var origBtn = document.querySelector(".js-original");
+        function toggleOriginal() {
+          var open = origBtn.getAttribute("aria-expanded") !== "true";
+          origBtn.setAttribute("aria-expanded", open ? "true" : "false");
+          origBtn.querySelector(".js-caret").textContent = open ? "▾" : "▸";
+          origBtn.querySelector(".js-orig-label").textContent = open ? "Hide original" : "Show original";
+          origBtn.parentNode.querySelector(".tb-translate-original-text").hidden = !open;
+        }
+        origBtn.addEventListener("click", toggleOriginal);
+        keyHandlers.translate = function (key) {
+          if (key === "o" || key === "O") {
+            toggleOriginal();
+            return true;
+          }
+        };
+        document.querySelectorAll(".js-copy").forEach(function (b) {
+          b.addEventListener("click", function () {
+            var text = b.closest(".tb-well").querySelector(".tb-translate-text").textContent;
+            var done = function () {
+              b.textContent = "Copied";
+              b.style.color = "var(--tb-add)";
+              setTimeout(function () {
+                b.textContent = "Copy";
+                b.style.color = "";
+              }, 1500);
+            };
+            if (navigator.clipboard) navigator.clipboard.writeText(text).then(done, done);
+            else done();
+          });
+        });
+
+        // ── Learn: flip the flashcard ──
+        var flash = document.querySelector(".js-flash");
+        var flipBtn = document.querySelector(".js-flip");
+        function flip() {
+          var on = flash.getAttribute("data-flipped") !== "true";
+          flash.setAttribute("data-flipped", on ? "true" : "false");
+          flash.querySelector(".js-front").hidden = on;
+          flash.querySelector(".js-back").hidden = !on;
+          flipBtn.textContent = on ? "Hide" : "Flip";
+        }
+        flash.addEventListener("click", flip);
+        flash.addEventListener("keydown", function (e) {
+          if (e.key === " " || e.key === "Enter") {
+            e.preventDefault();
+            flip();
+          }
+        });
+        flipBtn.addEventListener("click", flip);
+
+        // ── Phones: copy or share the link to open on a PC ──
+        document.querySelectorAll(".js-share").forEach(function (b) {
+          b.addEventListener("click", function () {
+            var url = location.origin + location.pathname;
+            if (navigator.share) {
+              navigator.share({ title: "BrushUp for Windows", url: url }).catch(function () {});
+            } else if (navigator.clipboard) {
+              navigator.clipboard.writeText(url).then(function () {
+                b.textContent = "Link copied";
+              });
+            }
+          });
+        });
+
+        // ── Hero demo ──
+        // One email, three scenes. Each scene is a list of [time, step] pairs;
+        // the switcher always opens on the action run last, as in the app.
+        var host = document.getElementById("host");
+        var draft = document.getElementById("draft");
+        var caption = document.getElementById("stage-caption");
+        var ovSwitcher = document.getElementById("ov-switcher");
+        var switcherItems = ovSwitcher.querySelectorAll(".tb-switcher-item");
+        var popup = document.getElementById("ov-popup");
+        var popupBody = document.getElementById("popup-body");
+        var popupPane = document.getElementById("popup-pane");
+        var popupLabel = document.getElementById("popup-pane-label");
+        var popupTime = document.getElementById("popup-time");
+        var popupActions = document.getElementById("popup-actions");
+        var popupBanner = document.getElementById("popup-banner");
+        var kCtrl = document.getElementById("k-ctrl");
+        var kC = document.getElementById("k-c");
+        var kEnter = document.getElementById("k-enter");
+        var DRAFT =
+          "Thursday is good for me, but can we make it 4 pm? I have a other meeting until 3:30.";
+        var DIFF =
+          'Thursday <span class="tb-diff-del">is good </span><span class="tb-diff-add">works </span>for me, but <span class="tb-diff-del">can </span><span class="tb-diff-add">could </span>we make it 4 pm? I have <span class="tb-diff-del">a other </span><span class="tb-diff-add">another </span>meeting until 3:30.';
+        var IMPROVED =
+          "Thursday works for me, but could we make it 4 pm? I have another meeting until 3:30.";
+        var ORDER = ["rewrite", "lookup", "translate"];
+        var SCENES = ["lookup", "translate", "rewrite"];
+        var lastAction = "rewrite";
+        var switcherIndex = 0;
+
+        function overlay(id) {
+          return document.getElementById("ov-" + id);
+        }
+        function closeAll() {
+          ["switcher", "lookup", "translate", "popup"].forEach(function (id) {
+            overlay(id).setAttribute("data-open", "false");
+          });
+        }
+        function clearSel() {
+          host.querySelectorAll(".sel").forEach(function (el) {
+            el.classList.remove("sel");
+          });
+        }
+        function press(el, on) {
+          el.setAttribute("data-pressed", on ? "true" : "false");
+        }
+        function tap(el) {
+          press(el, true);
+          setTimeout(function () {
+            press(el, false);
+          }, 160);
+        }
+        // Place an overlay near the selected text, inside the host: below it if
+        // it fits, else in the free column right of the message, else above.
+        var hostBody = host.querySelector(".host-body");
+        function place(ov, target) {
+          var hr = host.getBoundingClientRect();
+          var tr = target.getBoundingClientRect();
+          var w = ov.offsetWidth;
+          var h = ov.offsetHeight;
+          var gap = 12;
+          var left = Math.max(gap, Math.min(tr.left - hr.left, hr.width - w - gap));
+          var top = tr.bottom - hr.top + 8;
+          var textRight = hostBody.getBoundingClientRect().right - hr.left;
+          if (top + h > hr.height - gap) {
+            if (hr.width - textRight >= w + 24) {
+              left = hr.width - w - 24;
+              top = Math.max(gap, Math.min(tr.top - hr.top - 24, hr.height - h - gap));
+            } else {
+              top = Math.max(gap, tr.top - hr.top - h - 8);
+            }
+          }
+          ov.style.left = left + "px";
+          ov.style.top = top + "px";
+        }
+        function paintSwitcher() {
+          switcherItems.forEach(function (el, j) {
+            el.setAttribute("aria-selected", j === switcherIndex ? "true" : "false");
+          });
+        }
+        function openSwitcher(target) {
+          switcherIndex = ORDER.indexOf(lastAction);
+          paintSwitcher();
+          place(ovSwitcher, target);
+          ovSwitcher.setAttribute("data-open", "true");
+        }
+        function nextSwitcher() {
+          tap(kC);
+          switcherIndex = (switcherIndex + 1) % ORDER.length;
+          paintSwitcher();
+        }
+        function popupState(state) {
+          popup.setAttribute("data-state", state);
+          if (state === "pick") {
+            popupLabel.textContent = "Original";
+            popupTime.textContent = "";
+            popupBody.className = "tb-pane-body";
+            popupBody.textContent = DRAFT;
+            popupPane.removeAttribute("data-improved");
+            popupActions.hidden = true;
+            popupBanner.innerHTML =
+              '<span class="grow">Pick a preset</span><span class="tb-kbd tb-kbd-sm">↵</span> rewrite';
+          } else if (state === "writing") {
+            popupLabel.textContent = "Improve English";
+            popupBody.className = "tb-pane-body streaming";
+            popupBody.textContent = "Thursday works for me, but";
+            popupPane.setAttribute("data-improved", "");
+            popupBanner.innerHTML = '<span class="tb-mono grow">WRITING…</span>';
+          } else {
+            popupLabel.textContent = "Changes";
+            popupTime.textContent = "1.6s";
+            popupBody.className = "tb-pane-body";
+            popupBody.innerHTML = DIFF;
+            popupPane.setAttribute("data-improved", "");
+            popupActions.hidden = false;
+            popupBanner.innerHTML =
+              '<span class="tb-tag tb-tag-good">Done</span><span class="grow">3 changes</span><span class="tb-kbd tb-kbd-sm">↵</span> replace <span class="tb-kbd tb-kbd-sm">esc</span> close';
+          }
+        }
+
+        var timers = [];
+        var playing = !reduceMotion;
+        var inView = false;
+        var current = 0;
+        var tabs = document.querySelectorAll(".stage-tabs button");
+        function paintTabs() {
+          tabs.forEach(function (t, j) {
+            t.setAttribute("aria-selected", j === current ? "true" : "false");
+          });
+        }
+        function cancel() {
+          timers.forEach(clearTimeout);
+          timers = [];
+          [kCtrl, kC, kEnter].forEach(function (k) {
+            press(k, false);
+          });
+        }
+        function reset() {
+          cancel();
+          closeAll();
+          clearSel();
+        }
+        function hotkeyThen(target, steps, startAt) {
+          // Ctrl down, C, C (opens the switcher), then C until the wanted action.
+          return [
+            [startAt, function () {
+              press(kCtrl, true);
+              caption.textContent = "Hold Ctrl, tap C twice";
+            }],
+            [startAt + 300, function () {
+              tap(kC);
+            }],
+            [startAt + 600, function () {
+              tap(kC);
+              openSwitcher(target);
+            }],
+          ].concat(steps);
+        }
+        var scenes = {
+          lookup: function (target) {
+            return [[0, function () {
+              draft.textContent = DRAFT;
+              caption.textContent = "Select a word you don't know";
+            }], [500, function () {
+              target.classList.add("sel");
+            }]].concat(hotkeyThen(target, [
+              [2100, function () {
+                nextSwitcher();
+                caption.textContent = "It opens on what you ran last. Tap C for Lookup";
+              }],
+              [3300, function () {
+                press(kCtrl, false);
+                ovSwitcher.setAttribute("data-open", "false");
+                lastAction = "lookup";
+                place(overlay("lookup"), target);
+                overlay("lookup").setAttribute("data-open", "true");
+                caption.textContent = "Let go: the meaning, in English and in your language";
+              }],
+            ], 1300));
+          },
+          translate: function (target) {
+            return [[0, function () {
+              caption.textContent = "Select a sentence";
+            }], [500, function () {
+              target.classList.add("sel");
+            }]].concat(hotkeyThen(target, [
+              [2100, function () {
+                nextSwitcher();
+                caption.textContent = "Tap C for Translate";
+              }],
+              [3300, function () {
+                press(kCtrl, false);
+                ovSwitcher.setAttribute("data-open", "false");
+                lastAction = "translate";
+                place(overlay("translate"), target);
+                overlay("translate").setAttribute("data-open", "true");
+                caption.textContent = "Every language you set, and the email stays untouched";
+              }],
+            ], 1300));
+          },
+          rewrite: function (target) {
+            return [[0, function () {
+              draft.textContent = DRAFT;
+              caption.textContent = "Select your draft";
+            }], [500, function () {
+              target.classList.add("sel");
+            }]].concat(hotkeyThen(target, [
+              [2100, function () {
+                nextSwitcher();
+                caption.textContent = "Tap C for Rewrite";
+              }],
+              [3300, function () {
+                press(kCtrl, false);
+                ovSwitcher.setAttribute("data-open", "false");
+                lastAction = "rewrite";
+                popupState("pick");
+                place(popup, target);
+                popup.setAttribute("data-open", "true");
+                caption.textContent = "Preset 1, Improve English, is ready. Press Enter";
+              }],
+              [4500, function () {
+                tap(kEnter);
+                popupState("writing");
+                caption.textContent = "It streams in as it writes";
+              }],
+              [5600, function () {
+                popupState("done");
+                caption.textContent = "Every change marked, nothing hidden";
+              }],
+              [7800, function () {
+                tap(kEnter);
+                popup.setAttribute("data-open", "false");
+                clearSel();
+                draft.textContent = IMPROVED;
+                draft.classList.remove("replaced");
+                void draft.offsetWidth;
+                draft.classList.add("replaced");
+                caption.textContent = "Enter again: the better text replaces yours, right in the email";
+              }],
+            ], 1300));
+          },
+        };
+        function targetFor(name) {
+          return name === "lookup"
+            ? document.getElementById("w-word")
+            : name === "translate"
+              ? document.getElementById("w-sentence")
+              : draft;
+        }
+        var HOLD = { lookup: 8200, translate: 8200, rewrite: 11000 };
+        function play(i) {
+          reset();
+          current = i;
+          paintTabs();
+          var name = SCENES[i];
+          var target = targetFor(name);
+          scenes[name](target).forEach(function (s) {
+            timers.push(setTimeout(s[1], s[0]));
+          });
+          timers.push(
+            setTimeout(function () {
+              if (playing && inView) play((current + 1) % SCENES.length);
+            }, HOLD[name])
+          );
+        }
+        // The resting frame of a scene, without motion.
+        function frame(i) {
+          reset();
+          current = i;
+          paintTabs();
+          var name = SCENES[i];
+          var target = targetFor(name);
+          draft.textContent = DRAFT;
+          target.classList.add("sel");
+          if (name === "rewrite") {
+            popupState("done");
+            place(popup, target);
+            popup.setAttribute("data-open", "true");
+            caption.textContent = "Rewrite: every change marked; Enter replaces your text";
+          } else {
+            place(overlay(name), target);
+            overlay(name).setAttribute("data-open", "true");
+            caption.textContent =
+              name === "lookup"
+                ? "Lookup: the meaning, in English and in your language"
+                : "Translate: every language you set, and the email stays untouched";
+          }
+        }
+        var pauseBtn = document.getElementById("stage-pause");
+        function paintPause() {
+          pauseBtn.setAttribute("aria-label", playing ? "Pause demo" : "Play demo");
+          pauseBtn.innerHTML = playing
+            ? '<svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><rect x="2" y="1.5" width="2.5" height="9" rx="0.5" fill="currentColor"/><rect x="7.5" y="1.5" width="2.5" height="9" rx="0.5" fill="currentColor"/></svg>'
+            : '<svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 1.5v9l7.5-4.5Z" fill="currentColor"/></svg>';
+        }
+        pauseBtn.addEventListener("click", function () {
+          playing = !playing;
+          paintPause();
+          if (playing) play(current);
+          else frame(current);
+        });
+        tabs.forEach(function (t, j) {
+          t.addEventListener("click", function () {
+            if (playing) play(j);
+            else frame(j);
+          });
+        });
+        paintPause();
+        draft.textContent = DRAFT;
+        if (reduceMotion) {
+          frame(0);
+        } else if ("IntersectionObserver" in window) {
+          new IntersectionObserver(
+            function (entries) {
+              var was = inView;
+              inView = entries[0].isIntersecting;
+              if (inView && !was && playing) play(current);
+              if (!inView) cancel();
+            },
+            { threshold: 0.3 }
+          ).observe(document.getElementById("stage"));
+        } else {
+          frame(0);
+        }
+        document.addEventListener("visibilitychange", function () {
+          if (document.hidden) cancel();
+          else if (playing && inView) play(current);
+        });
+        window.addEventListener("resize", function () {
+          ["switcher", "lookup", "translate", "popup"].forEach(function (id) {
+            var ov = overlay(id);
+            var sel = host.querySelector(".sel");
+            if (ov.getAttribute("data-open") === "true" && sel) place(ov, sel);
           });
         });
 
@@ -2092,17 +3180,15 @@
         var releasePromise = null;
         function getLatestRelease() {
           if (!releasePromise) {
-            releasePromise = fetch(
-              "https://api.github.com/repos/bryht/brushup-web/releases/latest",
-              { headers: { Accept: "application/vnd.github+json" } }
-            ).then(function (res) {
+            releasePromise = fetch("https://api.github.com/repos/bryht/brushup-web/releases/latest", {
+              headers: { Accept: "application/vnd.github+json" },
+            }).then(function (res) {
               if (!res.ok) throw new Error("api " + res.status);
               return res.json();
             });
           }
           return releasePromise;
         }
-
         function exeFromRelease(data) {
           var asset = (data.assets || []).find(function (a) {
             return /\.exe$/i.test(a.name);
@@ -2110,7 +3196,6 @@
           if (!asset) throw new Error("no exe asset");
           return asset.browser_download_url;
         }
-
         // Prefetch on load so the click is instant, and surface the live version.
         getLatestRelease()
           .then(function (data) {
@@ -2118,7 +3203,6 @@
             if (el && data.tag_name) el.textContent = data.tag_name;
           })
           .catch(function () {});
-
         document.querySelectorAll(".js-download").forEach(function (el) {
           el.addEventListener("click", function (e) {
             e.preventDefault();
@@ -2133,7 +3217,7 @@
           });
         });
 
-        // ── Scroll reveal — fade sections in as they enter the viewport ──
+        // ── Scroll reveal ──
         var reveals = document.querySelectorAll(".reveal");
         if ("IntersectionObserver" in window && reveals.length) {
           var io = new IntersectionObserver(
@@ -2145,7 +3229,7 @@
                 }
               });
             },
-            { threshold: 0.12 }
+            { threshold: 0.08 }
           );
           reveals.forEach(function (el) {
             io.observe(el);
@@ -2156,20 +3240,15 @@
           });
         }
 
-        // ── Video: lazy-play on viewport entry, pause when scrolled away ──
+        // ── Video: pause when scrolled away ──
         var v = document.querySelector(".video-wrap video");
         if (v && "IntersectionObserver" in window) {
-          var vio = new IntersectionObserver(
+          new IntersectionObserver(
             function (entries) {
-              entries.forEach(function (entry) {
-                if (!entry.isIntersecting && !v.paused) {
-                  v.pause();
-                }
-              });
+              if (!entries[0].isIntersecting && !v.paused) v.pause();
             },
             { threshold: 0.25 }
-          );
-          vio.observe(v);
+          ).observe(v);
         }
       })();
     </script>
