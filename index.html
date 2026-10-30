@@ -65,7 +65,10 @@
          Based on src/styles/tokens.css, with the site's redesign changes:
          terracotta is the accent in both themes (green now only means "added
          text"), dim text and the light accent are darkened to pass 4.5:1, and
-         hairlines are 1px so they survive Windows display scaling. */
+         hairlines are 1px so they survive Windows display scaling.
+         --tb-accent is for fills and borders and is the same in both themes;
+         --tb-accent-text is the accent used as text, icons and the focus ring,
+         lighter in dark so small text stays readable. */
       :root,
       [data-theme="light"] {
         color-scheme: light;
@@ -84,6 +87,7 @@
 
         --tb-accent: #a64b28;
         --tb-accent-fg: #faf6ec;
+        --tb-accent-text: #a64b28;
         --tb-accent-glow: rgba(166, 75, 40, 0.13);
 
         /* The logo mark's own ink. */
@@ -131,11 +135,12 @@
         --tb-fg-dim: #82868f;
         --tb-fg-faint: #4a4e57;
 
-        --tb-accent: #e3825a;
-        --tb-accent-fg: #0a0b0d;
-        --tb-accent-glow: rgba(227, 130, 90, 0.16);
+        --tb-accent: #a64b28;
+        --tb-accent-fg: #faf6ec;
+        --tb-accent-text: #d89479;
+        --tb-accent-glow: rgba(166, 75, 40, 0.22);
 
-        --tb-brand: #e3825a;
+        --tb-brand: #b8542a;
 
         --tb-add: #74e088;
         --tb-add-bg: rgba(116, 224, 136, 0.12);
@@ -194,7 +199,7 @@
         text-decoration: underline;
       }
       :focus-visible {
-        outline: 2px solid var(--tb-accent);
+        outline: 2px solid var(--tb-accent-text);
         outline-offset: 2px;
         border-radius: 4px;
       }
@@ -410,7 +415,7 @@
         display: inline-flex;
       }
       .logo .up {
-        color: var(--tb-accent);
+        color: var(--tb-accent-text);
       }
       nav .links {
         display: flex;
@@ -517,7 +522,7 @@
         line-height: 1.02;
       }
       .hero h1 .accent {
-        color: var(--tb-accent);
+        color: var(--tb-accent-text);
         font-style: normal;
       }
       .hero .lede {
@@ -1019,7 +1024,7 @@
       }
       .tb-lookup-speak:hover,
       .tb-lookup-speak[data-speaking="true"] {
-        color: var(--tb-accent);
+        color: var(--tb-accent-text);
         border-color: var(--tb-accent);
       }
       .tb-well {
@@ -1037,7 +1042,7 @@
         font-weight: 600;
         text-transform: uppercase;
         letter-spacing: 0.06em;
-        color: var(--tb-accent);
+        color: var(--tb-accent-text);
       }
       .tb-lookup-meaning {
         font-size: 13.5px;
@@ -1152,7 +1157,7 @@
         gap: 8px;
         font-size: 13px;
         font-weight: 600;
-        color: var(--tb-accent);
+        color: var(--tb-accent-text);
         margin-bottom: 12px;
       }
       .label .tb-kbd {
@@ -1192,7 +1197,7 @@
         line-height: 1.55;
       }
       .points li svg {
-        color: var(--tb-accent);
+        color: var(--tb-accent-text);
         margin-top: 3px;
       }
       .points li strong {
@@ -1243,7 +1248,7 @@
         font-family: var(--tb-font-prose);
         font-weight: 600;
         font-size: 15px;
-        color: var(--tb-accent);
+        color: var(--tb-accent-text);
       }
       .steps h3 {
         font-size: 16.5px;
@@ -1349,7 +1354,7 @@
         gap: 8px;
       }
       .notes h3 svg {
-        color: var(--tb-accent);
+        color: var(--tb-accent-text);
       }
       .notes p {
         font-size: 13.5px;
@@ -1517,7 +1522,7 @@
         gap: 8px;
       }
       .fact h3 svg {
-        color: var(--tb-accent);
+        color: var(--tb-accent-text);
       }
       .fact p {
         font-size: 13.5px;
@@ -1619,7 +1624,7 @@
       }
       .price-list li svg {
         flex-shrink: 0;
-        color: var(--tb-accent);
+        color: var(--tb-accent-text);
         margin-top: 3px;
       }
       .price-card .tb-btn {
