@@ -6,7 +6,7 @@
     <title>BrushUp — Rewrite, look up and translate English in any app</title>
     <meta
       name="description"
-      content="A Windows app for people who work in English as a second language. Select text, hold Ctrl and tap C twice: rewrite it, look up a word, or translate it, right inside Outlook, Slack, Word or any other app. Everything you run becomes flashcards and insights. €5.10/year launch offer, regularly €30."
+      content="A Windows app for people who work in English as a second language. Select text, hold Ctrl and tap C twice: rewrite it, look up a word, or translate it, right inside Outlook, Slack, Word or any other app. Review your history and learn from your rewrites and lookups. €5.10/year launch offer, regularly €30."
     />
     <meta property="og:title" content="BrushUp — English help in any app" />
     <meta
@@ -451,6 +451,7 @@
         }
         .cta-phone {
           display: flex;
+          order: -1;
         }
       }
       .cta-phone {
@@ -471,7 +472,7 @@
 
       /* ─── Hero ─── */
       .hero {
-        padding: 72px 0 40px;
+        padding: 48px 0 40px;
         position: relative;
       }
       .hero::before {
@@ -489,7 +490,7 @@
         display: grid;
         grid-template-columns: 1.1fr 0.9fr;
         gap: 48px;
-        align-items: end;
+        align-items: center;
       }
       .eyebrow {
         display: inline-flex;
@@ -727,7 +728,7 @@
         border-radius: 6px;
         cursor: pointer;
       }
-      .stage-tabs button[aria-selected="true"] {
+      .stage-tabs button[aria-pressed="true"] {
         background: var(--tb-bg-elev);
         color: var(--tb-fg);
         font-weight: 600;
@@ -1773,6 +1774,7 @@
         .hotkey .tb-switcher {
           max-width: 320px;
         }
+        .hotkey > div:first-child { order: 2; }
       }
       @media (max-width: 640px) {
         .container {
@@ -1820,7 +1822,43 @@
           display: none;
         }
       }
+      /* Release details stay truthful if GitHub is unavailable. */
+      .download-info { position: relative; margin-top: 18px; max-width: 740px; }
+      .hero-pricing { font-size: 13px; }
+      .release-meta { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 12px; color: var(--tb-fg-dim); }
+      .release-meta span:empty { display: none; }
+      .install-help { margin-top: 12px; font-size: 13px; color: var(--tb-fg-mute); }
+      .install-help summary { cursor: pointer; color: var(--tb-fg); width: fit-content; }
+      .install-help ol { padding-left: 22px; margin: 12px 0; }
+      .install-help li + li { margin-top: 8px; }
+      .install-help p { margin-top: 10px; }
+      .demo-steps { display: flex; gap: 12px 28px; flex-wrap: wrap; list-style: none; padding: 0; margin: 0 0 16px; font-size: 13px; color: var(--tb-fg-mute); }
+      .demo-steps li { display: flex; align-items: center; gap: 8px; }
+      .demo-steps li > span { color: var(--tb-accent-text); font-family: var(--tb-font-mono); }
+      .feature-overview { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+      .feature-overview a { padding: 20px; border: 1px solid var(--tb-line-strong); border-radius: 12px; color: var(--tb-fg); background: var(--tb-bg-elev); }
+      .feature-overview a:hover { border-color: var(--tb-accent-text); text-decoration: none; }
+      .feature-overview strong, .feature-overview span { display: block; }
+      .feature-overview span { font-size: 14px; color: var(--tb-fg-mute); margin-top: 8px; }
+      .feature-details { margin-top: 24px; border-top: 1px solid var(--tb-line); }
+      .feature-details > summary { padding: 20px 0; cursor: pointer; font-weight: 600; }
+      .feature-details > summary span { display: block; margin: 6px 0 0 18px; font-size: 13px; font-weight: 400; color: var(--tb-fg-mute); }
+      .feature-content > .section { padding: 56px 0; }
+      .feature-content > .section > .container { padding: 0; }
+      .privacy p + p { margin-top: 12px; }
+      #stage, #download, #features { scroll-margin-top: 80px; }
+      @media (max-width: 640px) {
+        .feature-overview { grid-template-columns: 1fr; gap: 10px; }
+        .feature-overview a { padding: 16px; }
+        .hero-copy { gap: 20px; }
+        .hero .lede { font-size: 16px; margin-bottom: 18px; }
+        .stage { margin-top: 28px; }
+        .demo-steps { gap: 8px 14px; font-size: 12px; }
+        .demo-steps li:last-child { flex-basis: 100%; }
+        .feature-content > .section { padding: 40px 0; }
+      }
     </style>
+    <noscript><style>.reveal { opacity: 1; transform: none; }</style></noscript>
   </head>
   <body>
     <!-- The brush mark, defined once and reused with <use>. -->
@@ -1900,7 +1938,7 @@
               </svg>
             </button>
           </div>
-          <a class="tb-btn tb-btn-primary tb-btn-sm js-download cta-desktop nav-dl" href="#download">
+          <a class="tb-btn tb-btn-primary tb-btn-sm js-download cta-desktop nav-dl" href="https://github.com/bryht/brushup-web/releases/latest">
             Download
             <svg width="13" height="13" aria-hidden="true"><use href="#i-download" /></svg>
           </a>
@@ -1917,42 +1955,62 @@
               <span class="tb-dot"></span>
               Launch offer · €5.10/year — regularly €30
             </div>
-            <h1>Improve your English <span class="accent">in any app.</span></h1>
+            <h1>Better English. <span class="accent">Right where you write.</span></h1>
           </div>
           <div>
             <p class="lede">
-              Select any text, hold <strong>Ctrl</strong> and tap <strong>C</strong> twice. Then
-              <strong>rewrite</strong> your reply, <strong>look up</strong> a word you don't know, or
-              <strong>translate</strong> a message, right inside Outlook, Slack, Word or wherever
-              you're working.
+              Turn a rough reply into clear, natural English without leaving Outlook, Slack or Word.
+              Select your text, hold <strong>Ctrl</strong> and tap <strong>C</strong> twice.
+              Check the changes, then replace it when you're ready.
             </p>
             <div class="ctas">
-              <a class="tb-btn tb-btn-primary js-download cta-desktop" href="#download">
+              <a class="tb-btn tb-btn-primary js-download cta-desktop" href="https://github.com/bryht/brushup-web/releases/latest">
                 Download for Windows
                 <svg width="14" height="14" aria-hidden="true"><use href="#i-download" /></svg>
               </a>
-              <span class="price-hint cta-desktop"
-                ><s>€30</s> <strong>€5.10</strong>/year after a free trial</span
-              >
+              <a class="tb-btn tb-btn-ghost" href="#stage">See the rewrite demo</a>
+              <a class="hero-pricing" href="#pricing">Trial &amp; pricing</a>
               <div class="cta-phone">
                 <span><strong>BrushUp runs on Windows 10 and 11.</strong> Open this page on your PC to download it.</span>
                 <button class="tb-btn tb-btn-sm js-share" type="button">Copy link for later</button>
               </div>
             </div>
             <div class="meta-line">
-              <span>Windows 10/11</span>
-              <span>14-day free trial</span>
-              <span>No credit card</span>
-              <span id="version-meta">Auto-updating</span>
+              <span>Windows 10/11 · x64</span>
+              <span>14 days free · no credit card</span>
+              <span>Email sign-in · no API key</span>
+            </div>
+
+            <div class="download-info" id="download">
+              <p class="release-meta" aria-live="polite">
+                <span id="version-meta">Latest stable release</span>
+                <span id="release-date"></span>
+                <span id="release-size"></span>
+                <a href="https://github.com/bryht/brushup-web/releases/latest" id="release-notes">Release notes</a>
+              </p>
+              <details class="install-help">
+                <summary>Installing for the first time?</summary>
+                <ol>
+                  <li>Download the Windows x64 installer from the official GitHub release and run it.</li>
+                  <li>Sign in with your email and the 6-digit code sent to your inbox. No password or credit card is needed for the trial.</li>
+                  <li>Select text in an app, hold Ctrl and tap C twice. Choose Rewrite, review the changes and press Enter to replace.</li>
+                </ol>
+                <p>If Windows shows a security warning, check that the installer came from the official release above before deciding whether to run it. You do not need to turn off Windows security.</p>
+              </details>
             </div>
           </div>
         </div>
 
         <!-- Demo: an ordinary email, and the three actions working on it. -->
         <div class="stage" id="stage">
+          <ol class="demo-steps" aria-label="How rewriting works">
+            <li><span>1</span> Select your reply</li>
+            <li><span>2</span> Hold Ctrl, tap C twice</li>
+            <li><span>3</span> Review and replace</li>
+          </ol>
           <p class="sr-only">
-            Animated demo: in an email, BrushUp looks up the word "reschedule", translates a
-            sentence into Spanish and Chinese, and rewrites the reply.
+            Example demo: select a rough email reply, open Rewrite with Ctrl C C, review the
+            changes and press Enter to replace it. You can also preview Lookup and Translate.
           </p>
           <div class="host" id="host" aria-hidden="true">
             <div class="host-titlebar">
@@ -1965,7 +2023,7 @@
             </div>
             <div class="host-body">
               <p>Hi Daniel,</p>
-              <p><span id="draft"></span><span class="caret"></span></p>
+              <p><span id="draft">Thursday is good for me, but can we make it 4 pm? I have a other meeting until 3:30.</span><span class="caret"></span></p>
               <div class="host-quote">
                 <div class="from">On Tuesday, Daniel Ross wrote:</div>
                 <p>
@@ -2074,11 +2132,11 @@
               <span class="tb-kbd" id="k-c">C</span>
               <span class="tb-kbd" id="k-enter">↵</span>
             </span>
-            <span class="stage-caption" id="stage-caption" aria-live="polite"></span>
-            <span class="stage-tabs" role="tablist" aria-label="Demo">
-              <button type="button" role="tab" data-scene="lookup" aria-selected="true">Lookup</button>
-              <button type="button" role="tab" data-scene="translate" aria-selected="false">Translate</button>
-              <button type="button" role="tab" data-scene="rewrite" aria-selected="false">Rewrite</button>
+            <span class="stage-caption" id="stage-caption" aria-live="polite">Example: select your reply, review the changes, then replace.</span>
+            <span class="stage-tabs" role="group" aria-label="Example demo scenes">
+              <button type="button" data-scene="rewrite" aria-pressed="true">Rewrite</button>
+              <button type="button" data-scene="lookup" aria-pressed="false">Lookup</button>
+              <button type="button" data-scene="translate" aria-pressed="false">Translate</button>
             </span>
             <button type="button" class="stage-pause" id="stage-pause" aria-label="Pause demo">
               <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true" id="pause-icon">
@@ -2207,318 +2265,38 @@
         </div>
       </section>
 
-      <!-- ─── Lookup ─── -->
-      <section class="section reveal" id="lookup" data-keys="lookup">
-        <div class="container split">
-          <div>
-            <div class="section-head">
-              <span class="label">Lookup</span>
-              <h2>Understand any word without leaving the page.</h2>
-            </div>
-            <ul class="points">
-              <li>
-                <svg width="16" height="16" aria-hidden="true"><use href="#i-check" /></svg>
-                <span><strong>Meaning and examples</strong> in clear English, with the pronunciation in IPA.</span>
-              </li>
-              <li>
-                <svg width="16" height="16" aria-hidden="true"><use href="#i-check" /></svg>
-                <span><strong>A line in your own language</strong> under each meaning, so nothing gets lost.</span>
-              </li>
-              <li>
-                <svg width="16" height="16" aria-hidden="true"><use href="#i-check" /></svg>
-                <span><strong>Hear it.</strong> Press <span class="tb-kbd tb-kbd-sm">V</span> to have the word read aloud.</span>
-              </li>
-              <li>
-                <svg width="16" height="16" aria-hidden="true"><use href="#i-check" /></svg>
-                <span><strong>A memory aid</strong> to make it stick, and every lookup comes back later as a flashcard.</span>
-              </li>
-            </ul>
-          </div>
-          <div class="tb-shell">
-            <div class="tb-shell-head">
-              <span class="tb-shell-title"><svg width="16" height="16" aria-hidden="true"><use href="#mark" /></svg>BrushUp</span>
-              <span class="tb-shell-x">×</span>
-            </div>
-            <div class="tb-lookup">
-              <div class="tb-lookup-header">
-                <span class="tb-lookup-word">reschedule</span>
-                <span class="tb-lookup-phonetic">/ˌriːˈskedʒuːl/</span>
-                <span class="tb-lang">English</span>
-                <button class="tb-lookup-speak js-speak" type="button" aria-label="Pronounce reschedule (V)">
-                  <svg width="15" height="15" aria-hidden="true"><use href="#i-speaker" /></svg>
-                </button>
-              </div>
-              <div class="tb-well">
-                <span class="tb-label">verb</span>
-                <span class="tb-lookup-meaning">To change the time or date of a planned event.</span>
-                <span class="tb-lookup-native">reprogramar: cambiar la fecha u hora de algo</span>
-                <ul class="tb-lookup-examples">
-                  <li>Could we reschedule the call to Thursday?</li>
-                  <li>The launch was rescheduled for next month.</li>
-                </ul>
-              </div>
-              <div class="tb-well tb-memory">
-                <span class="tb-label">Memory aid</span>
-                <span class="tb-memory-text">re- means "again": you schedule it again, at a new time.</span>
-              </div>
-            </div>
-            <div class="tb-banner">
-              <span class="tb-tag tb-tag-good">Lookup</span><span class="grow">reschedule</span>
-              <span class="tb-kbd tb-kbd-sm">V</span> pronounce
-              <span class="tb-kbd tb-kbd-sm">esc</span> close
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ─── Translate ─── -->
-      <section class="section reveal" id="translate" data-keys="translate">
-        <div class="container split">
-          <div class="tb-shell card-first">
-            <div class="tb-shell-head">
-              <span class="tb-shell-title"><svg width="16" height="16" aria-hidden="true"><use href="#mark" /></svg>BrushUp — Translate</span>
-              <span class="tb-shell-x">×</span>
-            </div>
-            <div class="tb-translate">
-              <div class="tb-well">
-                <div class="tb-translate-head">
-                  <span class="tb-label">Spanish</span>
-                  <button class="tb-btn tb-btn-ghost js-copy" type="button">Copy</button>
-                </div>
-                <div class="tb-translate-text">Lamentablemente tengo que reprogramar nuestra llamada. ¿Te vendría bien el jueves a las 15:00?</div>
-              </div>
-              <div class="tb-well">
-                <div class="tb-translate-head">
-                  <span class="tb-label">German</span>
-                  <button class="tb-btn tb-btn-ghost js-copy" type="button">Copy</button>
-                </div>
-                <div class="tb-translate-text">Leider muss ich unser Gespräch verschieben. Würde dir Donnerstag um 15 Uhr passen?</div>
-              </div>
-              <div class="tb-well">
-                <div class="tb-translate-head">
-                  <span class="tb-label">Chinese</span>
-                  <button class="tb-btn tb-btn-ghost js-copy" type="button">Copy</button>
-                </div>
-                <div class="tb-translate-text">很抱歉，我得改一下我们通话的时间。改到周四下午3点，你方便吗？</div>
-              </div>
-              <div class="tb-translate-original">
-                <button class="tb-translate-toggle js-original" type="button" aria-expanded="false">
-                  <span aria-hidden="true" class="js-caret">▸</span><span class="js-orig-label">Show original</span>
-                  <span class="tb-lang">English</span>
-                </button>
-                <div class="tb-translate-original-text" hidden>
-                  Unfortunately I have to reschedule our call. Would Thursday at 3 pm suit you instead?
-                </div>
-              </div>
-            </div>
-            <div class="tb-banner">
-              <span class="tb-tag tb-tag-good">Translated</span><span class="grow">Spanish · German · Chinese</span>
-              <span class="tb-kbd tb-kbd-sm">O</span> original
-              <span class="tb-kbd tb-kbd-sm">esc</span> close
-            </div>
-          </div>
-          <div>
-            <div class="section-head">
-              <span class="label">Translate</span>
-              <h2>Read it in every language you speak.</h2>
-            </div>
-            <ul class="points">
-              <li>
-                <svg width="16" height="16" aria-hidden="true"><use href="#i-check" /></svg>
-                <span><strong>As many languages as you like.</strong> One block each, in the order you set.</span>
-              </li>
-              <li>
-                <svg width="16" height="16" aria-hidden="true"><use href="#i-check" /></svg>
-                <span><strong>Skips the obvious.</strong> A language the text is already in is left out.</span>
-              </li>
-              <li>
-                <svg width="16" height="16" aria-hidden="true"><use href="#i-check" /></svg>
-                <span><strong>Check it against the source.</strong> The original is one press of <span class="tb-kbd tb-kbd-sm">O</span> away.</span>
-              </li>
-              <li>
-                <svg width="16" height="16" aria-hidden="true"><use href="#i-check" /></svg>
-                <span><strong>Your text stays as it was.</strong> Translate opens its own window and never pastes over anything. Copy a block if you need it.</span>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </section>
-
-      <!-- ─── Learn ─── -->
-      <section class="section reveal" id="learn">
-        <div class="container">
-          <div class="section-head">
-            <span class="label">Learn</span>
-            <h2>Get better from your own writing.</h2>
-            <p>
-              Everything you rewrite, look up and translate is saved on your PC. BrushUp turns it into
-              practice that's about your English, not a textbook's.
-            </p>
-          </div>
-          <div class="learn-grid">
-            <div class="learn-col">
-              <h3>Flashcards from your lookups</h3>
-              <p>Every word you looked up becomes a card. Flip it, mark it known, and it leaves the deck.</p>
-              <div class="tb-shell">
-                <div class="flash">
-                  <div class="flash-meta">3 / 18 · 2 known</div>
-                  <div class="flash-card js-flash" role="button" tabindex="0" data-flipped="false" aria-label="Flashcard: reschedule. Press to reveal the meaning.">
-                    <div class="js-front">
-                      <div class="flash-word">reschedule</div>
-                      <div class="flash-phonetic">/ˌriːˈskedʒuːl/</div>
-                      <div class="flash-hint">Click or press Space to flip</div>
-                    </div>
-                    <div class="js-back tb-lookup" hidden>
-                      <div class="tb-well">
-                        <span class="tb-label">verb</span>
-                        <span class="tb-lookup-meaning">To change the time or date of a planned event.</span>
-                        <span class="tb-lookup-native">reprogramar: cambiar la fecha u hora de algo</span>
-                      </div>
-                      <div class="tb-well tb-memory">
-                        <span class="tb-label">Memory aid</span>
-                        <span class="tb-memory-text">re- means "again": you schedule it again, at a new time.</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="flash-actions">
-                    <span class="tb-btn tb-btn-ghost tb-btn-sm">‹ Prev</span>
-                    <button type="button" class="tb-btn tb-btn-sm js-flip">Flip</button>
-                    <span class="tb-btn tb-btn-ghost tb-btn-sm">Next ›</span>
-                    <span style="flex: 1"></span>
-                    <span class="tb-btn tb-btn-primary tb-btn-sm">I know this</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="learn-col">
-              <h3>Insights from your rewrites</h3>
-              <p>BrushUp reads back through your edits and shows the mistakes you make most, with a tip for each.</p>
-              <div class="tb-shell">
-                <div class="insight">
-                  <div class="insight-head">Prepositions of time <span class="tb-tag">Frequent</span></div>
-                  <div class="insight-text">You often use "in" with days and dates, where English uses "on".</div>
-                  <div class="insight-pair">
-                    <div><div class="cap">Before</div><div class="before">See you in Monday.</div></div>
-                    <div><div class="cap">After</div><div class="after">See you on Monday.</div></div>
-                  </div>
-                  <div class="insight-pair">
-                    <div><div class="cap">Before</div><div class="before">The report is due in 3 May.</div></div>
-                    <div><div class="cap">After</div><div class="after">The report is due on 3 May.</div></div>
-                  </div>
-                  <div class="insight-tip">Use "on" for days and dates, "in" for months and years, "at" for clock times.</div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <p class="learn-foot">
-            And a searchable <strong>History</strong> of everything you've run, with the changes for every
-            rewrite. It never leaves your PC; delete any entry, or all of it.
-          </p>
-        </div>
-      </section>
-
-      <!-- ─── Video ─── -->
-      <section class="section reveal" id="demo">
-        <div class="container">
-          <div class="section-head center">
-            <span class="label">See it in action</span>
-            <h2>Watch a whole working session.</h2>
-          </div>
-          <div class="video-wrap">
-            <video
-              controls
-              preload="metadata"
-              poster="assets/poster.jpeg"
-              aria-label="BrushUp demo: select text, rewrite, replace, in any app"
-            >
-              <source src="assets/brushup-demo.mp4" type="video/mp4" />
-            </video>
-          </div>
-        </div>
-      </section>
-
-      <!-- ─── Everywhere ─── -->
-      <section class="section reveal">
-        <div class="container">
-          <div class="section-head">
-            <span class="label">Stays out of your way</span>
-            <h2>Quiet in the tray until you need it.</h2>
-          </div>
-          <div class="facts">
-            <div class="fact">
-              <h3>
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="8" r="6" /><path d="M2 8h12M8 2c2 2 2 10 0 12M8 2c-2 2-2 10 0 12" /></svg>
-                Works in any app
-              </h3>
-              <p>Outlook, Word, Slack, Notion, browsers, even older programs.</p>
-            </div>
-            <div class="fact">
-              <h3>
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8.5 1.5L3 9h4l-.5 5.5L12 7H8l.5-5.5Z" /></svg>
-                Ready on install
-              </h3>
-              <p>Sign in with your email and a code. No password, no API key, no model to pick.</p>
-            </div>
-            <div class="fact">
-              <h3>
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="1.5" y="4" width="13" height="8" rx="1.5" /><path d="M4 7h.01M6.5 7h.01M9 7h.01M11.5 7h.01M5.5 9.5h5" /></svg>
-                Keyboard-first
-              </h3>
-              <p>Numbers pick presets, arrows step through them, Enter runs, Esc closes.</p>
-            </div>
-            <div class="fact">
-              <h3>
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.5 8.5A4.5 4.5 0 1 1 7.5 2.5a3.5 3.5 0 0 0 4 6Z" /></svg>
-                Dark, light or system
-              </h3>
-              <p>Follows your Windows theme, just like this page.</p>
-            </div>
-            <div class="fact">
-              <h3>
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13.5 8a5.5 5.5 0 1 1-1.6-3.9M13.5 2.5V5h-2.5" /></svg>
-                Updates itself
-              </h3>
-              <p>Signed releases install in the background. No installers to hunt for.</p>
-            </div>
-            <div class="fact">
-              <h3>
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="12" height="8.5" rx="1" /><path d="M5.5 14h5M8 11.5V14" /></svg>
-                Windows 10 and 11
-              </h3>
-              <p>A small native app for x64 PCs. Your license moves with you to a new PC.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
       <!-- ─── Privacy ─── -->
       <section class="section reveal" id="privacy">
         <div class="container">
           <div class="section-head">
             <span class="label">Privacy</span>
-            <h2>Your writing stays close.</h2>
+            <h2>Know what stays local. And what gets sent.</h2>
           </div>
           <div class="privacy">
             <div>
-              <h3>Your text goes straight to the AI model.</h3>
+              <h3>AI requests leave your PC.</h3>
               <p>
-                The app sends the text you select directly to the language model, through OpenRouter.
-                BrushUp's own server never receives it. It only checks your license and gives the app
-                its access key.
+                With the built-in provider, text you ask BrushUp to rewrite, look up or translate
+                goes through OpenRouter to the model provider. Generating Insights also sends the
+                rewrite examples used for that analysis. These features need an internet connection;
+                they do not run entirely on your PC.
               </p>
+              <p><a href="https://openrouter.ai/privacy">Read OpenRouter's privacy policy</a> for how that service handles requests. If you choose a custom endpoint, your requests go to that provider instead.</p>
             </div>
             <div>
               <h3>Your history stays on your PC.</h3>
               <p>
-                Rewrites, lookups, translations, flashcards and insights are stored locally. Delete any
-                entry, or clear it all, whenever you like.
+                Your saved history, flashcards, insights and settings stay on your PC. They are not
+                synced between computers. You can delete history entries or clear your history in the app.
               </p>
             </div>
             <div>
-              <h3>Nothing is read until you ask.</h3>
+              <h3>You choose what to send.</h3>
               <p>
-                BrushUp reads your selection only when you press Ctrl C C, and replaces text only when you
-                press Enter in the Rewrite popup.
+                Invoke BrushUp on the text you want help with; it does not continuously read your documents.
+                Rewrite replaces your selection only when you choose Replace or press Enter on a finished result.
+                BrushUp's backend handles email sign-in, sessions, trial and license checks, and model access keys;
+                the built-in AI requests go directly from the app to OpenRouter.
               </p>
             </div>
           </div>
@@ -2542,7 +2320,7 @@
               <span class="price-now">€5.10</span>
               <span class="price-per">/ year</span>
             </div>
-            <div class="price-note">Launch price for early adopters. Regularly €30 a year.</div>
+            <div class="price-note">Launch offer: €5.10/year, regularly €30. Billed yearly.</div>
             <ul class="price-list">
               <li><svg width="14" height="14" aria-hidden="true"><use href="#i-check" /></svg>Rewrite, Lookup and Translate in every app</li>
               <li><svg width="14" height="14" aria-hidden="true"><use href="#i-check" /></svg>Every preset, fully editable, plus your own</li>
@@ -2551,7 +2329,7 @@
               <li><svg width="14" height="14" aria-hidden="true"><use href="#i-check" /></svg>Built-in AI. No API key, no model to pick</li>
               <li><svg width="14" height="14" aria-hidden="true"><use href="#i-check" /></svg>Signed automatic updates; your license moves to any PC</li>
             </ul>
-            <a class="tb-btn tb-btn-primary js-download cta-desktop" href="#download">
+            <a class="tb-btn tb-btn-primary js-download cta-desktop" href="https://github.com/bryht/brushup-web/releases/latest">
               Start your free 14-day trial
               <svg width="14" height="14" aria-hidden="true"><use href="#i-download" /></svg>
             </a>
@@ -2559,13 +2337,13 @@
               <span><strong>BrushUp runs on Windows 10 and 11.</strong> Open this page on your PC to start the trial.</span>
               <button class="tb-btn tb-btn-sm js-share" type="button">Copy link for later</button>
             </div>
-            <div class="price-fine">No credit card for the trial. Buy inside the app when you're ready.</div>
+            <div class="price-fine">Email sign-in required. No credit card for the 14-day trial, and no automatic charge when it ends. Buy inside the app to continue using the built-in AI.</div>
           </div>
 
           <div class="faq">
             <details>
               <summary>What happens when the trial ends?</summary>
-              <p>BrushUp keeps working. Rewrites are never blocked; you'll see a gentle reminder now and then until you buy a license.</p>
+              <p>The built-in AI requires an active trial or paid license. After the 14-day trial, buy a license to keep using it. Your locally saved history and flashcards stay on your PC. You can also configure your own OpenAI-compatible endpoint; any charges from that provider are separate.</p>
             </details>
             <details>
               <summary>How do I buy?</summary>
@@ -2573,7 +2351,7 @@
             </details>
             <details>
               <summary>Do I need an account?</summary>
-              <p>Only your email. The first time you open BrushUp you enter it and a 6-digit code we send you. There's no password, and no API key to set up.</p>
+              <p>Yes, for the built-in AI: sign in with your email and a 6-digit code sent to your inbox. There is no password or API key to set up. Your 14-day trial is tied to your account, so reinstalling does not restart it.</p>
             </details>
             <details>
               <summary>Can I use it on another computer?</summary>
@@ -2591,13 +2369,318 @@
         </div>
       </section>
 
+      <!-- ─── More ways to learn ─── -->
+      <section class="section reveal" id="features">
+        <div class="container">
+          <div class="section-head">
+            <span class="label">More than rewriting</span>
+            <h2>Understand a message. Learn for the next one.</h2>
+            <p>Lookup, Translate and Learn are included in the same app and annual plan.</p>
+          </div>
+          <div class="feature-overview">
+            <a href="#lookup"><strong>Lookup</strong><span>Understand an unfamiliar word, with examples and a memory aid.</span></a>
+            <a href="#translate"><strong>Translate</strong><span>Read a message in your languages without replacing the original.</span></a>
+            <a href="#learn"><strong>Learn</strong><span>Review your history, practise flashcards and spot recurring mistakes.</span></a>
+          </div>
+          <details class="feature-details" id="feature-details">
+            <summary>Explore Lookup, Translate and Learn <span>Interactive examples and a full video walkthrough</span></summary>
+            <div class="feature-content">
+              <!-- ─── Lookup ─── -->
+              <section class="section reveal" id="lookup" data-keys="lookup">
+                <div class="container split">
+                  <div>
+                    <div class="section-head">
+                      <span class="label">Lookup</span>
+                      <h2>Understand any word without leaving the page.</h2>
+                    </div>
+                    <ul class="points">
+                      <li>
+                        <svg width="16" height="16" aria-hidden="true"><use href="#i-check" /></svg>
+                        <span><strong>Meaning and examples</strong> in clear English, with the pronunciation in IPA.</span>
+                      </li>
+                      <li>
+                        <svg width="16" height="16" aria-hidden="true"><use href="#i-check" /></svg>
+                        <span><strong>A line in your own language</strong> under each meaning, so nothing gets lost.</span>
+                      </li>
+                      <li>
+                        <svg width="16" height="16" aria-hidden="true"><use href="#i-check" /></svg>
+                        <span><strong>Hear it.</strong> Press <span class="tb-kbd tb-kbd-sm">V</span> to have the word read aloud.</span>
+                      </li>
+                      <li>
+                        <svg width="16" height="16" aria-hidden="true"><use href="#i-check" /></svg>
+                        <span><strong>A memory aid</strong> to make it stick, and every lookup comes back later as a flashcard.</span>
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="tb-shell">
+                    <div class="tb-shell-head">
+                      <span class="tb-shell-title"><svg width="16" height="16" aria-hidden="true"><use href="#mark" /></svg>BrushUp</span>
+                      <span class="tb-shell-x">×</span>
+                    </div>
+                    <div class="tb-lookup">
+                      <div class="tb-lookup-header">
+                        <span class="tb-lookup-word">reschedule</span>
+                        <span class="tb-lookup-phonetic">/ˌriːˈskedʒuːl/</span>
+                        <span class="tb-lang">English</span>
+                        <button class="tb-lookup-speak js-speak" type="button" aria-label="Pronounce reschedule (V)">
+                          <svg width="15" height="15" aria-hidden="true"><use href="#i-speaker" /></svg>
+                        </button>
+                      </div>
+                      <div class="tb-well">
+                        <span class="tb-label">verb</span>
+                        <span class="tb-lookup-meaning">To change the time or date of a planned event.</span>
+                        <span class="tb-lookup-native">reprogramar: cambiar la fecha u hora de algo</span>
+                        <ul class="tb-lookup-examples">
+                          <li>Could we reschedule the call to Thursday?</li>
+                          <li>The launch was rescheduled for next month.</li>
+                        </ul>
+                      </div>
+                      <div class="tb-well tb-memory">
+                        <span class="tb-label">Memory aid</span>
+                        <span class="tb-memory-text">re- means "again": you schedule it again, at a new time.</span>
+                      </div>
+                    </div>
+                    <div class="tb-banner">
+                      <span class="tb-tag tb-tag-good">Lookup</span><span class="grow">reschedule</span>
+                      <span class="tb-kbd tb-kbd-sm">V</span> pronounce
+                      <span class="tb-kbd tb-kbd-sm">esc</span> close
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <!-- ─── Translate ─── -->
+              <section class="section reveal" id="translate" data-keys="translate">
+                <div class="container split">
+                  <div class="tb-shell card-first">
+                    <div class="tb-shell-head">
+                      <span class="tb-shell-title"><svg width="16" height="16" aria-hidden="true"><use href="#mark" /></svg>BrushUp — Translate</span>
+                      <span class="tb-shell-x">×</span>
+                    </div>
+                    <div class="tb-translate">
+                      <div class="tb-well">
+                        <div class="tb-translate-head">
+                          <span class="tb-label">Spanish</span>
+                          <button class="tb-btn tb-btn-ghost js-copy" type="button">Copy</button>
+                        </div>
+                        <div class="tb-translate-text">Lamentablemente tengo que reprogramar nuestra llamada. ¿Te vendría bien el jueves a las 15:00?</div>
+                      </div>
+                      <div class="tb-well">
+                        <div class="tb-translate-head">
+                          <span class="tb-label">German</span>
+                          <button class="tb-btn tb-btn-ghost js-copy" type="button">Copy</button>
+                        </div>
+                        <div class="tb-translate-text">Leider muss ich unser Gespräch verschieben. Würde dir Donnerstag um 15 Uhr passen?</div>
+                      </div>
+                      <div class="tb-well">
+                        <div class="tb-translate-head">
+                          <span class="tb-label">Chinese</span>
+                          <button class="tb-btn tb-btn-ghost js-copy" type="button">Copy</button>
+                        </div>
+                        <div class="tb-translate-text">很抱歉，我得改一下我们通话的时间。改到周四下午3点，你方便吗？</div>
+                      </div>
+                      <div class="tb-translate-original">
+                        <button class="tb-translate-toggle js-original" type="button" aria-expanded="false">
+                          <span aria-hidden="true" class="js-caret">▸</span><span class="js-orig-label">Show original</span>
+                          <span class="tb-lang">English</span>
+                        </button>
+                        <div class="tb-translate-original-text" hidden>
+                          Unfortunately I have to reschedule our call. Would Thursday at 3 pm suit you instead?
+                        </div>
+                      </div>
+                    </div>
+                    <div class="tb-banner">
+                      <span class="tb-tag tb-tag-good">Translated</span><span class="grow">Spanish · German · Chinese</span>
+                      <span class="tb-kbd tb-kbd-sm">O</span> original
+                      <span class="tb-kbd tb-kbd-sm">esc</span> close
+                    </div>
+                  </div>
+                  <div>
+                    <div class="section-head">
+                      <span class="label">Translate</span>
+                      <h2>Read it in every language you speak.</h2>
+                    </div>
+                    <ul class="points">
+                      <li>
+                        <svg width="16" height="16" aria-hidden="true"><use href="#i-check" /></svg>
+                        <span><strong>As many languages as you like.</strong> One block each, in the order you set.</span>
+                      </li>
+                      <li>
+                        <svg width="16" height="16" aria-hidden="true"><use href="#i-check" /></svg>
+                        <span><strong>Skips the obvious.</strong> A language the text is already in is left out.</span>
+                      </li>
+                      <li>
+                        <svg width="16" height="16" aria-hidden="true"><use href="#i-check" /></svg>
+                        <span><strong>Check it against the source.</strong> The original is one press of <span class="tb-kbd tb-kbd-sm">O</span> away.</span>
+                      </li>
+                      <li>
+                        <svg width="16" height="16" aria-hidden="true"><use href="#i-check" /></svg>
+                        <span><strong>Your text stays as it was.</strong> Translate opens its own window and never pastes over anything. Copy a block if you need it.</span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </section>
+
+              <!-- ─── Learn ─── -->
+              <section class="section reveal" id="learn">
+                <div class="container">
+                  <div class="section-head">
+                    <span class="label">Learn</span>
+                    <h2>Get better from your own writing.</h2>
+                    <p>
+                      Everything you rewrite, look up and translate is saved on your PC. BrushUp turns it into
+                      practice that's about your English, not a textbook's.
+                    </p>
+                  </div>
+                  <div class="learn-grid">
+                    <div class="learn-col">
+                      <h3>Flashcards from your lookups</h3>
+                      <p>Every word you looked up becomes a card. Flip it, mark it known, and it leaves the deck.</p>
+                      <div class="tb-shell">
+                        <div class="flash">
+                          <div class="flash-meta">3 / 18 · 2 known</div>
+                          <div class="flash-card js-flash" role="button" tabindex="0" data-flipped="false" aria-label="Flashcard: reschedule. Press to reveal the meaning.">
+                            <div class="js-front">
+                              <div class="flash-word">reschedule</div>
+                              <div class="flash-phonetic">/ˌriːˈskedʒuːl/</div>
+                              <div class="flash-hint">Click or press Space to flip</div>
+                            </div>
+                            <div class="js-back tb-lookup" hidden>
+                              <div class="tb-well">
+                                <span class="tb-label">verb</span>
+                                <span class="tb-lookup-meaning">To change the time or date of a planned event.</span>
+                                <span class="tb-lookup-native">reprogramar: cambiar la fecha u hora de algo</span>
+                              </div>
+                              <div class="tb-well tb-memory">
+                                <span class="tb-label">Memory aid</span>
+                                <span class="tb-memory-text">re- means "again": you schedule it again, at a new time.</span>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="flash-actions">
+                            <span class="tb-btn tb-btn-ghost tb-btn-sm">‹ Prev</span>
+                            <button type="button" class="tb-btn tb-btn-sm js-flip">Flip</button>
+                            <span class="tb-btn tb-btn-ghost tb-btn-sm">Next ›</span>
+                            <span style="flex: 1"></span>
+                            <span class="tb-btn tb-btn-primary tb-btn-sm">I know this</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="learn-col">
+                      <h3>Insights from your rewrites</h3>
+                      <p>BrushUp reads back through your edits and shows the mistakes you make most, with a tip for each.</p>
+                      <div class="tb-shell">
+                        <div class="insight">
+                          <div class="insight-head">Prepositions of time <span class="tb-tag">Frequent</span></div>
+                          <div class="insight-text">You often use "in" with days and dates, where English uses "on".</div>
+                          <div class="insight-pair">
+                            <div><div class="cap">Before</div><div class="before">See you in Monday.</div></div>
+                            <div><div class="cap">After</div><div class="after">See you on Monday.</div></div>
+                          </div>
+                          <div class="insight-pair">
+                            <div><div class="cap">Before</div><div class="before">The report is due in 3 May.</div></div>
+                            <div><div class="cap">After</div><div class="after">The report is due on 3 May.</div></div>
+                          </div>
+                          <div class="insight-tip">Use "on" for days and dates, "in" for months and years, "at" for clock times.</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <p class="learn-foot">
+                    And a searchable <strong>History</strong> of everything you've run, with the changes for every
+                    rewrite. It never leaves your PC; delete any entry, or all of it.
+                  </p>
+                </div>
+              </section>
+
+              <!-- ─── Video ─── -->
+              <section class="section reveal" id="demo">
+                <div class="container">
+                  <div class="section-head center">
+                    <span class="label">See it in action</span>
+                    <h2>Watch a whole working session.</h2>
+                  </div>
+                  <div class="video-wrap">
+                    <video
+                      controls
+                      preload="metadata"
+                      poster="assets/poster.jpeg"
+                      aria-label="BrushUp demo: select text, rewrite, replace, in any app"
+                    >
+                      <source src="assets/brushup-demo.mp4" type="video/mp4" />
+                    </video>
+                  </div>
+                </div>
+              </section>
+
+              <!-- ─── Everywhere ─── -->
+              <section class="section reveal">
+                <div class="container">
+                  <div class="section-head">
+                    <span class="label">Stays out of your way</span>
+                    <h2>Quiet in the tray until you need it.</h2>
+                  </div>
+                  <div class="facts">
+                    <div class="fact">
+                      <h3>
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="8" r="6" /><path d="M2 8h12M8 2c2 2 2 10 0 12M8 2c-2 2-2 10 0 12" /></svg>
+                        Works in any app
+                      </h3>
+                      <p>Outlook, Word, Slack, Notion, browsers, even older programs.</p>
+                    </div>
+                    <div class="fact">
+                      <h3>
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8.5 1.5L3 9h4l-.5 5.5L12 7H8l.5-5.5Z" /></svg>
+                        Ready on install
+                      </h3>
+                      <p>Sign in with your email and a code. No password, no API key, no model to pick.</p>
+                    </div>
+                    <div class="fact">
+                      <h3>
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="1.5" y="4" width="13" height="8" rx="1.5" /><path d="M4 7h.01M6.5 7h.01M9 7h.01M11.5 7h.01M5.5 9.5h5" /></svg>
+                        Keyboard-first
+                      </h3>
+                      <p>Numbers pick presets, arrows step through them, Enter runs, Esc closes.</p>
+                    </div>
+                    <div class="fact">
+                      <h3>
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.5 8.5A4.5 4.5 0 1 1 7.5 2.5a3.5 3.5 0 0 0 4 6Z" /></svg>
+                        Dark, light or system
+                      </h3>
+                      <p>Follows your Windows theme, just like this page.</p>
+                    </div>
+                    <div class="fact">
+                      <h3>
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13.5 8a5.5 5.5 0 1 1-1.6-3.9M13.5 2.5V5h-2.5" /></svg>
+                        Updates itself
+                      </h3>
+                      <p>Signed releases install in the background. No installers to hunt for.</p>
+                    </div>
+                    <div class="fact">
+                      <h3>
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="12" height="8.5" rx="1" /><path d="M5.5 14h5M8 11.5V14" /></svg>
+                        Windows 10 and 11
+                      </h3>
+                      <p>A small native app for x64 PCs. Your license moves with you to a new PC.</p>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+            </div>
+          </details>
+        </div>
+      </section>
+
       <!-- ─── Bottom CTA ─── -->
       <section class="bottom-cta reveal">
         <div class="container">
           <h2>Better English, wherever you write.</h2>
           <p>Runs quietly in your tray. Free for 14 days, no credit card.</p>
           <div class="ctas">
-            <a class="tb-btn tb-btn-primary js-download cta-desktop" href="#download">
+            <a class="tb-btn tb-btn-primary js-download cta-desktop" href="https://github.com/bryht/brushup-web/releases/latest">
               Download BrushUp
               <svg width="14" height="14" aria-hidden="true"><use href="#i-download" /></svg>
             </a>
@@ -2862,7 +2945,7 @@
         var IMPROVED =
           "Thursday works for me, but could we make it 4 pm? I have another meeting until 3:30.";
         var ORDER = ["rewrite", "lookup", "translate"];
-        var SCENES = ["lookup", "translate", "rewrite"];
+        var SCENES = ["rewrite", "lookup", "translate"];
         var lastAction = "rewrite";
         var switcherIndex = 0;
 
@@ -2963,7 +3046,7 @@
         var tabs = document.querySelectorAll(".stage-tabs button");
         function paintTabs() {
           tabs.forEach(function (t, j) {
-            t.setAttribute("aria-selected", j === current ? "true" : "false");
+            t.setAttribute("aria-pressed", j === current ? "true" : "false");
           });
         }
         function cancel() {
@@ -3047,7 +3130,7 @@
                 nextSwitcher();
                 caption.textContent = "Tap C for Rewrite";
               }],
-              [3300, function () {
+              [2500, function () {
                 press(kCtrl, false);
                 ovSwitcher.setAttribute("data-open", "false");
                 lastAction = "rewrite";
@@ -3056,16 +3139,16 @@
                 popup.setAttribute("data-open", "true");
                 caption.textContent = "Preset 1, Improve English, is ready. Press Enter";
               }],
-              [4500, function () {
+              [3100, function () {
                 tap(kEnter);
                 popupState("writing");
                 caption.textContent = "It streams in as it writes";
               }],
-              [5600, function () {
+              [3900, function () {
                 popupState("done");
                 caption.textContent = "Every change marked, nothing hidden";
               }],
-              [7800, function () {
+              [5400, function () {
                 tap(kEnter);
                 popup.setAttribute("data-open", "false");
                 clearSel();
@@ -3085,13 +3168,14 @@
               ? document.getElementById("w-sentence")
               : draft;
         }
-        var HOLD = { lookup: 8200, translate: 8200, rewrite: 11000 };
+        var HOLD = { lookup: 8200, translate: 8200, rewrite: 7400 };
         function play(i) {
           reset();
           current = i;
           paintTabs();
           var name = SCENES[i];
           var target = targetFor(name);
+          lastAction = ORDER[(ORDER.indexOf(name) + ORDER.length - 1) % ORDER.length];
           scenes[name](target).forEach(function (s) {
             timers.push(setTimeout(s[1], s[0]));
           });
@@ -3172,47 +3256,69 @@
           });
         });
 
+        // Open optional feature examples before scrolling to an anchored section.
+        var featureDetails = document.getElementById("feature-details");
+        function revealFeature(hash) {
+          var target = document.getElementById(hash.slice(1));
+          if (target && featureDetails.contains(target)) {
+            featureDetails.open = true;
+            return target;
+          }
+        }
+        document.querySelectorAll('a[href^="#"]').forEach(function (link) {
+          link.addEventListener("click", function () { revealFeature(link.hash); });
+        });
+        window.addEventListener("hashchange", function () {
+          var target = revealFeature(location.hash);
+          if (target) target.scrollIntoView();
+        });
+        var initialFeature = revealFeature(location.hash);
+        if (initialFeature) requestAnimationFrame(function () { initialFeature.scrollIntoView(); });
+
         // ── Download: resolve the latest installer ──
         // Uses GitHub's `releases/latest`, which by design skips drafts and
         // pre-releases, so the website only ever offers stable builds.
         var releasePromise = null;
         function getLatestRelease() {
           if (!releasePromise) {
+            var controller = new AbortController();
+            var timeout = setTimeout(function () { controller.abort(); }, 6000);
             releasePromise = fetch("https://api.github.com/repos/bryht/brushup-web/releases/latest", {
               headers: { Accept: "application/vnd.github+json" },
+              signal: controller.signal,
             }).then(function (res) {
               if (!res.ok) throw new Error("api " + res.status);
               return res.json();
-            });
+            }).finally(function () { clearTimeout(timeout); });
           }
           return releasePromise;
         }
-        function exeFromRelease(data) {
-          var asset = (data.assets || []).find(function (a) {
-            return /\.exe$/i.test(a.name);
+        function installerFromRelease(data) {
+          return (data.assets || []).find(function (a) {
+            return /\.exe$/i.test(a.name) &&
+              /^https:\/\/github\.com\/bryht\/brushup-web\/releases\/download\//.test(a.browser_download_url);
           });
-          if (!asset) throw new Error("no exe asset");
-          return asset.browser_download_url;
         }
-        // Prefetch on load so the click is instant, and surface the live version.
-        getLatestRelease()
-          .then(function (data) {
-            var el = document.getElementById("version-meta");
-            if (el && data.tag_name) el.textContent = data.tag_name;
-          })
-          .catch(function () {});
-        document.querySelectorAll(".js-download").forEach(function (el) {
-          el.addEventListener("click", function (e) {
-            e.preventDefault();
-            getLatestRelease()
-              .then(exeFromRelease)
-              .then(function (url) {
-                window.location.href = url;
-              })
-              .catch(function () {
-                window.location.href = "https://github.com/bryht/brushup-web/releases/latest";
-              });
-          });
+        // Keep real release-page links usable without JS, on timeouts or rate limits.
+        getLatestRelease().then(function (data) {
+          var asset = installerFromRelease(data);
+          document.getElementById("version-meta").textContent = data.tag_name || "Latest stable release";
+          var date = new Date(data.published_at);
+          if (data.published_at && !isNaN(date.getTime())) {
+            document.getElementById("release-date").textContent = "Released " + date.toLocaleDateString("en-GB", {
+              day: "numeric", month: "short", year: "numeric", timeZone: "UTC",
+            });
+          }
+          if (asset && Number.isFinite(asset.size) && asset.size > 0) {
+            document.getElementById("release-size").textContent = "Installer · " + (asset.size / 1048576).toFixed(1) + " MB";
+          }
+          if (asset) {
+            document.querySelectorAll(".js-download").forEach(function (el) {
+              el.href = asset.browser_download_url;
+            });
+          }
+        }).catch(function () {
+          document.getElementById("version-meta").textContent = "Version and installer details on GitHub";
         });
 
         // ── Scroll reveal ──
